@@ -66,3 +66,24 @@ double **get_identity_matrix(void)
 	a[3][3] = 1;
 	return a;
 }
+
+int compare_matrix(double **a, double **b, int size)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while(i < size)
+	{
+		while(j < size)
+		{
+			if (fabs(a[i][j] - b[i][j]) > 0.001)
+				return 1;
+			j ++;
+		}
+		j = 0;
+		i++;
+	}
+	return 0;
+}

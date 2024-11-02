@@ -1,13 +1,13 @@
 #include "miniRT.h"
 
-void show_matrix(double **a)
+void show_matrix(double **a, int size)
 {
 	int i = 0;
 	int j = 0;
 
-	while(i < 4)
+	while(i < size)
 	{
-		while(j < 4)
+		while(j < size)
 		{
 			printf("%f ", a[i][j]);
 			j ++;

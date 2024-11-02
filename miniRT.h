@@ -16,6 +16,7 @@ typedef struct s_koord
 
 
 
+//vector operations
 xyzvektor crossProduct(xyzvektor a, xyzvektor b);
 double dotProduct(xyzvektor a, xyzvektor b);
 xyzvektor substraction(xyzvektor a, xyzvektor b);
@@ -27,7 +28,27 @@ xyzvektor scalarMultiplication(xyzvektor a, double b);
 xyzvektor scalarDivision(xyzvektor a, double b);
 xyzvektor set_vector(double x, double y, double z, double w);
 
+//matrix operations
+double **multiply_matrix(double **a, double **b);
+xyzvektor	multiply_vector_and_matrix(xyzvektor a, double **b);
+double **get_identity_matrix(void);
+int compare_matrix(double **a, double **b, int size);
+double **transpose_matrix(double **a, int size);
+double get_minor(double **a, int i, int j, int size);
+double get_determinante_of_2(double **a);
+double *extract_submatrix_row(double *a, int ii, int size);
+double **get_submatrix(double **a, int ii, int jj, int size);
+double **invert_matrix(double **a, int size);
+double get_cofactor(double **a, int i, int j, int size);
+double get_determinant_of_bigger_matrix(double **a, int size);
 
+//color operations
+uint32_t	get_color_from_tuple(xyzvektor color);
+
+//utils
+
+void free_double_ptr(double **a, int size);
+void show_matrix(double **a, int size);
 
 
 
