@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "../miniRT.h"
 #include <stdio.h>
 
 xyzvektor scalarMultiplication(xyzvektor a, double b)

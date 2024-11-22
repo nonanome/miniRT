@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "../miniRT.h"
 
 double calculate_element(int row, int column, double **a, double **b)
 {
@@ -9,7 +9,7 @@ double calculate_element(int row, int column, double **a, double **b)
 	result = 0;
 	j = 0;
 	i = 0;
-	while(i < 4)
+	while (i < 4)
 	{
 		result += a[row][j] * b[i][column];
 		j ++;

@@ -1,5 +1,5 @@
 NAME = miniRT
-CFLAGS = -g -framework OpenGL  -framework Cocoa -mmacosx-version-min=14.3  -lglfw
+CFLAGS = -g -framework OpenGL  -mmacosx-version-min=14.3  -lglfw
 PATH_MLX = -L/MLX -lmlx42 -O3
 MLX = MLX42/build/libmlx42.a
 OBJECTS = libft/ft_toupper.o \
@@ -46,7 +46,7 @@ OBJECTS = libft/ft_toupper.o \
        libft/ft_bzero.o \
        libft/ft_atoi.o \
 
-GC = main.o garbageCollector.o vector_vector_operations.o vector_scalar_operations.o vector_operations.o
+GC = main.o garbageCollector.o vector_stuff/vector_vector_operations.o vector_stuff/vector_scalar_operations.o vector_stuff/vector_operations.o Matrix_stuff/matrix_conversion.o Matrix_stuff/matrix_conversion2.o Matrix_stuff/matrix_operations.o Matrix_stuff/submatrix.o Matrix_stuff/transformation.o
 
 OBJ = $(OBJECTS:.o=.c)
 

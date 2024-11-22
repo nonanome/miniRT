@@ -14,7 +14,13 @@ typedef struct s_koord
 	double	w;
 }	xyzvektor;
 
-
+//trasnformation
+double **translation(double x, double y, double z);
+double **scaling(double x, double y, double z);
+double **rotation_x(double degree);
+double **rotation_y(double degree);
+double **rotation_z(double degree);
+double **shearing(double *proportions);
 
 //vector operations
 xyzvektor crossProduct(xyzvektor a, xyzvektor b);
@@ -41,6 +47,7 @@ double **get_submatrix(double **a, int ii, int jj, int size);
 double **invert_matrix(double **a, int size);
 double get_cofactor(double **a, int i, int j, int size);
 double get_determinant_of_bigger_matrix(double **a, int size);
+double get_determinante_of_3x3(double **a);
 
 //color operations
 uint32_t	get_color_from_tuple(xyzvektor color);
