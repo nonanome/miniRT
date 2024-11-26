@@ -51,27 +51,63 @@ uint32_t	get_color_from_tuple(xyzvektor color)
 	return (r << 16 | g << 8 | b);
 }
 
+
+int *calculate_pixel_coordinates(xyzvektor point)
+{
+	int *result;
+
+	result = malloc(2 * sizeof(int));
+	result[0] = point.x + 750;
+	result[1] = point.y + 750;
+	return result;
+}
+
+void draw_point(int x, int y, t_c *canvas, int32_t color)
+{
+	int x1;
+	int y1;
+
+	x1 = x - 5;
+	y1 = y - 5;
+	while(y1 < y + 5)
+	{
+		while(x1 < x + 5)
+		{
+			mlx_put_pixel(canvas->img, x1, y1, color);
+			x1 ++;
+		}
+		x1 = x - 5;
+		y1 ++;
+	}
+}
+
 void draw_on_img(t_c *canvas)
 {
 	xyzvektor colorTuple;
 	int32_t color;
-	int x;
-	int y;
+	xyzvektor point;
+	point.x = 0;
+	point.y = 0;
+	point.z = 0;
+	point.w = 1;
 
-	x = -1;
-	y = -1;
-	colorTuple = set_vector(255, 255, 255, 0);
-	while (++x < canvas->width)
+	point = multiply_vector_and_matrix(point, translation(0, -550, 0));
+
+	int i = 0;
+	while(i < 12)
 	{
-		while (++y < canvas->height)
-		{
-			color = get_color_from_tuple(colorTuple);
-			if (point_out_bounds(x, y, *canvas) != 1)
-				mlx_put_pixel(canvas->img, x, y, color);
-		}
-		y = -1;
+		point = multiply_vector_and_matrix(point, rotation_z(30));
+		int *pixel = calculate_pixel_coordinates(point);
+		colorTuple = set_vector(255, 255, 255, 0);
+
+		color = get_color_from_tuple(colorTuple);
+		draw_point(pixel[0], pixel[1], canvas, color);
+		i ++;
 	}
+
+
 }
+
 
 void	mlx_loop_start(t_c canvas)
 {
@@ -90,12 +126,14 @@ void init_canvas(t_c *canvas)
 	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
 }
 
-// int main(void)
-// {
-// 	t_c canvas;
-// 	init_canvas(&canvas);
-// 	mlx_loop_start(canvas);
-// }
+
+
+int main(void)
+{
+	t_c canvas;
+	init_canvas(&canvas);
+	mlx_loop_start(canvas);
+}
 
 
 
@@ -170,26 +208,26 @@ void init_canvas(t_c *canvas)
 // 	//show_matrix(get_submatrix(a, 0, 0, 3), 2);
 // }
 
-int main(void)
-{
-	xyzvektor a;
+// int main(void)
+// {
+// 	xyzvektor a;
 
-	a.x = 2;
-	a.y = 3;
-	a.z = 4;
-	a.w = 1;
+// 	a.x = 2;
+// 	a.y = 3;
+// 	a.z = 4;
+// 	a.w = 1;
 
-	double *proportion = malloc(6 * sizeof(double));
-	proportion[0] = 0;
-	proportion[1] = 0;
-	proportion[2] = 0;
-	proportion[3] = 0; 
-	proportion[4] = 0;
-	proportion[5] = 1;
-	double **scale = shearing(proportion);
-	xyzvektor result = multiply_vector_and_matrix(a, scale);
+// 	double *proportion = malloc(6 * sizeof(double));
+// 	proportion[0] = 0;
+// 	proportion[1] = 0;
+// 	proportion[2] = 0;
+// 	proportion[3] = 0; 
+// 	proportion[4] = 0;
+// 	proportion[5] = 1;
+// 	double **scale = shearing(proportion);
+// 	xyzvektor result = multiply_vector_and_matrix(a, scale);
 
-	printf("%f\n", result.x);
-	printf("%f\n", result.y);
-	printf("%f\n", result.z);
-}
+// 	printf("%f\n", result.x);
+// 	printf("%f\n", result.y);
+// 	printf("%f\n", result.z);
+// }
