@@ -83,3 +83,5 @@ double **shearing(double *proportions)
 	return result ;
 }
 
+
+

@@ -1,6 +1,8 @@
 #include "garbageCollector.h"
 #include "miniRT.h"
 
+static int globalID = 0;
+
 typedef struct point_data
 {
 	xyzvektor position;
@@ -20,6 +22,27 @@ typedef struct canvas
 	mlx_image_t *img;
 	mlx_t		*mlx_ptr;
 }	t_c;
+
+typedef struct ray
+{
+	xyzvektor origin;
+	xyzvektor direction;
+}	t_ray;
+
+typedef struct sphere
+{
+	int			id;
+	xyzvektor	origin;
+	double		radius;
+}	t_sphere;
+
+typedef struct intersect
+{
+	double *times;
+	int		object_id;
+}	t_intersec;
+
+
 
 // void	*ft_calloc(int count, int size)
 // {
@@ -62,57 +85,24 @@ int *calculate_pixel_coordinates(xyzvektor point)
 	return result;
 }
 
-void draw_point(int x, int y, t_c *canvas, int32_t color)
-{
-	int x1;
-	int y1;
-
-	x1 = x - 5;
-	y1 = y - 5;
-	while(y1 < y + 5)
-	{
-		while(x1 < x + 5)
-		{
-			mlx_put_pixel(canvas->img, x1, y1, color);
-			x1 ++;
-		}
-		x1 = x - 5;
-		y1 ++;
-	}
-}
-
-void draw_on_img(t_c *canvas)
-{
-	xyzvektor colorTuple;
-	int32_t color;
-	xyzvektor point;
-	point.x = 0;
-	point.y = 0;
-	point.z = 0;
-	point.w = 1;
-
-	point = multiply_vector_and_matrix(point, translation(0, -550, 0));
-
-	int i = 0;
-	while(i < 12)
-	{
-		point = multiply_vector_and_matrix(point, rotation_z(30));
-		int *pixel = calculate_pixel_coordinates(point);
-		colorTuple = set_vector(255, 255, 255, 0);
-
-		color = get_color_from_tuple(colorTuple);
-		draw_point(pixel[0], pixel[1], canvas, color);
-		i ++;
-	}
 
 
-}
+// void draw_on_img(t_c *canvas)
+// {
+
+// 		mlx_put_pixel(canvas->img, x, y, color);
+
+
+
+// }
+
+
 
 
 void	mlx_loop_start(t_c canvas)
 {
 	canvas.img = mlx_new_image(canvas.mlx_ptr, canvas.height, canvas.width);
-	draw_on_img(&canvas);
+	//draw_on_img(&canvas);
 	mlx_image_to_window(canvas.mlx_ptr, canvas.img, 0, 0);
 	mlx_loop(canvas.mlx_ptr);
 }
@@ -126,16 +116,88 @@ void init_canvas(t_c *canvas)
 	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
 }
 
+xyzvektor ray_position(t_ray ray, double time)
+{
+	xyzvektor result;
 
+	result = addition(ray.origin, scalarMultiplication(ray.direction, time));
+	return result; 
+}
+
+t_sphere new_sphere()
+{
+	t_sphere result;
+
+	result.origin.x = 0;
+	result.origin.y = 0;
+	result.origin.z = 0;
+	result.origin.w = 1;
+	result.radius = 1;
+	result.id = globalID;
+	globalID ++;
+	return result;
+}
+
+double get_discriminant(double *discriminant_values)
+{
+	return (discriminant_values[1] * discriminant_values[1] - 4
+		* discriminant_values[0] * discriminant_values[2]);
+}
+
+t_intersec *intersect(t_sphere sphere, t_ray ray)
+{
+	xyzvektor sphere_to_ray;
+	t_intersec	*result;
+	double *discriminant_values;
+	double discriminant;
+
+	discriminant_values = malloc(3 * sizeof(double));
+	sphere_to_ray = substraction(ray.origin, sphere.origin);
+	discriminant_values[0] = dotProduct(ray.direction, ray.direction);
+	discriminant_values[1] = 2 * dotProduct(ray.direction, sphere_to_ray);
+	discriminant_values[2] = dotProduct(sphere_to_ray, sphere_to_ray) - 1;
+	discriminant = get_discriminant(discriminant_values);
+	if(discriminant < 0)
+		return NULL;
+	result->times = malloc (2 * sizeof(double));
+	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2 * discriminant_values[0]);
+	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2 * discriminant_values[0]);
+	result->object_id = sphere.id;
+	return result;
+}
+
+// int main(void)
+// {
+// 	t_c canvas;
+// 	init_canvas(&canvas);
+// //	mlx_loop_start(canvas);
+// }
 
 int main(void)
 {
-	t_c canvas;
-	init_canvas(&canvas);
-	mlx_loop_start(canvas);
+	t_ray ray;
+	xyzvektor origin;
+	xyzvektor direction;
+
+
+	origin.x = 0;
+	origin.y = 0;
+	origin.z = 0;
+	origin.w = 1;
+
+	direction.x = 0;
+	direction.y = 0;
+	direction.z = 1;
+	direction.w = 0;
+
+	ray.origin = origin;
+	ray.direction = direction;
+
+	t_sphere sphere1 = new_sphere();
+	t_sphere sphere2 = new_sphere();
+
+	printf("%d %d", sphere1.id, sphere2.id);
 }
-
-
 
 // int main(void)
 // {
