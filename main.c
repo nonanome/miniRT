@@ -15,13 +15,7 @@ typedef struct environment
 	xyzvektor gravity;
 }	t_env;
 
-typedef struct canvas
-{
-	int width;
-	int height;
-	mlx_image_t *img;
-	mlx_t		*mlx_ptr;
-}	t_c;
+
 
 typedef struct ray
 {
@@ -42,7 +36,21 @@ typedef struct intersect
 	int		object_id;
 }	t_intersec;
 
+typedef struct intersections
+{
+	t_intersec *intersections;
+	size_t		nr_intersections;
+}	t_all_intersec;
 
+typedef struct canvas
+{
+	int				width;
+	int				height;
+	mlx_image_t		*img;
+	mlx_t			*mlx_ptr;
+	t_all_intersec	all_intersections;
+	
+}	t_c;
 
 // void	*ft_calloc(int count, int size)
 // {
@@ -114,6 +122,7 @@ void init_canvas(t_c *canvas)
 	canvas->height = 1500;
 	canvas->width = 1500;
 	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
+	canvas->all_intersections.nr_intersections = 0;
 }
 
 xyzvektor ray_position(t_ray ray, double time)
@@ -122,6 +131,64 @@ xyzvektor ray_position(t_ray ray, double time)
 
 	result = addition(ray.origin, scalarMultiplication(ray.direction, time));
 	return result; 
+}
+
+bool intersection_comparison_1_bigger_2(t_intersec *intersection1, t_intersec *intersection2)
+{
+	double smallest_time_of_1;
+	double smallest_time_of_2;
+
+	if(intersection1->times == NULL && intersection2->times == NULL)
+		return false;
+	if(intersection1->times == NULL)
+		return true;
+	if(intersection2->times == NULL)
+		return false;
+	if(intersection1->times[0] < intersection1->times[1])
+		smallest_time_of_1 = intersection1->times[0];
+	else
+		smallest_time_of_1 = intersection1->times[1];
+	if(intersection2->times[0] < intersection2->times[1])
+		smallest_time_of_2 = intersection2->times[0];
+	else
+		smallest_time_of_2 = intersection2->times[1];
+	if(smallest_time_of_1 < smallest_time_of_2)
+		return false;
+	else
+		return true;
+}
+
+void	save_intersection(t_c *canvas, t_intersec *new_intersection, int i , int j)
+{
+	int nr_intersec;
+	t_intersec *old_intersections;
+	t_intersec *intersections_sorted;
+	bool new_intersection_sorted;
+
+	new_intersection_sorted = false;
+	old_intersections = canvas->all_intersections.intersections;
+	nr_intersec = canvas->all_intersections.nr_intersections + 1;
+	canvas->all_intersections.nr_intersections = nr_intersec;
+	intersections_sorted = malloc (nr_intersec * sizeof(t_intersec));
+	if(nr_intersec == 1)
+	{
+		canvas->all_intersections.intersections = new_intersection;	
+		return;
+	}
+	while(++ i < nr_intersec)
+	{
+		if((intersection_comparison_1_bigger_2(&old_intersections[j],new_intersection) && !new_intersection_sorted) || (i == nr_intersec - 1 && !new_intersection_sorted))
+		{
+			intersections_sorted[i] = *new_intersection;
+			new_intersection_sorted = true;
+		}
+		else
+		{
+			intersections_sorted[i] = old_intersections[j];
+			j ++;
+		}
+	}
+	canvas->all_intersections.intersections = intersections_sorted;
 }
 
 t_sphere new_sphere()
@@ -151,6 +218,7 @@ t_intersec *intersect(t_sphere sphere, t_ray ray)
 	double *discriminant_values;
 	double discriminant;
 
+	result = malloc(sizeof(t_intersec));
 	discriminant_values = malloc(3 * sizeof(double));
 	sphere_to_ray = substraction(ray.origin, sphere.origin);
 	discriminant_values[0] = dotProduct(ray.direction, ray.direction);
@@ -173,16 +241,32 @@ t_intersec *intersect(t_sphere sphere, t_ray ray)
 // //	mlx_loop_start(canvas);
 // }
 
+// t_intersec hit(t_c canvas)
+// {
+// 	t_intersec smallest;
+// 	int i;
+
+// 	i = 1;
+// 	smallest = canvas.all_intersections.intersections[0];
+// 	while(i < canvas.all_intersections.nr_intersections)
+// 	{
+// 		if()
+// 	}
+// }
+
 int main(void)
 {
 	t_ray ray;
+	t_ray ray2;
 	xyzvektor origin;
+	xyzvektor origin2;
 	xyzvektor direction;
+	t_c canvas;
 
-
+	init_canvas(&canvas);
 	origin.x = 0;
 	origin.y = 0;
-	origin.z = 0;
+	origin.z = -5;
 	origin.w = 1;
 
 	direction.x = 0;
@@ -190,13 +274,30 @@ int main(void)
 	direction.z = 1;
 	direction.w = 0;
 
+	origin2.x = 0;
+	origin2.y = 1;
+	origin2.z = -5;
+	origin2.w = 1;
+
 	ray.origin = origin;
 	ray.direction = direction;
+
+	ray2.origin = origin2;
+	ray2.direction = direction;
 
 	t_sphere sphere1 = new_sphere();
 	t_sphere sphere2 = new_sphere();
 
-	printf("%d %d", sphere1.id, sphere2.id);
+	t_intersec *sphere_intersections2 = intersect(sphere1, ray2);
+	t_intersec *sphere_intersections = intersect(sphere2, ray);
+
+	save_intersection(&canvas, sphere_intersections2, -1, 0);
+	save_intersection(&canvas, sphere_intersections, -1, 0);
+
+	printf("%f %f", sphere_intersections2->times[0], sphere_intersections2->times[1]);
+	printf("\n");
+	printf("%d  ",  canvas.all_intersections.nr_intersections);
+	printf("%f %f %f %f", canvas.all_intersections.intersections[0].times[0], canvas.all_intersections.intersections[0].times[1], canvas.all_intersections.intersections[1].times[0], canvas.all_intersections.intersections[1].times[1]);
 }
 
 // int main(void)
