@@ -14,6 +14,69 @@ typedef struct s_koord
 	double	w;
 }	xyzvektor;
 
+typedef struct point_data
+{
+	xyzvektor position;
+	xyzvektor velocity;
+}	t_point;
+
+typedef struct environment
+{
+	xyzvektor wind;
+	xyzvektor gravity;
+}	t_env;
+
+
+
+typedef struct ray
+{
+	xyzvektor origin;
+	xyzvektor direction;
+
+}	t_ray;
+
+typedef struct sphere
+{
+	int			id;
+	xyzvektor	origin;
+	double		radius;
+	double **	default_transformation;
+}	t_sphere;
+
+typedef struct intersect
+{
+	t_ray		ray;
+	double *times;
+	int		object_id;
+}	t_intersec;
+
+typedef struct intersections
+{
+
+	t_intersec *intersections;
+	size_t		nr_intersections;
+}	t_all_intersec;
+
+typedef struct canvas
+{
+	int				width;
+	int				height;
+	mlx_image_t		*img;
+	mlx_t			*mlx_ptr;
+	t_all_intersec	all_intersections;
+	
+}	t_c;
+
+//intersection
+void	save_intersection(t_c *canvas, t_intersec *new_intersection, int i , int j);
+t_intersec *intersect(t_sphere sphere, t_ray ray);
+xyzvektor ray_position(t_ray ray, double time);
+double get_smallest_positive_value(t_intersec *intersection1);
+xyzvektor identify_hit(t_all_intersec all_intersections);
+t_ray transform(t_ray ray, double **transformation);
+
+
+
 //trasnformation
 double **translation(double x, double y, double z);
 double **scaling(double x, double y, double z);
@@ -56,6 +119,9 @@ uint32_t	get_color_from_tuple(xyzvektor color);
 
 void free_double_ptr(double **a, int size);
 void show_matrix(double **a, int size);
+
+//sphere
+void set_transform(t_sphere *sphere, double **translation);
 
 
 
