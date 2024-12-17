@@ -36,17 +36,6 @@ uint32_t	get_color_from_tuple(xyzvektor color)
 }
 
 
-int *calculate_pixel_coordinates(xyzvektor point)
-{
-	int *result;
-
-	result = malloc(2 * sizeof(int));
-	result[0] = point.x + 80;
-	result[1] = point.y + 80;
-	return result;
-}
-
-
 
 // void draw_on_img(t_c *canvas)
 // {
@@ -58,22 +47,17 @@ int *calculate_pixel_coordinates(xyzvektor point)
 // }
 
 
-void	mlx_loop_start(t_c canvas)
-{
-	canvas.img = mlx_new_image(canvas.mlx_ptr, canvas.height, canvas.width);
-	//draw_on_img(&canvas);
-	mlx_image_to_window(canvas.mlx_ptr, canvas.img, 0, 0);
-	mlx_loop(canvas.mlx_ptr);
-}
+
 
 
 void init_canvas(t_c *canvas)
 {
-
-	canvas->height = 160;
-	canvas->width = 160;
+	canvas->worldheight = 8;
+	canvas->height = 320;
+	canvas->width = 320;
 	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
-	
+	canvas->pixel_size = canvas->height / canvas->worldheight;
+	canvas->half_size = canvas->worldheight / 2;
 	canvas->all_intersections.nr_intersections = 0;
 }
 
@@ -96,14 +80,11 @@ t_sphere new_sphere()
 	result.radius = 1;
 	result.default_transformation = get_identity_matrix();
 	result.id = globalID;
+	result.material = default_material();
 	globalID ++;
 	return result;
 }
 
-double calculate_pixel_size(t_c canvas, int n)
-{
-	return canvas.height / n;
-}
 
 
 // int main(void)
@@ -129,20 +110,18 @@ double calculate_pixel_size(t_c canvas, int n)
 xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half)
 {
 	xyzvektor result;
-	result.x = x * pixel_size - half * pixel_size;
-	result.y = half * pixel_size - y * pixel_size;
+	result.x = x / pixel_size - half;
+	result.y = half - y / pixel_size;
 	result.z = 10;
 	result.w = 1;
+	return result;
 }
 
-
-void visualize(void *input)
+t_ray init_ray(void)
 {
-	t_c *canvas = input;
+	t_ray ray;
 	xyzvektor origin;
 	xyzvektor direction;
-	t_ray ray;
-	t_intersec *intersec = malloc(sizeof(t_intersec));
 
 	origin.x = 0;
 	origin.y = 0;
@@ -153,36 +132,123 @@ void visualize(void *input)
 	direction.y = 0;
 	direction.z = 1;
 	direction.w = 0;
+
 	ray.origin = origin;
 	ray.direction = direction;
+	return ray;
+}
+
+xyzvektor point_of_intersection(t_intersec *intersec, t_ray ray)
+{
+	double time_of_intersection;
+	xyzvektor way;
+	xyzvektor point_of_intersection;
+
+	time_of_intersection = get_smallest_positive_value(intersec);
+	way = scalarMultiplication(ray.direction , time_of_intersection);
+	point_of_intersection = addition(ray.origin, way);
+	return point_of_intersection;
+}
+
+//maybe normalize
+xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
+{
+	xyzvektor object_normale;
+	xyzvektor world_normale;
+	xyzvektor point_object_space;
+	double **transpose;
+
+
+	transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
+	point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
+	object_normale = substraction(point_object_space,  sphere.origin);
+	world_normale = multiply_vector_and_matrix(object_normale, transpose);
+	world_normale.w = 0;
+	return (normalize(world_normale));
+}
+
+xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale)
+{
+	double dot;
+	xyzvektor n;
+
+	dot = 2 * dotProduct(in, normale);
+	n = scalarMultiplication(normale, dot);
+	return substraction(in, n);
+}
+
+
+
+t_material default_material(void)
+{
+	t_material dm;
+	xyzvektor color;
+
+	color.x = 1;
+	color.y = 1;
+	color.z = 1;
+
+	dm.color = get_color_from_tuple(color);
+	dm.ambient = 0.1;
+	dm.diffuse = 0.9;
+	dm.specular = 0.9;
+	dm.shininess = 200.0;
+}
+
+t_light default_light(void)
+{
+	t_light source;
+	xyzvektor color;
+	xyzvektor position;
+
+	color.x = 1;
+	color.y = 1;
+	color.z = 1;
+
+	position.x = 0;
+	position.y = 0;
+	position.w = 0;
+
+	source.color = get_color_from_tuple(color);
+	source.position = position;
+}
+
+
+void visualize(void *input)
+{
+	t_c *canvas = input;
+	t_ray ray = init_ray();
+	t_intersec *intersec;
 	t_sphere sphere1 = new_sphere();
-	double pixel_size = calculate_pixel_size(*canvas, 8);
-	double half_size = 8 / 2;
 	xyzvektor world_coordinates;
+
 
 	int x = 0;
 	int y = 0;
 
-	canvas->img = mlx_new_image(canvas->mlx_ptr, 160, 160);
+	mlx_delete_image(canvas->mlx_ptr, canvas->img);
+	canvas->img = mlx_new_image(canvas->mlx_ptr, canvas->height, canvas->width);
 	while(y < canvas->height)
 	{
 		while(x < canvas->width)
 		{
-			world_coordinates = calculate_wall_coordinate(x, y, pixel_size, half_size);
-			ray.direction = normalize(substraction(world_coordinates, ray.origin));
+			world_coordinates = calculate_wall_coordinate(x, y, canvas->pixel_size, canvas->half_size);
+			ray.direction = normalize(substraction(ray.origin, world_coordinates));
 			intersec = intersect(sphere1, ray);
 			if(intersec != NULL)
 				mlx_put_pixel(canvas->img, x, y, 0xFFFFFF);
 			else
 				mlx_put_pixel(canvas->img, x, y, 0x000000);
+			free(intersec);
 			x ++;
 		}
 		x = 0;
 		y ++;
 	}
 	mlx_image_to_window(canvas->mlx_ptr, canvas->img, 0, 0);
-	mlx_delete_image(canvas->mlx_ptr, canvas->img);
 }
+
+
 
 int main(void)
 {
@@ -191,15 +257,30 @@ int main(void)
 	t_c canvas;
 
 
-
-
-
-
 	init_canvas(&canvas);
 	mlx_loop_hook(canvas.mlx_ptr, &visualize, (void *) &canvas);
 	mlx_loop(canvas.mlx_ptr);
 
 }
+
+// int main(void)
+// {
+// 	xyzvektor a;
+// 	xyzvektor normale;
+// 	xyzvektor reflect;
+
+// 	a.x = 0;
+// 	a.y = -1;
+// 	a.z = 0;
+
+// 	normale.x = sqrt(2) / 2;
+// 	normale.y = sqrt(2) / 2;
+// 	normale.z = 0;
+
+// 	reflect = calculate_reflection(a, normale);
+
+// 	printf("%f %f %f", reflect.x, reflect.y, reflect.z);
+// }
 
 // int main(void)
 // {

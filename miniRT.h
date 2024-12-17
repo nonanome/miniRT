@@ -35,12 +35,23 @@ typedef struct ray
 
 }	t_ray;
 
+
+typedef struct material
+{
+	uint32_t	color;
+	double		ambient;
+	double		diffuse;
+	double		specular;
+	double		shininess;
+}	t_material;
+
 typedef struct sphere
 {
 	int			id;
 	xyzvektor	origin;
 	double		radius;
-	double **	default_transformation;
+	double		**default_transformation;
+	t_material	material;
 }	t_sphere;
 
 typedef struct intersect
@@ -57,10 +68,20 @@ typedef struct intersections
 	size_t		nr_intersections;
 }	t_all_intersec;
 
+typedef struct pointlight
+{
+	uint32_t	color;
+	xyzvektor	position;
+}	t_light;
+
+
 typedef struct canvas
 {
 	int				width;
 	int				height;
+	double			pixel_size;
+	double			half_size;
+	double			worldheight;
 	mlx_image_t		*img;
 	mlx_t			*mlx_ptr;
 	t_all_intersec	all_intersections;
@@ -122,6 +143,7 @@ void show_matrix(double **a, int size);
 
 //sphere
 void set_transform(t_sphere *sphere, double **translation);
+t_material default_material(void);
 
 
 

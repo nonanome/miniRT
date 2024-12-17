@@ -55,12 +55,12 @@ double **rotation_y(double degree)
 	return result;
 }
 
-double **rotation_z(double degree)
+double **rotation_z(double radians)
 {
-	double radians;
+	// double radians;
 	double **result;
 
-	radians = degree / 180 * M_PI;
+	// radians = degree / 180 * M_PI;
 	result = get_identity_matrix();
 	result[0][0] = cos(radians);
 	result[0][1] = -sin(radians);

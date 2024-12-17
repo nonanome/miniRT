@@ -12,10 +12,10 @@ xyzvektor normalize(xyzvektor a)
 {
 	xyzvektor result;
 
-	result.x = a.x * magnitude(a);
-	result.y = a.y * magnitude(a);
-	result.z = a.z * magnitude(a);
-	result.w = a.w * magnitude(a);
+	result.x = a.x / magnitude(a);
+	result.y = a.y / magnitude(a);
+	result.z = a.z / magnitude(a);
+	result.w = a.w / magnitude(a);
 	return result;
 }
 
