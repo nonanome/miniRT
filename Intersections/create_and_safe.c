@@ -22,7 +22,6 @@ t_intersec *intersect(t_sphere sphere, t_ray ray)
 	discriminant_values[1] = 2 * dotProduct(ray.direction, sphere_to_ray);
 	discriminant_values[2] = dotProduct(sphere_to_ray, sphere_to_ray) - 1;
 	discriminant = get_discriminant(discriminant_values);
-	printf("%f\n", discriminant);
 	if(discriminant < 0)
 		return NULL;
 	result->times = malloc (2 * sizeof(double));

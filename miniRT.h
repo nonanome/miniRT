@@ -70,10 +70,23 @@ typedef struct intersections
 
 typedef struct pointlight
 {
-	uint32_t	color;
+	xyzvektor	color;
 	xyzvektor	position;
 }	t_light;
 
+typedef struct reflection_data_store
+{
+    xyzvektor		effective_color;
+	xyzvektor		materialcolor;
+	xyzvektor		lightsourcecolor;
+    xyzvektor		light_vector;
+    xyzvektor ambient;
+    xyzvektor diffuse;
+    xyzvektor specular;
+	double reflect_dot_eye;
+	double factor;
+	xyzvektor reflectv;
+}	t_store;
 
 typedef struct canvas
 {
@@ -85,7 +98,9 @@ typedef struct canvas
 	mlx_image_t		*img;
 	mlx_t			*mlx_ptr;
 	t_all_intersec	all_intersections;
-	
+	t_light			lightsource;
+	xyzvektor		normale;
+	xyzvektor		eyevector;
 }	t_c;
 
 //intersection
@@ -116,6 +131,7 @@ xyzvektor normalize(xyzvektor a);
 xyzvektor negateTuple(xyzvektor a);
 xyzvektor scalarMultiplication(xyzvektor a, double b);
 xyzvektor scalarDivision(xyzvektor a, double b);
+xyzvektor hadamard_product(xyzvektor a, xyzvektor b);
 xyzvektor set_vector(double x, double y, double z, double w);
 
 //matrix operations
@@ -137,13 +153,18 @@ double get_determinante_of_3x3(double **a);
 uint32_t	get_color_from_tuple(xyzvektor color);
 
 //utils
-
+t_light default_light(void);
+t_material default_material(void);
 void free_double_ptr(double **a, int size);
 void show_matrix(double **a, int size);
 
 //sphere
 void set_transform(t_sphere *sphere, double **translation);
 t_material default_material(void);
+
+//ray
+xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale);
+xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point);
 
 
 
