@@ -32,9 +32,13 @@ int min_of(int a, int b)
 
 uint32_t	get_color_from_tuple(xyzvektor color)
 {
-    uint8_t r = min_of(color.x * 255, 255);
-    uint8_t g = min_of(color.y * 255, 255);
-    uint8_t b = min_of(color.z * 255, 255);
+    // uint8_t r = min_of(color.x * 255, 255);
+    // uint8_t g = min_of(color.y * 255, 255);
+    // uint8_t b = min_of(color.z * 255, 255);
+
+    uint8_t r = color.x;
+    uint8_t g = color.y;
+    uint8_t b = color.z;
 
     // Combine into a single 32-bit integer (0xRRGGBB)
     return (r << 16) | (g << 8) | b;
@@ -128,7 +132,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
 	store.lightsourcecolor = canvas.lightsource.color;
     store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
     store.light_vector = normalize(substraction(canvas.lightsource.position, point));
-	// store.ambient = scalarMultiplication(store.effective_color , material.ambient);
+	store.ambient = scalarMultiplication(store.effective_color , material.ambient);
 	// printf("%f %f %f\n", canvas.normale.x, canvas.normale.y, canvas.normale.z);
 	// printf("%f %f %f\n",store.light_vector.x,store.light_vector.y,store.light_vector.z);
     light_dot_normale = dotProduct(store.light_vector, canvas.normale);
@@ -138,13 +142,13 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
         store.specular = set_black();
 	if (light_dot_normale >= 0) 
 	{
-    //    store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
-		printf("%d\n", get_color_from_tuple(store.diffuse));
+        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
+		// printf("%d\n", get_color_from_tuple(store.diffuse));
         store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
 
-		printf("%f\n", store.light_vector.z);
-				printf("%f\n", canvas.normale.z);
-						printf("%f\n\n", canvas.eyevector.z);
+		// printf("%f\n", store.light_vector.z);
+		// 		printf("%f\n", canvas.normale.z);
+		// 				printf("%f\n\n", canvas.eyevector.z);
         store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));
         if (store.reflect_dot_eye <= 0)
 		{
@@ -156,7 +160,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
 		{
 				//printf("test\n");
             store.factor = pow(store.reflect_dot_eye, material.shininess);
-           	store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor , material.specular), store.factor);
+            store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor , material.specular), store.factor);
 			//printf("  %d\n", get_color_from_tuple(store.specular));
         }
     }
@@ -170,40 +174,51 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
 
 
 //reflection_test
+// int main(void)
+// {
+// 	t_sphere sphere = new_sphere();
+// 	t_c canvas;
+// 	xyzvektor point;
+// 	xyzvektor eye;
+// 	uint32_t colors;
+// 	xyzvektor color;
+// 	xyzvektor normale;
+
+// 	init_canvas(&canvas);
+// 	point.x = 0;
+// 	point.y = 0;
+// 	point.z = 0;
+// 	point.w = 0;
+
+// 	eye.x = 0;
+// 	eye.y = 0;
+// 	eye.z = - 1;
+
+// 	normale.x = 0;
+// 	normale.y = 0;
+// 	normale.z = -1;
+
+// 	canvas.eyevector = substraction(eye, point);
+// 	canvas.normale = normale;
+
+// 	printf("%f %f %f\n", canvas.eyevector.x, canvas.eyevector.y, canvas.eyevector.z);
+// 	color = lightning(sphere.material, point, canvas);
+
+// 	printf("%f %f %f\n" , color.x, color.y, color.z);
+// }
+
 int main(void)
 {
-	t_sphere sphere = new_sphere();
+
+
 	t_c canvas;
-	xyzvektor point;
-	xyzvektor eye;
-	uint32_t colors;
-	xyzvektor color;
-	xyzvektor normale;
+
 
 	init_canvas(&canvas);
-	point.x = 0;
-	point.y = 0;
-	point.z = 0;
-	point.w = 0;
+	mlx_loop_hook(canvas.mlx_ptr, &visualize, (void *) &canvas);
+	mlx_loop(canvas.mlx_ptr);
 
-	eye.x = 0;
-	eye.y = 0;
-	eye.z = - 1;
-
-	normale.x = 0;
-	normale.y = 0;
-	normale.z = -1;
-
-	canvas.eyevector = substraction(eye, point);
-	canvas.normale = normale;
-
-	printf("%f %f %f\n", canvas.eyevector.x, canvas.eyevector.y, canvas.eyevector.z);
-	color = lightning(sphere.material, point, canvas);
-
-	printf("%f %f %f\n" , color.x, color.y, color.z);
 }
-
-
 
 // int main(void)
 // {
@@ -276,7 +291,12 @@ xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
 	double **transpose;
 
 
-	transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
+	// transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
+	// point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
+	// object_normale = substraction(point_object_space,  sphere.origin);
+	// world_normale = multiply_vector_and_matrix(object_normale, transpose);
+	// world_normale.w = 0;
+		transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
 	point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
 	object_normale = substraction(point_object_space,  sphere.origin);
 	world_normale = multiply_vector_and_matrix(object_normale, transpose);
@@ -326,7 +346,7 @@ t_material default_material(void)
 	dm.ambient = 0.1;
 	dm.diffuse = 0.9;
 	dm.specular = 0.9;
-	dm.shininess = 200.0;
+	dm.shininess = 500.0;
 	return dm;
 }
 
@@ -402,18 +422,7 @@ void visualize(void *input)
 
 
 
-// int main(void)
-// {
 
-
-// 	t_c canvas;
-
-
-// 	init_canvas(&canvas);
-// 	mlx_loop_hook(canvas.mlx_ptr, &visualize, (void *) &canvas);
-// 	mlx_loop(canvas.mlx_ptr);
-
-// }
 
 // int main(void)
 // {

@@ -166,6 +166,6 @@ t_material default_material(void);
 xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale);
 xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point);
 
-
+void visualize(void *input);
 
 #endif
