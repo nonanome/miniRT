@@ -44,6 +44,16 @@ uint32_t	get_color_from_tuple(xyzvektor color)
     return (r << 16) | (g << 8) | b;
 }
 
+uint32_t	get_color_from_tuple2(xyzvektor color)
+{
+    uint8_t r = min_of(color.x * 255, 255);
+    uint8_t g = min_of(color.y * 255, 255);
+    uint8_t b = min_of(color.z * 255, 255);
+
+    // Combine into a single 32-bit integer (0xRRGGBB)
+    return (r << 16) | (g << 8) | b;
+}
+
 xyzvektor	get_color_from_uint(uint32_t color)
 {
 	xyzvektor result;
@@ -58,6 +68,8 @@ xyzvektor	get_color_from_uint(uint32_t color)
 
     return result;
 }
+
+
 
 
 
@@ -77,8 +89,8 @@ xyzvektor	get_color_from_uint(uint32_t color)
 void init_canvas(t_c *canvas)
 {
 	canvas->worldheight = 8;
-	canvas->height = 320;
-	canvas->width = 320;
+	canvas->height = 640;
+	canvas->width = 640;
 	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
 	canvas->pixel_size = canvas->height / canvas->worldheight;
 	canvas->half_size = canvas->worldheight / 2;
@@ -132,6 +144,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
 	store.lightsourcecolor = canvas.lightsource.color;
     store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
     store.light_vector = normalize(substraction(canvas.lightsource.position, point));
+    store.ambient = set_black();
 	store.ambient = scalarMultiplication(store.effective_color , material.ambient);
 	// printf("%f %f %f\n", canvas.normale.x, canvas.normale.y, canvas.normale.z);
 	// printf("%f %f %f\n",store.light_vector.x,store.light_vector.y,store.light_vector.z);
@@ -142,7 +155,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
         store.specular = set_black();
 	if (light_dot_normale >= 0) 
 	{
-        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
+       store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
 		// printf("%d\n", get_color_from_tuple(store.diffuse));
         store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
 
@@ -296,7 +309,7 @@ xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
 	// object_normale = substraction(point_object_space,  sphere.origin);
 	// world_normale = multiply_vector_and_matrix(object_normale, transpose);
 	// world_normale.w = 0;
-		transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
+	transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
 	point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
 	object_normale = substraction(point_object_space,  sphere.origin);
 	world_normale = multiply_vector_and_matrix(object_normale, transpose);
@@ -337,16 +350,16 @@ t_material default_material(void)
 	t_material dm;
 	xyzvektor color;
 
-	color.x = 255;
-	color.y = 255;
-	color.z = 255;
+	color.x = 1;
+	color.y = 0.2;
+	color.z = 1;
 	color.w = 1;
 
 	dm.color = get_color_from_tuple(color);
 	dm.ambient = 0.1;
 	dm.diffuse = 0.9;
 	dm.specular = 0.9;
-	dm.shininess = 500.0;
+	dm.shininess = 200.0;
 	return dm;
 }
 
@@ -407,7 +420,7 @@ void visualize(void *input)
 				xyzvektor color = lightning(sphere1.material, intersectionpoint, *canvas);
 				// printf("%f %f %f\n", color.x, color.y, color.z);
 				//printf("%d\n", get_color_from_tuple(color));
-				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(color));
+				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple2(color));
 			}
 			else
 				mlx_put_pixel(canvas->img, x, y, 0x000000);
