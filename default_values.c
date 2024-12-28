@@ -8,8 +8,8 @@ t_material default_material(void)
 	xyzvektor color;
 
 	color.x = 0;
-	color.y = 0;
-	color.z = 1;
+	color.y = 1;
+	color.z = 0;
 	color.w = 1;
 
 	dm.color = get_color_from_tuple(color);
