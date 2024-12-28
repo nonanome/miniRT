@@ -1,12 +1,12 @@
 #include "garbageCollector.h"
 #include "miniRT.h"
 
-int	point_out_bounds(double x, double y, t_c canvas)
-{
-	if (x > canvas.height | y > canvas.width)
-		return (1);
-	return (0);
-}
+// int	point_out_bounds(double x, double y, t_c canvas)
+// {
+// 	if (x > canvas.height | y > canvas.width)
+// 		return (1);
+// 	return (0);
+// }
 
 int min_of(int a, int b)
 {
@@ -15,17 +15,7 @@ int min_of(int a, int b)
 	return b;
 }
 
-void init_canvas(t_c *canvas)
-{
-	canvas->worldheight = 8;
-	canvas->height = 320;
-	canvas->width = 320;
-	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
-	canvas->pixel_size = canvas->height / canvas->worldheight;
-	canvas->half_size = canvas->worldheight / 2;
-	canvas->all_intersections.nr_intersections = 0;
-	canvas->lightsource = default_light();
-}
+
 
 xyzvektor ray_position(t_ray ray, double time)
 {
@@ -39,90 +29,13 @@ xyzvektor ray_position(t_ray ray, double time)
 
 
 
-xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
-	t_store store;
-    double light_dot_normale;
-
-	// printf("%f %f %f\n", point.x, point.y, point.z);
-	store.materialcolor = get_color_from_uint(material.color);
-	store.lightsourcecolor = canvas.lightsource.color;
-    store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
-    store.light_vector = normalize(substraction(canvas.lightsource.position, point));
-    store.ambient = set_black();
-	store.ambient = scalarMultiplication(store.effective_color , material.ambient);
-	// printf("%f %f %f\n", canvas.normale.x, canvas.normale.y, canvas.normale.z);
-	// printf("%f %f %f\n",store.light_vector.x,store.light_vector.y,store.light_vector.z);
-    light_dot_normale = dotProduct(store.light_vector, canvas.normale);
-	// printf("     %f\n", light_dot_normale);
-	// printf("%d\n", get_color_from_tuple(store.ambient));
-	store.diffuse = set_black();
-    store.specular = set_black();
-	if (light_dot_normale >= 0) 
-	{
-        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
-		// printf("%d\n", get_color_from_tuple(store.diffuse));
-        store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
-
-		// printf("%f\n", store.light_vector.z);
-		// 		printf("%f\n", canvas.normale.z);
-		// 				printf("%f\n\n", canvas.eyevector.z);
-        store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));
-        if (store.reflect_dot_eye <= 0)
-		{
-		//	printf("test\n\n");
-			store.specular = set_black();
-		}
-            
-        else 
-		{
-				//printf("test\n");
-            store.factor = pow(store.reflect_dot_eye, material.shininess);
-            store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor , material.specular), store.factor);
-			//printf("  %d\n", get_color_from_tuple(store.specular));
-        }
-    }
-
-    return addition(addition(store.ambient , store.diffuse)  ,store.specular);
-}
 
 
 
 
 
 
-//reflection_test
-// int main(void)
-// {
-// 	t_sphere sphere = new_sphere();
-// 	t_c canvas;
-// 	xyzvektor point;
-// 	xyzvektor eye;
-// 	uint32_t colors;
-// 	xyzvektor color;
-// 	xyzvektor normale;
 
-// 	init_canvas(&canvas);
-// 	point.x = 0;
-// 	point.y = 0;
-// 	point.z = 0;
-// 	point.w = 0;
-
-// 	eye.x = 0;
-// 	eye.y = 0;
-// 	eye.z = - 1;
-
-// 	normale.x = 0;
-// 	normale.y = 0;
-// 	normale.z = -1;
-
-// 	canvas.eyevector = substraction(eye, point);
-// 	canvas.normale = normale;
-
-// 	printf("%f %f %f\n", canvas.eyevector.x, canvas.eyevector.y, canvas.eyevector.z);
-// 	color = lightning(sphere.material, point, canvas);
-
-// 	printf("%f %f %f\n" , color.x, color.y, color.z);
-// }
 
 int main(void)
 {
@@ -167,43 +80,11 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 	return result;
 }
 
-t_ray init_ray(void)
-{
-	t_ray ray;
-	xyzvektor origin;
-	xyzvektor direction;
-
-	origin.x = 0;
-	origin.y = 0;
-	origin.z = -5;
-	origin.w = 1;
-
-	direction.x = 0;
-	direction.y = 0;
-	direction.z = 1;
-	direction.w = 0;
-
-	ray.origin = origin;
-	ray.direction = direction;
-	return ray;
-}
 
 
 
-xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
-{
-	xyzvektor object_normale;
-	xyzvektor world_normale;
-	xyzvektor point_object_space;
-	double **transpose;
 
-	transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
-	point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
-	object_normale = substraction(point_object_space,  sphere.origin);
-	world_normale = multiply_vector_and_matrix(object_normale, transpose);
-	world_normale.w = 0;
-	return normalize(world_normale);
-}
+
 
 // int main(void)
 // {
@@ -221,15 +102,6 @@ xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
 
 
 
-xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale)
-{
-	double dot;
-	xyzvektor n;
-
-	dot = 2 * dotProduct(in, normale);
-	n = scalarMultiplication(normale, dot);
-	return normalize(substraction(in, n));
-}
 
 
 
@@ -238,45 +110,31 @@ void visualize(void *input)
 {
 	t_c *canvas = input;
 	t_ray ray = init_ray();
-	t_intersec *intersec;
+	v_s vs_data;
 	t_sphere sphere1 = new_sphere();
-	xyzvektor world_coordinates;
-	xyzvektor light_vector;
-	xyzvektor eyevector;
-	xyzvektor surfacenormale;
-	xyzvektor reflectionvector;
-	xyzvektor intersectionpoint;
-
 
 	int x = 0;
 	int y = 0;
-
 	mlx_delete_image(canvas->mlx_ptr, canvas->img);
 	canvas->img = mlx_new_image(canvas->mlx_ptr, canvas->height, canvas->width);
 	while(y < canvas->height)
 	{
 		while(x < canvas->width)
 		{
-			world_coordinates = calculate_wall_coordinate(x, y, canvas->pixel_size, canvas->half_size);
-			ray.direction = normalize(substraction(world_coordinates, ray.origin));
+			vs_data.world_coordinates = calculate_wall_coordinate(x, y, canvas->pixel_size, canvas->half_size);
+			ray.direction = normalize(substraction(vs_data.world_coordinates, ray.origin));
 			canvas->eyevector = negateTuple(ray.direction);
-			intersec = intersect(sphere1, ray);
-			if(intersec != NULL)
+			vs_data.intersec = intersect(sphere1, ray);
+			if(vs_data.intersec != NULL)
 			{
-				intersectionpoint = point_of_intersection(intersec, ray);
-				// printf("%f %f %f\n",intersectionpoint.x,intersectionpoint.y,intersectionpoint.z);
-				canvas->normale = calculate_normale_of_sphere(sphere1, intersectionpoint);
-				xyzvektor color = lightning(sphere1.material, intersectionpoint, *canvas);
-				//	printf("%f %f %f\n", color.x, color.y, color.z);
-				printf("%d\n", get_color_from_tuple(color));
-	fflush(stdout);
-				// printf("%f %f %f\n", color.x, color.y, color.z);
-				//printf("%d\n", get_color_from_tuple(color));
-				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(color));
+				vs_data.intersectionpoint = point_of_intersection(vs_data.intersec, ray);
+				canvas->normale = calculate_normale_of_sphere(sphere1, vs_data.intersectionpoint);
+				vs_data.color = lightning(sphere1.material, vs_data.intersectionpoint, *canvas);
+				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(vs_data.color));
 			}
 			else
 				mlx_put_pixel(canvas->img, x, y, 0x000000);
-			free(intersec);
+			free(vs_data.intersec);
 			x ++;
 		}
 		x = 0;

@@ -105,6 +105,14 @@ typedef struct canvas
 	xyzvektor		eyevector;
 }	t_c;
 
+typedef struct visualize_struct
+{
+	xyzvektor world_coordinates;
+	xyzvektor intersectionpoint;
+	xyzvektor color;
+	t_intersec *intersec;	
+}	v_s;
+
 //intersection
 void	save_intersection(t_c *canvas, t_intersec *new_intersection, int i , int j);
 t_intersec *intersect(t_sphere sphere, t_ray ray);
@@ -153,6 +161,8 @@ double get_determinante_of_3x3(double **a);
 
 //color operations
 uint32_t	get_color_from_tuple(xyzvektor color);
+void init_canvas(t_c *canvas);
+t_ray init_ray(void);
 
 //utils
 t_light default_light(void);
@@ -179,5 +189,9 @@ xyzvektor set_black(void);
 t_sphere new_sphere();
 t_light default_light(void);
 t_material default_material(void);
+
+xyzvektor lightning(t_material material, xyzvektor point, t_c canvas);
+xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale);
+xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point);
 
 #endif

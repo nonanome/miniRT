@@ -7,8 +7,8 @@ t_material default_material(void)
 	t_material dm;
 	xyzvektor color;
 
-	color.x = 0;
-	color.y = 1;
+	color.x = 1;
+	color.y = 0;
 	color.z = 0;
 	color.w = 1;
 
