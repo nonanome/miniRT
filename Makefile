@@ -48,7 +48,7 @@ OBJECTS = libft/ft_toupper.o \
 
 GC = main.o garbageCollector.o vector_stuff/vector_vector_operations.o vector_stuff/vector_scalar_operations.o vector_stuff/vector_operations.o Matrix_stuff/matrix_conversion.o \
 Matrix_stuff/matrix_conversion2.o Matrix_stuff/matrix_operations.o Matrix_stuff/submatrix.o Matrix_stuff/transformation.o Intersections/Intersection_order.o Intersections/create_and_safe.o \
-Intersections/identify_hits.o Transformation/transformation.c 
+Intersections/identify_hits.o Transformation/transformation.c default_values.c color_transform.c
 
 OBJ = $(OBJECTS:.o=.c)
 

@@ -2,6 +2,7 @@
 	"files.associations": {
 		"minirt.h": "c",
 		"algorithm": "c",
-		"__locale": "c"
+		"__locale": "c",
+		"mlx42.h": "c"
 	}
 }

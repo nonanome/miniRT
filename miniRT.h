@@ -6,6 +6,8 @@
 #include "libft/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 
+static int globalID = 0;
+
 typedef struct s_koord
 {
 	double	x;
@@ -167,5 +169,15 @@ xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale);
 xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point);
 
 void visualize(void *input);
+int min_of(int a, int b);
+uint32_t	get_color_from_tuple(xyzvektor color);
+xyzvektor	get_color_from_uint(uint32_t color);
+xyzvektor point_of_intersection(t_intersec *intersec, t_ray ray);
+
+
+xyzvektor set_black(void);
+t_sphere new_sphere();
+t_light default_light(void);
+t_material default_material(void);
 
 #endif

@@ -1,21 +1,6 @@
 #include "garbageCollector.h"
 #include "miniRT.h"
 
-static int globalID = 0;
-
-
-
-// void	*ft_calloc(int count, int size)
-// {
-// 	char	*allocated_memory;
-
-// 	allocated_memory = (void *) MALLOC (count * size);
-// 	if (allocated_memory == 0)
-// 		return (NULL);
-// 	ft_memset(allocated_memory, 0, count * size);
-// 	return (allocated_memory);
-// }
-
 int	point_out_bounds(double x, double y, t_c canvas)
 {
 	if (x > canvas.height | y > canvas.width)
@@ -30,67 +15,11 @@ int min_of(int a, int b)
 	return b;
 }
 
-uint32_t	get_color_from_tuple(xyzvektor color)
-{
-    // uint8_t r = min_of(color.x * 255, 255);
-    // uint8_t g = min_of(color.y * 255, 255);
-    // uint8_t b = min_of(color.z * 255, 255);
-
-    uint8_t r = color.x;
-    uint8_t g = color.y;
-    uint8_t b = color.z;
-
-    // Combine into a single 32-bit integer (0xRRGGBB)
-    return (r << 16) | (g << 8) | b;
-}
-
-uint32_t	get_color_from_tuple2(xyzvektor color)
-{
-    uint8_t r = min_of(color.x * 255, 255);
-    uint8_t g = min_of(color.y * 255, 255);
-    uint8_t b = min_of(color.z * 255, 255);
-
-    // Combine into a single 32-bit integer (0xRRGGBB)
-    return (r << 16) | (g << 8) | b;
-}
-
-xyzvektor	get_color_from_uint(uint32_t color)
-{
-	xyzvektor result;
-	uint8_t r = (color >> 16) & 0xFF;
-    uint8_t g = (color >> 8) & 0xFF;
-    uint8_t b = color & 0xFF;
-
-    result.x = (double)r;
-    result.y = (double)g;
-    result.z = (double)b;
-	result.w = 1;
-
-    return result;
-}
-
-
-
-
-
-// void draw_on_img(t_c *canvas)
-// {
-
-// 		mlx_put_pixel(canvas->img, x, y, color);
-
-
-
-// }
-
-
-
-
-
 void init_canvas(t_c *canvas)
 {
 	canvas->worldheight = 8;
-	canvas->height = 640;
-	canvas->width = 640;
+	canvas->height = 320;
+	canvas->width = 320;
 	canvas->mlx_ptr = mlx_init(canvas->height, canvas->width, "miniRT", false);
 	canvas->pixel_size = canvas->height / canvas->worldheight;
 	canvas->half_size = canvas->worldheight / 2;
@@ -106,32 +35,7 @@ xyzvektor ray_position(t_ray ray, double time)
 	return result; 
 }
 
-t_sphere new_sphere()
-{
-	t_sphere result;
 
-	result.origin.x = 0;
-	result.origin.y = 0;
-	result.origin.z = 0;
-	result.origin.w = 1;
-	result.radius = 1;
-	result.default_transformation = get_identity_matrix();
-	result.id = globalID;
-	result.material = default_material();
-	globalID ++;
-	return result;
-}
-
-xyzvektor set_black(void)
-{
-	xyzvektor result;
-
-	result.x = 0;
-	result.y = 0;
-	result.z = 0;
-	result.w = 1;
-	return result;
-}
 
 
 
@@ -151,11 +55,11 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas) {
     light_dot_normale = dotProduct(store.light_vector, canvas.normale);
 	// printf("     %f\n", light_dot_normale);
 	// printf("%d\n", get_color_from_tuple(store.ambient));
-		store.diffuse = set_black();
-        store.specular = set_black();
+	store.diffuse = set_black();
+    store.specular = set_black();
 	if (light_dot_normale >= 0) 
 	{
-       store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
+        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
 		// printf("%d\n", get_color_from_tuple(store.diffuse));
         store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
 
@@ -284,17 +188,7 @@ t_ray init_ray(void)
 	return ray;
 }
 
-xyzvektor point_of_intersection(t_intersec *intersec, t_ray ray)
-{
-	double time_of_intersection;
-	xyzvektor way;
-	xyzvektor point_of_intersection;
 
-	time_of_intersection = get_smallest_positive_value(intersec);
-	way = scalarMultiplication(ray.direction , time_of_intersection);
-	point_of_intersection = addition(ray.origin, way);
-	return point_of_intersection;
-}
 
 xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
 {
@@ -303,12 +197,6 @@ xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
 	xyzvektor point_object_space;
 	double **transpose;
 
-
-	// transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
-	// point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
-	// object_normale = substraction(point_object_space,  sphere.origin);
-	// world_normale = multiply_vector_and_matrix(object_normale, transpose);
-	// world_normale.w = 0;
 	transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
 	point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
 	object_normale = substraction(point_object_space,  sphere.origin);
@@ -345,45 +233,6 @@ xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale)
 
 
 
-t_material default_material(void)
-{
-	t_material dm;
-	xyzvektor color;
-
-	color.x = 1;
-	color.y = 0.2;
-	color.z = 1;
-	color.w = 1;
-
-	dm.color = get_color_from_tuple(color);
-	dm.ambient = 0.1;
-	dm.diffuse = 0.9;
-	dm.specular = 0.9;
-	dm.shininess = 200.0;
-	return dm;
-}
-
-t_light default_light(void)
-{
-	t_light source;
-	xyzvektor color;
-	xyzvektor position;
-
-	color.x = 1;
-	color.y = 1;
-	color.z = 1;
-	color.w = 1;
-
-	position.x = -10;
-	position.y = 10;
-	position.z = -10;
-	position.w = 0;
-
-	source.color = color;
-	source.position = position;
-	return source;
-}
-
 
 void visualize(void *input)
 {
@@ -418,9 +267,12 @@ void visualize(void *input)
 				// printf("%f %f %f\n",intersectionpoint.x,intersectionpoint.y,intersectionpoint.z);
 				canvas->normale = calculate_normale_of_sphere(sphere1, intersectionpoint);
 				xyzvektor color = lightning(sphere1.material, intersectionpoint, *canvas);
+				//	printf("%f %f %f\n", color.x, color.y, color.z);
+				printf("%d\n", get_color_from_tuple(color));
+	fflush(stdout);
 				// printf("%f %f %f\n", color.x, color.y, color.z);
 				//printf("%d\n", get_color_from_tuple(color));
-				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple2(color));
+				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(color));
 			}
 			else
 				mlx_put_pixel(canvas->img, x, y, 0x000000);
