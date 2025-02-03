@@ -73,7 +73,6 @@ double get_determinante_of_3x3(double **a)
 	submatrix1 = get_submatrix(a, 0, 0, 3);
 	submatrix2 = get_submatrix(a, 0, 1, 3);
 	submatrix3 = get_submatrix(a, 0, 2, 3);
-
 	return (a[0][0] * get_determinante_of_2(submatrix1)
 	- a[0][1] * get_determinante_of_2(submatrix2)
 	+ a[0][2] * get_determinante_of_2(submatrix3));

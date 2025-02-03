@@ -20,7 +20,7 @@ char	*ft_strdup(char *s1)
 
 	i = 0;
 	size = ft_strlen(s1) + 1;
-	stringcopy = (char *) MALLOC (size);
+	stringcopy = (char *) malloc (size); //MALLOC!
 	if (stringcopy == 0)
 		return (0);
 	while (s1[i] != 0)

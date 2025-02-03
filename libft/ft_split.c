@@ -76,13 +76,13 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	if (!*s)
 	{
-		strarray = MALLOC(1 * sizeof(char *));
+		strarray = malloc(1 * sizeof(char *)); //MALLOC!
 		if (!strarray)
 			return (NULL);
 		strarray[0] = 0;
 		return (strarray);
 	}
-	strarray = (char **) MALLOC ((ft_stringcounter(s, c) + 1) * sizeof(char *));
+	strarray = (char **) malloc ((ft_stringcounter(s, c) + 1) * sizeof(char *)); //MALLOC!
 	if (strarray == 0)
 		return (0);
 	strarray = ft_split2(s, c, &j, strarray);

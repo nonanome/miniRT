@@ -51,7 +51,7 @@ void	save_intersection(t_c *canvas, t_intersec *new_intersection, int i , int j)
 	{
 		canvas->all_intersections.intersections = new_intersection;	
 		canvas->all_intersections.nr_intersections += 1;
-		return;
+		return ;
 	}
 	while(++ i < nr_intersec)
 	{

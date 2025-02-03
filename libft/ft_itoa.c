@@ -29,7 +29,7 @@ static char	*ft_specialcase2(int n, char *number)
 {
 	int	j;
 
-	number = (char *) MALLOC (ft_digitcount(n) + 2);
+	number = (char *) malloc (ft_digitcount(n) + 2); //MALLOC!
 	if (number == 0)
 		return (0);
 	j = ft_digitcount(n);
@@ -48,7 +48,7 @@ static char	*ft_specialcase(int n, char *number)
 {
 	if (n == INT_MIN)
 	{
-		number = (char *) MALLOC (12 * sizeof(char));
+		number = (char *) malloc (12 * sizeof(char)); //MALLOC!
 		if (number == 0)
 			return (0);
 		ft_strlcpy(number, "-2147483648", 12);
@@ -57,7 +57,7 @@ static char	*ft_specialcase(int n, char *number)
 	n = -n;
 	if (n == 0)
 	{
-		number = (char *) MALLOC (2);
+		number = (char *) malloc (2); //MALLOC!
 		if (number == 0)
 			return (0);
 		number[0] = '0';
@@ -76,7 +76,7 @@ char	*ft_itoa(int n)
 	number = 0;
 	if (n <= 0)
 		return (ft_specialcase(n, number));
-	number = (char *) MALLOC (ft_digitcount(n) + 1);
+	number = (char *) malloc (ft_digitcount(n) + 1); //MALLOC!
 	if (number == 0)
 		return (0);
 	j = ft_digitcount(n) - 1;

@@ -1,6 +1,6 @@
 NAME = miniRT
-CFLAGS = -g -framework OpenGL  -mmacosx-version-min=14.3  -lglfw
-PATH_MLX = -L/MLX -lmlx42 -O3
+CFLAGS = -Iinclude -ldl -lglfw -pthread -lm -g
+PATH_MLX = -L./MLX -lmlx42 -O3
 MLX = MLX42/build/libmlx42.a
 OBJECTS = libft/ft_toupper.o \
        libft/ft_tolower.o \
@@ -48,15 +48,16 @@ OBJECTS = libft/ft_toupper.o \
 
 GC = main.o garbageCollector.o vector_stuff/vector_vector_operations.o vector_stuff/vector_scalar_operations.o vector_stuff/vector_operations.o Matrix_stuff/matrix_conversion.o \
 Matrix_stuff/matrix_conversion2.o Matrix_stuff/matrix_operations.o Matrix_stuff/submatrix.o Matrix_stuff/transformation.o Intersections/Intersection_order.o Intersections/create_and_safe.o \
-Intersections/identify_hits.o Transformation/transformation.c default_values.c color_transform.c reflection.c initialisation.c
+Intersections/identify_hits.o Transformation/transformation.c default_values.c color_transform.c reflection.c initialisation.c world_building/base_world.o world_building/world_testing.o\
+world_building/intersect_world.o
 
 OBJ = $(OBJECTS:.o=.c)
 
 
 all: miniRT
 
-miniRT: main.o ${GC} $(MLX) ${OBJECTS}
-	gcc ${CFLAGS} $(MLX) -o $@ $^
+miniRT: ${GC} $(MLX) ${OBJECTS}
+	    gcc ${GC} $(OBJECTS) $(MLX) -o $@ -ldl -lglfw -pthread -lm -lX11 -lXext
 
 main.o: main.c
 	gcc -c ${CFLAGS} $< -o $@
@@ -70,11 +71,10 @@ ${OBJECTS}:	${OBJ}
 
 clean:
 	rm -f ${OBJECTS} *.o
-	make -C ./libft
 
 fclean:
 	make clean
-	make fclean -C ./libft
+	make -C ./libft fclean
 	rm -f ${OBJECTS} ${NAME}
 
 re:	fclean all

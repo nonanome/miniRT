@@ -16,7 +16,7 @@ void	*ft_calloc(int count, int size)
 {
 	char	*allocated_memory;
 
-	allocated_memory = (void *) MALLOC (count * size);
+	allocated_memory = (void *) malloc (count * size); //MALLOC!
 	if (allocated_memory == 0)
 		return (NULL);
 	ft_memset(allocated_memory, 0, count * size);

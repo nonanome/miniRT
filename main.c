@@ -32,23 +32,18 @@ xyzvektor ray_position(t_ray ray, double time)
 
 
 
+//int main(void)
+//{
 
 
+//	t_c canvas;
 
 
+//	init_canvas(&canvas);
+//	mlx_loop_hook(canvas.mlx_ptr, &visualize, (void *) &canvas);
+//	mlx_loop(canvas.mlx_ptr);
 
-int main(void)
-{
-
-
-	t_c canvas;
-
-
-	init_canvas(&canvas);
-	mlx_loop_hook(canvas.mlx_ptr, &visualize, (void *) &canvas);
-	mlx_loop(canvas.mlx_ptr);
-
-}
+//}
 
 // int main(void)
 // {

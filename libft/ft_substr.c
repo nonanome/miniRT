@@ -41,7 +41,7 @@ char	*ft_substr(char const	*s, size_t start, size_t len)
 		len = ft_strlen(s) - start;
 	if (ft_strlen(s) - start < len)
 		len = ft_strlen(s) - start;
-	substring = (char *) MALLOC (len + 1);
+	substring = (char *) malloc (len + 1); //MALLOC!
 	if (substring == 0)
 		return (0);
 	while (i < len && s[i + start] != 0)
