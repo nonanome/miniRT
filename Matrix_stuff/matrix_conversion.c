@@ -1,0 +1,98 @@
+#include "../miniRT.h"
+
+// double calculate_element(int row, int column, double **a, double **b)
+// {
+// 	double result;
+// 	int j;
+// 	int i;
+
+// 	result = 0;
+// 	j = 0;
+// 	i = 0;
+// 	while(i < 4)
+// 	{
+// 		result += a[row][j] * b[i][column];
+// 		j ++;
+// 		i ++;
+// 	}
+// 	return result;
+// }
+
+// double **multiply_matrix(double **a, double **b)
+// {
+// 	double **result;
+// 	int row;
+// 	int column;
+
+// 	row = -1;
+// 	result = malloc(4 * (sizeof(double *)));
+// 	while (++ row < 4)
+// 		result[row] = malloc(4 * (sizeof(double)));
+// 	row = -1;
+// 	column = -1;
+// 	while (++ row < 4)
+// 	{
+// 		while(++ column < 4)
+// 			result[row][column] = calculate_element(row, column, a, b);
+// 		column = -1;
+// 	}
+// 	return result;
+// }
+
+double **transpose_matrix(double **a, int size)
+{
+	double **result;
+	int i;
+	int j;
+
+	result = malloc(size * (sizeof(double *)));
+	i = -1;
+	while(++ i < size)
+		result[i] = malloc(size * (sizeof(double)));
+	i = 0;
+	j = 0;
+	while(i < size)
+	{
+		while(j < size)
+		{
+			result[i][j] = a[j][i];
+			j ++;
+		}
+		j = 0;
+		i ++;
+	}
+	return result;
+}
+
+double get_determinante_of_3x3(double **a)
+{
+	double **submatrix1;
+	double **submatrix2;
+	double **submatrix3;
+
+	submatrix1 = get_submatrix(a, 0, 0, 3);
+	submatrix2 = get_submatrix(a, 0, 1, 3);
+	submatrix3 = get_submatrix(a, 0, 2, 3);
+	return (a[0][0] * get_determinante_of_2(submatrix1)
+	- a[0][1] * get_determinante_of_2(submatrix2)
+	+ a[0][2] * get_determinante_of_2(submatrix3));
+}
+
+double get_minor(double **a, int i, int j, int size)
+{
+	double **submatrix;
+	double determinante;
+
+	submatrix = get_submatrix(a, i, j, size);
+	if(size == 3)
+		determinante = get_determinante_of_2(submatrix);
+	else
+		determinante = get_determinante_of_3x3(submatrix);
+	free_double_ptr(submatrix, 2);
+	return (determinante);
+}
+
+double get_determinante_of_2(double **a)
+{
+	return a[0][0] * a[1][1] - a[1][0] * a[0][1];
+}
