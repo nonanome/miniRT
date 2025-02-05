@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "world_testing.h"
-
 #define PI 3.14159265358979323846
 
 t_material	set_material(xyzvektor color, double ambient, double diffuse,
