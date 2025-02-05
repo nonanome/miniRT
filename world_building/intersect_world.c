@@ -6,15 +6,15 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/03 22:03:18 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/05 18:07:44 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 #include "world.h"
 
-void	find_nearest_intersection(t_intersec *intersections, int nr_intersections,
-		t_intersec **intersec_to_use, int	*shape_to_use)
+void	find_nearest_intersection(t_intersec *intersections,
+		int nr_intersections, t_intersec **intersec_to_use, int *shape_to_use)
 {
 	int	i;
 
@@ -38,21 +38,31 @@ void	find_nearest_intersection(t_intersec *intersections, int nr_intersections,
 	}
 }
 
-xyzvektor color_at(t_world *world, t_ray ray)
+xyzvektor	color_at(t_world *world, t_ray ray)
 {
-	t_comp	comp;
-	t_intersec *intersec_to_use;
-	int	shape_to_use;
+	t_comp		comp;
+	t_intersec	*intersec_to_use;
+	int			shape_to_use;
 
+	if (world->canvas->all_intersections.intersections)
+{
+    free(world->canvas->all_intersections.intersections);
+    world->canvas->all_intersections.intersections = NULL;
+    world->canvas->all_intersections.nr_intersections = 0;
+}
+	world->canvas->all_intersections.nr_intersection_entries = 0;
 	intersec_to_use = NULL;
 	shape_to_use = 0;
 	intersect_world(world, ray);
 	if (world->canvas->all_intersections.nr_intersections == 0)
 		return (set_black());
 	find_nearest_intersection(world->canvas->all_intersections.intersections,
-		world->canvas->all_intersections.nr_intersection_entries, &intersec_to_use,
-		&shape_to_use);
-	comp = prepare_computations(intersec_to_use, ray, &(world->spheres[shape_to_use]));
+		world->canvas->all_intersections.nr_intersection_entries,
+		&intersec_to_use, &shape_to_use);
+	if (!intersec_to_use)
+		return (set_black());
+	comp = prepare_computations(intersec_to_use, ray,
+			&(world->spheres[shape_to_use]));
 	return (shade_hit(world, comp));
 }
 
@@ -71,8 +81,8 @@ static void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	else
 	{
 		canvas->all_intersections.intersections = realloc(canvas->all_intersections.intersections,
-				sizeof(t_intersec) * (canvas->all_intersections.nr_intersection_entries
-					+ 1));
+				sizeof(t_intersec)
+				* (canvas->all_intersections.nr_intersection_entries + 1));
 		if (!canvas->all_intersections.intersections)
 			exit(1);
 	}
