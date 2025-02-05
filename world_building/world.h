@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/05 16:01:31 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/05 16:37:44 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ xyzvektor 		shade_hit(t_world *world, t_comp comp);
 xyzvektor 		color_at(t_world *world, t_ray ray);
 double			**view_transform(xyzvektor from, xyzvektor to, xyzvektor up);
 t_camera		camera(int hsize, int vsize, double field_of_view);
-
+t_ray			ray_for_pixel(t_camera cam, int px, int py);
+mlx_image_t	*render_image(t_camera cam, t_world *world);
 #endif

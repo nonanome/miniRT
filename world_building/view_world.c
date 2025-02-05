@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/05 16:05:21 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/05 16:37:00 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,28 @@
 
 t_ray	ray_for_pixel(t_camera cam, int px, int py)
 {
-	double	xoffset;
-	double	yoffset;
-	double	world_x;
-	double	world_y;
-	double	pixel_x;
-	double	pixel_y;
-	t_ray	ray;
+	double		xoffset;
+	double		yoffset;
+	double		world_x;
+	double		world_y;
+	double		pixel_x;
+	double		pixel_y;
+	t_ray		ray;
+	xyzvektor	pixel;
+	xyzvektor	origin;
+	double		**inv;
 
 	xoffset = (px + 0.5) * cam.pixel_size;
 	yoffset = (py + 0.5) * cam.pixel_size;
 	world_x = cam.half_width - xoffset;
 	world_y = cam.half_height - yoffset;
-	pixel_x = cam.transform[0][0] * world_x + cam.transform[1][0] * world_y
-		- cam.transform[2][0];
-	pixel_y = cam.transform[0][1] * world_x + cam.transform[1][1] * world_y
-		- cam.transform[2][1];
-	ray.origin = set_vector(0, 0, 0, 1);
-	ray.direction = normalize(set_vector(pixel_x, pixel_y, -1, 0));
+	pixel = set_vector(world_x, world_y, -1, 1);
+	origin = set_vector(0, 0, 0, 1);
+	inv = invert_matrix(cam.transform, 4);
+	pixel = multiply_vector_and_matrix(pixel, inv);
+	origin = multiply_vector_and_matrix(origin, inv);
+	ray.origin = origin;
+	ray.direction = normalize(substraction(pixel, origin));
 	return (ray);
 }
 
@@ -101,14 +105,42 @@ double	**matrix(double lx, double ly, double lz, double lw, double ux,
 
 double	**view_transform(xyzvektor from, xyzvektor to, xyzvektor up)
 {
-	xyzvektor forward = normalize(substraction(to, from));
-	xyzvektor left = crossProduct(forward, normalize(up));
-	xyzvektor true_up = crossProduct(left, forward);
+	xyzvektor	forward;
+	xyzvektor	left;
+	xyzvektor	true_up;
+	double		**orientation;
+	double		**translation_mat;
 
-	double **orientation = matrix(left.x, left.y, left.z, 0, true_up.x,
-			true_up.y, true_up.z, 0, -forward.x, -forward.y, -forward.z, 0, 0,
-			0, 0, 1);
-	double **translation_mat = translation(-from.x, -from.y, -from.z);
-
+	forward = normalize(substraction(to, from));
+	left = crossProduct(forward, normalize(up));
+	true_up = crossProduct(left, forward);
+	orientation = matrix(left.x, left.y, left.z, 0, true_up.x, true_up.y,
+			true_up.z, 0, -forward.x, -forward.y, -forward.z, 0, 0, 0, 0, 1);
+	translation_mat = translation(-from.x, -from.y, -from.z);
 	return (multiply_matrix(orientation, translation_mat));
+}
+
+mlx_image_t	*render_image(t_camera cam, t_world *world)
+{
+	mlx_image_t	*image;
+	int			x;
+	int			y;
+	t_ray		ray;
+	xyzvektor	color;
+
+	image = mlx_new_image(world->canvas->mlx_ptr, cam.hsize, cam.vsize);
+	y = 0;
+	while (y < cam.vsize)
+	{
+		x = 0;
+		while (x < cam.hsize)
+		{
+			ray = ray_for_pixel(cam, x, y);
+			color = color_at(world, ray);
+			mlx_put_pixel(image, x, y, get_color_from_tuple(color));
+			x++;
+		}
+		y++;
+	}
+	return (image);
 }

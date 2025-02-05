@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "world_testing.h"
+
 #define PI 3.14159265358979323846
 
 t_material	set_material(xyzvektor color, double ambient, double diffuse,
@@ -22,45 +24,72 @@ int	make_test_world(t_world *world)
 {
 	xyzvektor	color;
 	xyzvektor	color2;
+	xyzvektor	color3;
+	xyzvektor	color4;
 
-	color = set_vector(0.8, 1.0, 0.6, 1.0);
-	color2 = set_vector(1.0, 1.0, 1.0, 1.0);
+	color = set_vector(0.5, 1.0, 0.1, 1.0);
+	color2 = set_vector(0.1, 1.0, 0.5, 1.0);
+	color3 = set_vector(1.0, 0.8, 0.1, 1.0);
+	color4 = set_vector(1.0, 0.9, 0.9, 1.0);
 	if (!world)
 		return (1);
 	init_canvas(world->canvas);
-	world->env->wind = set_vector(0.0, 0.0, 0.0, 0.0);
-	world->env->gravity = set_vector(0.0, 0.0, 0.0, 0.0);
-	world->spheres[0].id = 0;
-	world->spheres[0].origin = set_vector(0.0, 0.0, 0.0, 1.0);
-	world->spheres[0].radius = 1.0;
-	world->spheres[0].default_transformation = get_identity_matrix();
-	world->spheres[0].material = set_material(color, 1.0, 0.7, 0.2, 200.0);
-	world->spheres[1].id = 1;
-	world->spheres[1].origin = set_vector(0.0, 0.0, 0.0, 1.0);
-	world->spheres[1].radius = 0.5;
-	world->spheres[1].default_transformation = get_identity_matrix();
-	world->spheres[1].material = set_material(color2, 1.0, 0.9, 0.9, 200.0);
-	world->nr_spheres = 2;
-	world->canvas->all_intersections.nr_intersection_entries = 0;
-	world->all_sorted = malloc(sizeof(double *) * 100);
+	//floor
+	world->spheres[0] = new_sphere();
+	world->spheres[0].default_transformation = scaling(10, 0.01, 10);
+	world->spheres[0].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
+	//left wall
+	world->spheres[1] = new_sphere();
+	world->spheres[1].default_transformation = multiply_matrix(
+			multiply_matrix(translation(0, 0, 5), rotation_y(-45)),
+			multiply_matrix(rotation_x(90), scaling(10, 0.01, 10)));
+	world->spheres[1].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
+	//right wall
+	world->spheres[2] = new_sphere();
+	world->spheres[2].default_transformation = multiply_matrix(
+			multiply_matrix(translation(0, 0, 5), rotation_y(45)),
+			multiply_matrix(rotation_x(90), scaling(10, 0.01, 10)));
+	world->spheres[2].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
+	//middle
+	world->spheres[3] = new_sphere();
+	world->spheres[3].default_transformation = translation(-0.5, 1, 0.5);
+	world->spheres[3].material = set_material(color2, 0.1, 0.7, 0.3, 200.0);
+	//right
+	world->spheres[4] = new_sphere();
+	world->spheres[4].default_transformation = multiply_matrix(
+			translation(1.5, 0.5, -0.5), scaling(0.5, 0.5, 0.5));
+	world->spheres[4].material = set_material(color, 0.1, 0.7, 0.3, 200.0);
+	//left
+	world->spheres[5] = new_sphere();
+	world->spheres[5].default_transformation = multiply_matrix(
+			translation(-1.5, 0.33, -0.75), scaling(0.33, 0.33, 0.33));
+	world->spheres[5].material = set_material(color3, 0.1, 0.7, 0.3, 200.0);
+	world->nr_spheres = 6;
+	world->canvas->lightsource.color = set_vector(1.0, 1.0, 1.0, 1.0);
+	world->canvas->lightsource.position = set_vector(-10, 10, -10, 0);
+
+	world->all_sorted = malloc(sizeof(double));
 	if (!world->all_sorted)
-	{
-		free_world(world);
 		return (1);
-	}
+	world->all_sorted[0] = 0;
 	return (0);
 }
 
 int	main(void)
 {
-	t_world		*world;
-	t_ray		ray;
-	t_comp		comp;
-	xyzvektor	shadestuff;
-	double		**retmatrix;
-	t_camera	cam;
+	t_world			*world;
+	t_ray			ray;
+	t_comp			comp;
+	xyzvektor		shadestuff;
+	double			**retmatrix;
+	t_camera		cam;
+	double			**rot;
+	double			**trans;
+	mlx_image_t		*image;
+	unsigned int	color;
+	xyzvektor		color2;
 
-	world = get_world(2);
+	world = get_world(6);
 	if (!world)
 		return (1);
 	if (make_test_world(world))
@@ -69,18 +98,30 @@ int	main(void)
 		return (1);
 	}
 	ray = init_ray();
-	ray.direction = set_vector(0.0, 0.0, -1.0, 0.0);
-	ray.origin = set_vector(0.0, 0.0, 0.75, 1.0);
-	shadestuff = color_at(world, ray);
-	retmatrix = view_transform(set_vector(1, 3, 2, 1), set_vector(4, -2, 8, 1),
-			set_vector(1, 1, 0, 0));
-	cam = camera(125, 200, PI / 2);
-	printf("cam.pixel_size = %f\n", cam.pixel_size);
+	cam = camera(300, 150, PI / 3);
+	cam.transform = view_transform(set_vector(0, 1.5, -5, 1),
+			set_vector(0, 1, 0, 1), set_vector(0, 1, 0, 1));
+	image = render_image(cam, world);
+	if (!image)
+	{
+		free_world(world);
+		return (1);
+	}
+	mlx_image_to_window(world->canvas->mlx_ptr, image, 0, 0);
+	mlx_loop(world->canvas->mlx_ptr);
 	free_world(world);
 	return (0);
 }
 
 // tests from intersect_world.c
+// printf("ray.origin.x = %f\n", ray.origin.x);
+// printf("ray.origin.y = %f\n", ray.origin.y);
+// printf("ray.origin.z = %f\n", ray.origin.z);
+// printf("ray.origin.w = %f\n", ray.origin.w);
+// printf("ray.direction.x = %f\n", ray.direction.x);
+// printf("ray.direction.y = %f\n", ray.direction.y);
+// printf("ray.direction.z = %f\n", ray.direction.z);
+// printf("ray.direction.w = %f\n", ray.direction.w);
 // for (int i = 0; i < 4; i++)
 //{
 //	for (int j = 0; j < 4; j++)
