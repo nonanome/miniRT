@@ -124,7 +124,7 @@ void visualize(void *input)
 			{
 				vs_data.intersectionpoint = point_of_intersection(vs_data.intersec, ray);
 				canvas->normale = calculate_normale_of_sphere(sphere1, vs_data.intersectionpoint);
-				vs_data.color = lightning(sphere1.material, vs_data.intersectionpoint, *canvas);
+				vs_data.color = lightning(sphere1.material, vs_data.intersectionpoint, *canvas, 0);
 				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(vs_data.color));
 			}
 			else

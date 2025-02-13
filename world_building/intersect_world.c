@@ -88,7 +88,7 @@ static void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	}
 	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
 	canvas->all_intersections.nr_intersection_entries++;
-	while (new_intersection->times[i] != 0)
+	while (i != 2)
 	{
 		if (canvas->all_intersections.nr_intersections % 100 >= 90)
 		{
@@ -139,6 +139,9 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.point = point_of_intersection(intersection, ray);
 	comps.eyev = negateTuple(ray.direction);
 	comps.normalv = calculate_normale_of_sphere(*shape, comps.point);
+	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
+			comps.point.y + comps.normalv.y * EPSILON,
+			comps.point.z + comps.normalv.z * EPSILON, 1);
 	if (dotProduct(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = true;

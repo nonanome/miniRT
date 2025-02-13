@@ -20,7 +20,7 @@ t_world	*get_world(int spheres)
 	world = (t_world *)malloc(sizeof(t_world));
 	if (!world)
 		return (NULL);
-	world->canvas = (t_c *)malloc(sizeof(t_c));
+	world->canvas = (t_c *)calloc(sizeof(t_c), 1);
 	if (!world->canvas)
 		return (free(world), NULL);
 	world->env = (t_env *)malloc(sizeof(t_env));

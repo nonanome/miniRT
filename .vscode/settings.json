@@ -3,6 +3,7 @@
 		"minirt.h": "c",
 		"algorithm": "c",
 		"__locale": "c",
-		"mlx42.h": "c"
+		"mlx42.h": "c",
+		"world.h": "c"
 	}
 }

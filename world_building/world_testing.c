@@ -32,6 +32,20 @@ int	make_test_world(t_world *world)
 	if (!world)
 		return (1);
 	init_canvas(world->canvas);
+	// // Set up the default world
+	// world->canvas->lightsource.color = set_vector(1.0, 1.0, 1.0, 1.0);
+	// world->canvas->lightsource.position = set_vector(-10, 10, -10, 1);
+
+	// // Sphere 1
+	// world->spheres[0] = new_sphere();
+	// world->spheres[0].material = set_material(set_vector(0.8, 1.0, 0.6, 1.0), 0.1, 0.7, 0.2, 200.0);
+
+	// // Sphere 2
+	// world->spheres[1] = new_sphere();
+	// world->spheres[1].default_transformation = scaling(0.5, 0.5, 0.5);
+
+	// // Set the number of spheres
+	// world->nr_spheres = 2;
 	//floor
 	world->spheres[0] = new_sphere();
 	world->spheres[0].default_transformation = scaling(10, 0.01, 10);
@@ -66,7 +80,7 @@ int	make_test_world(t_world *world)
 	world->canvas->lightsource.color = set_vector(1.0, 1.0, 1.0, 1.0);
 	world->canvas->lightsource.position = set_vector(-10, 10, -10, 0);
 
-	world->all_sorted = malloc(sizeof(double));
+	world->all_sorted = calloc(sizeof(double *) ,100);
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
@@ -95,10 +109,10 @@ int	main(void)
 		free_world(world);
 		return (1);
 	}
-	ray = init_ray();
 	cam = camera(300, 150, PI / 3);
 	cam.transform = view_transform(set_vector(0, 1.5, -5, 1),
 			set_vector(0, 1, 0, 1), set_vector(0, 1, 0, 1));
+	world->canvas->lightsource.position = set_vector(10, 10, -10, 1);
 	image = render_image(cam, world);
 	if (!image)
 	{

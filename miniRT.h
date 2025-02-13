@@ -186,7 +186,7 @@ t_sphere			new_sphere(void);
 t_light				default_light(void);
 t_material			default_material(void);
 
-xyzvektor			lightning(t_material material, xyzvektor point, t_c canvas);
+xyzvektor			lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow);
 xyzvektor			calculate_reflection(xyzvektor in, xyzvektor normale);
 xyzvektor			calculate_normale_of_sphere(t_sphere sphere,
 						xyzvektor point);
