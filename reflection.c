@@ -25,11 +25,15 @@ xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
 	return normalize(world_normale);
 }
 
-xyzvektor lightning(t_material material, xyzvektor point, t_c canvas)
+xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow)
 {
 	t_store store;
     double light_dot_normale;
 
+	if (in_shadow)
+	{
+		return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource.color), 0.1));
+	}
 	store.materialcolor = get_color_from_uint(material.color);
 	store.lightsourcecolor = canvas.lightsource.color;
     store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);

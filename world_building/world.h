@@ -15,6 +15,8 @@
 
 # include "../miniRT.h"
 
+# define EPSILON 0.00001
+
 typedef struct s_world
 {
 	t_sphere	*spheres;
@@ -29,6 +31,7 @@ typedef struct s_comp
 	double	t;
 	t_sphere	*object;
 	xyzvektor	point;
+	xyzvektor	over_point;
 	xyzvektor	eyev;
 	xyzvektor	normalv;
 	xyzvektor	reflectv;
@@ -57,4 +60,9 @@ double			**view_transform(xyzvektor from, xyzvektor to, xyzvektor up);
 t_camera		camera(int hsize, int vsize, double field_of_view);
 t_ray			ray_for_pixel(t_camera cam, int px, int py);
 mlx_image_t	*render_image(t_camera cam, t_world *world);
+void	find_nearest_intersection(t_intersec *intersections,
+	int nr_intersections, t_intersec **intersec_to_use, int *shape_to_use);
+//test
+bool	is_shadowed(t_world *world, xyzvektor point);
+
 #endif
