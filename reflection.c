@@ -10,19 +10,21 @@ xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale)
 	return normalize(substraction(in, n));
 }
 
-xyzvektor calculate_normale_of_sphere(t_sphere sphere, xyzvektor point)
+xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 {
-	xyzvektor object_normale;
-	xyzvektor world_normale;
-	xyzvektor point_object_space;
-	double **transpose;
+	xyzvektor local_point;
+	xyzvektor local_normal;
+	xyzvektor world_normal;
+	double **inverse_transform;
+	double **transpose_inverse_transform;
 
-	transpose = transpose_matrix(invert_matrix(sphere.default_transformation, 4), 4);
-	point_object_space = multiply_vector_and_matrix(point, invert_matrix(sphere.default_transformation, 4));
-	object_normale = substraction(point_object_space,  sphere.origin);
-	world_normale = multiply_vector_and_matrix(object_normale, transpose);
-	world_normale.w = 0;
-	return normalize(world_normale);
+	inverse_transform = invert_matrix(shape.default_transformation, 4);
+	local_point = multiply_vector_and_matrix(point, inverse_transform);
+	local_normal = substraction(local_point, shape.origin);
+	transpose_inverse_transform = transpose_matrix(inverse_transform, 4);
+	world_normal = multiply_vector_and_matrix(local_normal, transpose_inverse_transform);
+	world_normal.w = 0;
+	return normalize(world_normal);
 }
 
 xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow)

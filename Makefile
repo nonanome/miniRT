@@ -1,6 +1,6 @@
 NAME = miniRT
 CFLAGS = -Iinclude -ldl -lglfw -pthread -lm -g
-PATH_MLX = -L./MLX -lmlx42 -O3
+PATH_MLX = -L./MLX42 -lmlx42 -O3
 MLX = MLX42/build/libmlx42.a
 OBJECTS = libft/ft_toupper.o \
        libft/ft_tolower.o \

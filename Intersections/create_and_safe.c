@@ -6,16 +6,14 @@ double get_discriminant(double *discriminant_values)
 		* discriminant_values[0] * discriminant_values[2]);
 }
 
-t_intersec *intersect(t_sphere sphere, t_ray ray)
+t_intersec *local_intersect(t_intersec *result, t_ray ray, t_shape shape)
 {
-	xyzvektor sphere_to_ray;
-	t_intersec	*result;
 	double *discriminant_values;
 	double discriminant;
+	xyzvektor sphere_to_ray;
+	t_shape sphere;
 
-	result = malloc(sizeof(t_intersec));
-	ray = transform(ray, invert_matrix(sphere.default_transformation, 4));
-	result->ray = ray;
+	sphere = shape;
 	discriminant_values = malloc(3 * sizeof(double));
 	sphere_to_ray = substraction(ray.origin, sphere.origin);
 	discriminant_values[0] = dotProduct(ray.direction, ray.direction);
@@ -29,4 +27,14 @@ t_intersec *intersect(t_sphere sphere, t_ray ray)
 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2 * discriminant_values[0]);
 	result->object_id = sphere.id;
 	return result;
+}
+
+t_intersec *intersect(t_shape shape, t_ray ray)
+{
+	t_intersec	*result;
+
+	result = malloc(sizeof(t_intersec));
+	ray = transform(ray, invert_matrix(shape.default_transformation, 4));
+	result->ray = ray;
+	return(local_intersect(result, ray, shape));
 }

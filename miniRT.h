@@ -1,5 +1,7 @@
-#ifndef MINI_RT
-# define MINI_RT
+#ifndef MINTRT_H
+
+# define MINIRT_H
+
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <math.h>
@@ -43,6 +45,16 @@ typedef struct material
 	double			specular;
 	double			shininess;
 }					t_material;
+
+typedef struct s_shape
+{
+	int				id;
+	xyzvektor		origin;
+	double			**default_transformation;
+	t_material		material;
+	int				type;
+	double			radius;
+}					t_shape;
 
 typedef struct sphere
 {
@@ -113,7 +125,7 @@ typedef struct visualize_struct
 // intersection
 void				save_intersection(t_c *canvas, t_intersec *new_intersection,
 						int i, int j);
-t_intersec			*intersect(t_sphere sphere, t_ray ray);
+t_intersec			*intersect(t_shape shape, t_ray ray);
 xyzvektor			ray_position(t_ray ray, double time);
 double				get_smallest_positive_value(t_intersec *intersection1);
 xyzvektor			identify_hit(t_all_intersec all_intersections);
@@ -167,12 +179,12 @@ void				free_double_ptr(double **a, int size);
 void				show_matrix(double **a, int size);
 void				*MALLOC(int size);
 // sphere
-void				set_transform(t_sphere *sphere, double **translation);
+void				set_transform(t_shape *shape, double **translation);
 t_material			default_material(void);
 
 // ray
 xyzvektor			calculate_reflection(xyzvektor in, xyzvektor normale);
-xyzvektor			calculate_normale_of_sphere(t_sphere sphere,
+xyzvektor			calculate_normale(t_shape shape,
 						xyzvektor point);
 
 void				visualize(void *input);
@@ -188,7 +200,5 @@ t_material			default_material(void);
 
 xyzvektor			lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow);
 xyzvektor			calculate_reflection(xyzvektor in, xyzvektor normale);
-xyzvektor			calculate_normale_of_sphere(t_sphere sphere,
-						xyzvektor point);
 
 #endif

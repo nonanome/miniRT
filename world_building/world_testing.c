@@ -1,4 +1,3 @@
-#include "../miniRT.h"
 #include "world.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,46 +36,46 @@ int	make_test_world(t_world *world)
 	// world->canvas->lightsource.position = set_vector(-10, 10, -10, 1);
 
 	// // Sphere 1
-	// world->spheres[0] = new_sphere();
-	// world->spheres[0].material = set_material(set_vector(0.8, 1.0, 0.6, 1.0), 0.1, 0.7, 0.2, 200.0);
+	// world->shapes[0] = new_sphere();
+	// world->shapes[0].material = set_material(set_vector(0.8, 1.0, 0.6, 1.0), 0.1, 0.7, 0.2, 200.0);
 
 	// // Sphere 2
-	// world->spheres[1] = new_sphere();
-	// world->spheres[1].default_transformation = scaling(0.5, 0.5, 0.5);
+	// world->shapes[1] = new_sphere();
+	// world->shapes[1].default_transformation = scaling(0.5, 0.5, 0.5);
 
-	// // Set the number of spheres
-	// world->nr_spheres = 2;
+	// // Set the number of shapes
+	// world->nr_shapes = 2;
 	//floor
-	world->spheres[0] = new_sphere();
-	world->spheres[0].default_transformation = scaling(10, 0.01, 10);
-	world->spheres[0].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
+	world->shapes[0] = new_shape(0);
+	world->shapes[0].default_transformation = scaling(10, 0.01, 10);
+	world->shapes[0].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
 	//left wall
-	world->spheres[1] = new_sphere();
-	world->spheres[1].default_transformation = multiply_matrix(
+	world->shapes[1] = new_shape(0);
+	world->shapes[1].default_transformation = multiply_matrix(
 			multiply_matrix(translation(0, 0, 5), rotation_y(-45)),
 			multiply_matrix(rotation_x(90), scaling(10, 0.01, 10)));
-	world->spheres[1].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
+	world->shapes[1].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
 	//right wall
-	world->spheres[2] = new_sphere();
-	world->spheres[2].default_transformation = multiply_matrix(
+	world->shapes[2] = new_shape(0);
+	world->shapes[2].default_transformation = multiply_matrix(
 			multiply_matrix(translation(0, 0, 5), rotation_y(45)),
 			multiply_matrix(rotation_x(90), scaling(10, 0.01, 10)));
-	world->spheres[2].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
+	world->shapes[2].material = set_material(color4, 0.1, 0.7, 0.1, 200.0);
 	//middle
-	world->spheres[3] = new_sphere();
-	world->spheres[3].default_transformation = translation(-0.5, 1, 0.5);
-	world->spheres[3].material = set_material(color2, 0.1, 0.7, 0.3, 200.0);
+	world->shapes[3] = new_shape(0);
+	world->shapes[3].default_transformation = translation(-0.5, 1, 0.5);
+	world->shapes[3].material = set_material(color2, 0.1, 0.7, 0.3, 200.0);
 	//right
-	world->spheres[4] = new_sphere();
-	world->spheres[4].default_transformation = multiply_matrix(
+	world->shapes[4] = new_shape(0);
+	world->shapes[4].default_transformation = multiply_matrix(
 			translation(1.5, 0.5, -0.5), scaling(0.5, 0.5, 0.5));
-	world->spheres[4].material = set_material(color, 0.1, 0.7, 0.3, 200.0);
+	world->shapes[4].material = set_material(color, 0.1, 0.7, 0.3, 200.0);
 	//left
-	world->spheres[5] = new_sphere();
-	world->spheres[5].default_transformation = multiply_matrix(
+	world->shapes[5] = new_shape(0);
+	world->shapes[5].default_transformation = multiply_matrix(
 			translation(-1.5, 0.33, -0.75), scaling(0.33, 0.33, 0.33));
-	world->spheres[5].material = set_material(color3, 0.1, 0.7, 0.3, 200.0);
-	world->nr_spheres = 6;
+	world->shapes[5].material = set_material(color3, 0.1, 0.7, 0.3, 200.0);
+	world->nr_shapes = 6;
 	world->canvas->lightsource.color = set_vector(1.0, 1.0, 1.0, 1.0);
 	world->canvas->lightsource.position = set_vector(-10, 10, -10, 0);
 
@@ -180,36 +179,36 @@ int	main(void)
 //{
 //	printf("world->all_sorted[%d] = %f\n", i, world->all_sorted[i]);
 //}
-// printf("world->spheres[0].id = %d\n", world->spheres[0].id);
-// printf("world->spheres[0].origin.x = %f\n", world->spheres[0].origin.x);
-// printf("world->spheres[0].origin.y = %f\n", world->spheres[0].origin.y);
-// printf("world->spheres[0].origin.z = %f\n", world->spheres[0].origin.z);
-// printf("world->spheres[0].origin.w = %f\n", world->spheres[0].origin.w);
-// printf("world->spheres[0].radius = %f\n", world->spheres[0].radius);
-// printf("world->spheres[0].material.ambient = %f\n",
-//	world->spheres[0].material.ambient);
-// printf("world->spheres[0].material.diffuse = %f\n",
-//	world->spheres[0].material.diffuse);
-// printf("world->spheres[0].material.specular = %f\n",
-//	world->spheres[0].material.specular);
-// printf("world->spheres[0].material.shininess = %f\n",
-//	world->spheres[0].material.shininess);
-// printf("world->spheres[1].id = %d\n", world->spheres[1].id);
-// printf("world->spheres[1].origin.x = %f\n", world->spheres[1].origin.x);
-// printf("world->spheres[1].origin.y = %f\n", world->spheres[1].origin.y);
-// printf("world->spheres[1].origin.z = %f\n", world->spheres[1].origin.z);
-// printf("world->spheres[1].origin.w = %f\n", world->spheres[1].origin.w);
-// printf("world->spheres[1].radius = %f\n", world->spheres[1].radius);
-// printf("world->spheres[1].material.ambient = %f\n",
-//	world->spheres[1].material.ambient);
-// printf("world->spheres[1].material.diffuse = %f\n",
-//	world->spheres[1].material.diffuse);
-// printf("world->spheres[1].material.specular = %f\n",
-//	world->spheres[1].material.specular);
-// printf("world->spheres[1].material.shininess = %f\n",
-//	world->spheres[1].material.shininess);
-// printf("world->spheres[1].material.color = %d\n",
-//	world->spheres[1].material.color);
+// printf("world->shapes[0].id = %d\n", world->shapes[0].id);
+// printf("world->shapes[0].origin.x = %f\n", world->shapes[0].origin.x);
+// printf("world->shapes[0].origin.y = %f\n", world->shapes[0].origin.y);
+// printf("world->shapes[0].origin.z = %f\n", world->shapes[0].origin.z);
+// printf("world->shapes[0].origin.w = %f\n", world->shapes[0].origin.w);
+// printf("world->shapes[0].radius = %f\n", world->shapes[0].radius);
+// printf("world->shapes[0].material.ambient = %f\n",
+//	world->shapes[0].material.ambient);
+// printf("world->shapes[0].material.diffuse = %f\n",
+//	world->shapes[0].material.diffuse);
+// printf("world->shapes[0].material.specular = %f\n",
+//	world->shapes[0].material.specular);
+// printf("world->shapes[0].material.shininess = %f\n",
+//	world->shapes[0].material.shininess);
+// printf("world->shapes[1].id = %d\n", world->shapes[1].id);
+// printf("world->shapes[1].origin.x = %f\n", world->shapes[1].origin.x);
+// printf("world->shapes[1].origin.y = %f\n", world->shapes[1].origin.y);
+// printf("world->shapes[1].origin.z = %f\n", world->shapes[1].origin.z);
+// printf("world->shapes[1].origin.w = %f\n", world->shapes[1].origin.w);
+// printf("world->shapes[1].radius = %f\n", world->shapes[1].radius);
+// printf("world->shapes[1].material.ambient = %f\n",
+//	world->shapes[1].material.ambient);
+// printf("world->shapes[1].material.diffuse = %f\n",
+//	world->shapes[1].material.diffuse);
+// printf("world->shapes[1].material.specular = %f\n",
+//	world->shapes[1].material.specular);
+// printf("world->shapes[1].material.shininess = %f\n",
+//	world->shapes[1].material.shininess);
+// printf("world->shapes[1].material.color = %d\n",
+//	world->shapes[1].material.color);
 // int i = 0;
 // while (world->all_sorted[i] != 0)
 //{

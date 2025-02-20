@@ -13,7 +13,7 @@ t_material default_material(void)
 	color.w = 1;
 
 	dm.color = get_color_from_tuple(color);
-	dm.ambient = 0.2;
+	dm.ambient = 0.1;
 	dm.diffuse = 0.9;
 	dm.specular = 0.9;
 	dm.shininess = 200.0;
