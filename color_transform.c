@@ -2,6 +2,13 @@
 
 //RGB vertauscht x = b
 
+int min_of(int a, int b)
+{
+	if(a < b)
+		return a;
+	return b;
+}
+
 
 uint32_t	get_color_from_tuple(xyzvektor color)
 {

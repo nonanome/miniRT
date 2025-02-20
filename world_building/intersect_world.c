@@ -6,11 +6,10 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/05 18:07:44 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/18 16:55:15 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../miniRT.h"
 #include "world.h"
 
 void	find_nearest_intersection(t_intersec *intersections,
@@ -62,7 +61,7 @@ xyzvektor	color_at(t_world *world, t_ray ray)
 	if (!intersec_to_use)
 		return (set_black());
 	comp = prepare_computations(intersec_to_use, ray,
-			&(world->spheres[shape_to_use]));
+			&(world->shapes[shape_to_use]));
 	return (shade_hit(world, comp));
 }
 
@@ -130,7 +129,7 @@ static void	sort_intersections(double *all_sorted)
 }
 
 t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
-		t_sphere *shape)
+		t_shape *shape)
 {
 	t_comp	comps;
 
@@ -138,7 +137,7 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.object = shape;
 	comps.point = point_of_intersection(intersection, ray);
 	comps.eyev = negateTuple(ray.direction);
-	comps.normalv = calculate_normale_of_sphere(*shape, comps.point);
+	comps.normalv = calculate_normale(*shape, comps.point);
 	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
 			comps.point.y + comps.normalv.y * EPSILON,
 			comps.point.z + comps.normalv.z * EPSILON, 1);
@@ -160,9 +159,9 @@ int	intersect_world(t_world *world, t_ray ray)
 
 	i = 0;
 	j = 0;
-	while (world->nr_spheres > i)
+	while (world->nr_shapes > i)
 	{
-		new_intersection = intersect(world->spheres[i], ray);
+		new_intersection = intersect(world->shapes[i], ray);
 		if (new_intersection)
 		{
 			save_intersections(world->canvas, new_intersection, world);

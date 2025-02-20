@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/05 16:37:44 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/18 17:01:11 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 typedef struct s_world
 {
-	t_sphere	*spheres;
-	long		nr_spheres;
+	t_shape	*shapes;
+	long		nr_shapes;
 	t_c			*canvas;
 	double		*all_sorted;
 	t_env		*env;
@@ -29,7 +29,7 @@ typedef struct s_world
 typedef struct s_comp
 {
 	double	t;
-	t_sphere	*object;
+	t_shape	*object;
 	xyzvektor	point;
 	xyzvektor	over_point;
 	xyzvektor	eyev;
@@ -49,11 +49,11 @@ typedef struct s_camera
 	double	half_height;
 }				t_camera;
 
-t_world			*get_world(int spheres);
+t_world			*get_world(int shapes);
 void			free_world(t_world *world);
 int				intersect_world(t_world *world, t_ray ray);
 t_comp			prepare_computations(t_intersec *intersection, t_ray ray,
-		t_sphere *shape);
+		t_shape *shape);
 xyzvektor 		shade_hit(t_world *world, t_comp comp);
 xyzvektor 		color_at(t_world *world, t_ray ray);
 double			**view_transform(xyzvektor from, xyzvektor to, xyzvektor up);
@@ -62,6 +62,7 @@ t_ray			ray_for_pixel(t_camera cam, int px, int py);
 mlx_image_t	*render_image(t_camera cam, t_world *world);
 void	find_nearest_intersection(t_intersec *intersections,
 	int nr_intersections, t_intersec **intersec_to_use, int *shape_to_use);
+	t_shape new_shape(int type);
 //test
 bool	is_shadowed(t_world *world, xyzvektor point);
 

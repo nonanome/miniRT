@@ -1,5 +1,5 @@
 #include "garbageCollector.h"
-#include "miniRT.h"
+#include "world_building/world.h"
 
 // int	point_out_bounds(double x, double y, t_c canvas)
 // {
@@ -7,13 +7,6 @@
 // 		return (1);
 // 	return (0);
 // }
-
-int min_of(int a, int b)
-{
-	if(a < b)
-		return a;
-	return b;
-}
 
 
 
@@ -106,7 +99,7 @@ void visualize(void *input)
 	t_c *canvas = input;
 	t_ray ray = init_ray();
 	v_s vs_data;
-	t_sphere sphere1 = new_sphere();
+	t_shape sphere1 = new_shape(0);
 
 	int x = 0;
 	int y = 0;
@@ -123,7 +116,7 @@ void visualize(void *input)
 			if(vs_data.intersec != NULL)
 			{
 				vs_data.intersectionpoint = point_of_intersection(vs_data.intersec, ray);
-				canvas->normale = calculate_normale_of_sphere(sphere1, vs_data.intersectionpoint);
+				canvas->normale = calculate_normale(sphere1, vs_data.intersectionpoint);
 				vs_data.color = lightning(sphere1.material, vs_data.intersectionpoint, *canvas, 0);
 				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(vs_data.color));
 			}

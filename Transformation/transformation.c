@@ -9,8 +9,8 @@ t_ray transform(t_ray ray, double **transformation)
 	return new_ray;
 }
 
-void set_transform(t_sphere *sphere, double **translation)
+void set_transform(t_shape *shape, double **translation)
 {
-	sphere->default_transformation = translation;
+	shape->default_transformation = translation;
 }
 

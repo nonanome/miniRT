@@ -6,14 +6,26 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/03 16:24:35 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/18 17:46:59 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../miniRT.h"
 #include "world.h"
 
-t_world	*get_world(int spheres)
+t_shape new_shape(int type)
+{
+	t_shape	shape;
+
+	shape.type = type;
+	shape.origin = set_vector(0, 0, 0, 1);
+	shape.radius = 1;
+	shape.default_transformation = get_identity_matrix();
+	shape.material = default_material();
+	shape.id = globalID++;
+	return (shape);
+}
+
+t_world	*get_world(int shapes)
 {
 	t_world	*world;
 
@@ -26,7 +38,7 @@ t_world	*get_world(int spheres)
 	world->env = (t_env *)malloc(sizeof(t_env));
 	if (!world->env)
 		return (free(world->canvas), free(world), NULL);
-	world->spheres = (t_sphere *)malloc(sizeof(t_sphere) * spheres);
+	world->shapes = (t_shape *)malloc(sizeof(t_shape) * shapes);
 	return (world);
 }
 
@@ -38,11 +50,11 @@ void	free_world(t_world *world)
 		free(world->canvas->img);
 	if (world->env)
 		free(world->env);
-	if (world->spheres)
+	if (world->shapes)
 		{
-			while (world->nr_spheres--)
+			while (world->nr_shapes--)
 			{
-			free(world->spheres[world->nr_spheres].default_transformation);
+			free(world->shapes[world->nr_shapes].default_transformation);
 			
 			}
 		}
