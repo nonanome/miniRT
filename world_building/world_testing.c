@@ -57,7 +57,6 @@ int	main(void)
 	t_comp			comp;
 	xyzvektor		shadestuff;
 	double			**retmatrix;
-	t_camera		*cam;
 	double			**rot;
 	double			**trans;
 	mlx_image_t		*image;
@@ -72,14 +71,19 @@ int	main(void)
 		free_world(world);
 		return (1);
 	}
-	cam = camera(300, 150, PI / 3);
-	cam->transform = view_transform(
-		set_vector(0, 1.5, -5, 1),    
-		set_vector(0, 4, 0, 1),
-		set_vector(0, 1, 0, 1)
-	);
+	world->camera = camera(800, 400, PI / 3);
+	if (!world->camera)
+	{
+		free_world(world);
+		return (1);
+	}
+	if (parse_input("test.rt", world))
+	{
+		free_world(world);
+		return (1);
+	}
 	world->canvas->lightsource.position = set_vector(-10, 3, -10, 0);
-	image = render_image(cam, world);
+	image = render_image(world->camera, world);
 	if (!image)
 	{
 		free_world(world);

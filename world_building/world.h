@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/25 19:55:45 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/10 18:09:46 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	find_nearest_intersection(t_intersec *intersections,
 	xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow);
 	t_ray init_ray(void);
 	double magnitude(xyzvektor a);
+	int parse_input(char *file_name, t_world *world);
 //test
 bool	is_shadowed(t_world *world, xyzvektor point);
 

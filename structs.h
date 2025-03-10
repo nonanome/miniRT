@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/25 14:33:52 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/10 18:14:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,17 @@ typedef struct visualize_struct
 	t_intersec		*intersec;
 }					v_s;
 
+typedef struct s_camera
+{
+	int		hsize;
+	int		vsize;
+	double	pixel_size;
+	double	field_of_view;
+	double	**transform;
+	double	half_width;
+	double	half_height;
+}				t_camera;
+
 typedef struct s_world
 {
 	t_shape	**shapes;
@@ -147,6 +158,9 @@ typedef struct s_world
 	t_c			*canvas;
 	double		*all_sorted;
 	t_env		*env;
+	xyzvektor	*ambient;
+	double		ambient_intensity;
+	t_camera	*camera;
 }				t_world;
 
 typedef struct s_comp
@@ -160,16 +174,5 @@ typedef struct s_comp
 	xyzvektor	reflectv;
 	bool	inside;
 }				t_comp;
-
-typedef struct s_camera
-{
-	int		hsize;
-	int		vsize;
-	double	pixel_size;
-	double	field_of_view;
-	double	**transform;
-	double	half_width;
-	double	half_height;
-}				t_camera;
 
 #endif
