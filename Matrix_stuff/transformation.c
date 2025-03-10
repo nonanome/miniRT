@@ -32,7 +32,7 @@ double **rotation_x(double degree)
 	double radians;
 	double **result;
 
-	radians = degree / 180 * M_PI;
+	radians = degree / 180 * PI;
 	result = get_identity_matrix();
 	result[1][1] = cos(radians);
 	result[1][2] = -sin(radians);
@@ -46,7 +46,7 @@ double **rotation_y(double degree)
 	double radians;
 	double **result;
 
-	radians = degree / 180 * M_PI;
+	radians = degree / 180 * PI;
 	result = get_identity_matrix();
 	result[0][0] = cos(radians);
 	result[0][2] = sin(radians);

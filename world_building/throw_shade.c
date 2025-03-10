@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/03 17:30:16 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/10 10:37:58 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,19 @@ xyzvektor	hit(t_all_intersec all_intersections)
 	hit_intersection = set_vector(0, 0, 0, 0);
 	while (i <= all_intersections.nr_intersections /2 -1)
 	{
-		if (all_intersections.intersections[i].times[0] > 0)
+		if (all_intersections.intersections[i].times[0] > 0 && all_intersections.intersections[i].times[0] < all_intersections.intersections[i].times[1])
 		{
 			hit_intersection = all_intersections.intersections[i].ray.origin;
 			hit_intersection = addition(hit_intersection, scalarMultiplication(all_intersections.intersections[i].ray.direction,
 						all_intersections.intersections[i].times[0]));
 			hit_intersection.w = all_intersections.intersections[i].times[0];
+			if (all_intersections.intersections[i].times[0] < 0 || all_intersections.intersections[i].times[0] > all_intersections.intersections[i].times[1])
+				{
+					hit_intersection.w = all_intersections.intersections[i].times[1];
+					hit_intersection = addition(all_intersections.intersections[i].ray.origin, scalarMultiplication(all_intersections.intersections[i].ray.direction,
+						all_intersections.intersections[i].times[1]));
+					hit_intersection.w = all_intersections.intersections[i].times[1];
+				}
 			return (hit_intersection);
 		}
 		i++;
@@ -60,8 +67,8 @@ bool	is_shadowed(t_world *world, xyzvektor point)
 	empty_intersections(world->canvas);
 	intersect_world(world, ray);
 	hit_intersection = hit(world->canvas->all_intersections);
-	if (hit_intersection.w > 0 && hit_intersection.w < distance)
-		return (true);
+	if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
+    	return (true);
 	return (false);
 }
 

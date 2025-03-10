@@ -1,5 +1,5 @@
 #include "garbageCollector.h"
-#include "world_building/world.h"
+#include "miniRT.h"
 
 // int	point_out_bounds(double x, double y, t_c canvas)
 // {
@@ -94,42 +94,42 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 
 
 
-void visualize(void *input)
-{
-	t_c *canvas = input;
-	t_ray ray = init_ray();
-	v_s vs_data;
-	t_shape sphere1 = new_shape(0);
+// void visualize(void *input)
+// {
+// 	t_c *canvas = input;
+// 	t_ray ray = init_ray();
+// 	v_s vs_data;
+// 	t_shape sphere1 = new_shape(0);
 
-	int x = 0;
-	int y = 0;
-	mlx_delete_image(canvas->mlx_ptr, canvas->img);
-	canvas->img = mlx_new_image(canvas->mlx_ptr, canvas->height, canvas->width);
-	while(y < canvas->height)
-	{
-		while(x < canvas->width)
-		{
-			vs_data.world_coordinates = calculate_wall_coordinate(x, y, canvas->pixel_size, canvas->half_size);
-			ray.direction = normalize(substraction(vs_data.world_coordinates, ray.origin));
-			canvas->eyevector = negateTuple(ray.direction);
-			vs_data.intersec = intersect(sphere1, ray);
-			if(vs_data.intersec != NULL)
-			{
-				vs_data.intersectionpoint = point_of_intersection(vs_data.intersec, ray);
-				canvas->normale = calculate_normale(sphere1, vs_data.intersectionpoint);
-				vs_data.color = lightning(sphere1.material, vs_data.intersectionpoint, *canvas, 0);
-				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(vs_data.color));
-			}
-			else
-				mlx_put_pixel(canvas->img, x, y, 0x000000);
-			free(vs_data.intersec);
-			x ++;
-		}
-		x = 0;
-		y ++;
-	}
-	mlx_image_to_window(canvas->mlx_ptr, canvas->img, 0, 0);
-}
+// 	int x = 0;
+// 	int y = 0;
+// 	mlx_delete_image(canvas->mlx_ptr, canvas->img);
+// 	canvas->img = mlx_new_image(canvas->mlx_ptr, canvas->height, canvas->width);
+// 	while(y < canvas->height)
+// 	{
+// 		while(x < canvas->width)
+// 		{
+// 			vs_data.world_coordinates = calculate_wall_coordinate(x, y, canvas->pixel_size, canvas->half_size);
+// 			ray.direction = normalize(substraction(vs_data.world_coordinates, ray.origin));
+// 			canvas->eyevector = negateTuple(ray.direction);
+// 			vs_data.intersec = intersect(sphere1, ray);
+// 			if(vs_data.intersec != NULL)
+// 			{
+// 				vs_data.intersectionpoint = point_of_intersection(vs_data.intersec, ray);
+// 				canvas->normale = calculate_normale(sphere1, vs_data.intersectionpoint);
+// 				vs_data.color = lightning(sphere1.material, vs_data.intersectionpoint, *canvas, 0);
+// 				mlx_put_pixel(canvas->img, x, y, get_color_from_tuple(vs_data.color));
+// 			}
+// 			else
+// 				mlx_put_pixel(canvas->img, x, y, 0x000000);
+// 			free(vs_data.intersec);
+// 			x ++;
+// 		}
+// 		x = 0;
+// 		y ++;
+// 	}
+// 	mlx_image_to_window(canvas->mlx_ptr, canvas->img, 0, 0);
+// }
 
 
 
