@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/10 18:51:50 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/10 20:00:17 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,16 +126,16 @@ int parse_camera(t_world *world, char *line)
     split = ft_split(line, ' ');
     if (!split)
         return (1);
-    if (budget_ft_atof(split[3]) < 0 || budget_ft_atof(split[3]) > 180)
+    if (budget_ft_atof(split[2]) < 0 || budget_ft_atof(split[2]) > 180)
         return (ft_free_split(split), 1);
     xyz_split = ft_split(split[1], ',');
     if (!xyz_split)
         return (ft_free_split(split), 1);
+    if (!parse_xyz(xyz_split, xyz, 0))
+        return (ft_free_split(split), ft_free_split(xyz_split), 1);
     normal_split = ft_split(split[2], ',');
     if (!normal_split)
         return (ft_free_split(split), ft_free_split(xyz_split), 1);
-    if (!parse_xyz(xyz_split, xyz, 0))
-        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(normal_split), 1);
     if (!parse_xyz(normal_split, normal, 1))
         return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(normal_split), 1);
     if (normal[0] < -1 || normal[0] > 1 || normal[1] < -1 || normal[1] > 1 || normal[2] < -1 || normal[2] > 1)
@@ -143,6 +143,126 @@ int parse_camera(t_world *world, char *line)
     world->camera->field_of_view = budget_ft_atof(split[3]);
     world->camera->transform = view_transform(set_vector(xyz[0], xyz[1], xyz[2], 1), set_vector(normal[0], normal[1], normal[2], 0), set_vector(0, 1, 0, 0));
     return (ft_free_split(split), ft_free_split(xyz_split), 0);
+}
+
+int parse_light(t_world *world, char *line)
+{
+    char **split;
+    char **xyz_split;
+    char **rgb_split;
+    double xyz[3];
+    double rgb[3];
+    double brightness;
+
+    split = ft_split(line, ' ');
+    if (!split)
+        return (1);
+    if (budget_ft_atof(split[2]) < 0)
+        return (ft_free_split(split), 1);
+    xyz_split = ft_split(split[1], ',');
+    if (!xyz_split)
+        return (ft_free_split(split), 1);
+    rgb_split = ft_split(split[3], ',');
+    if (!rgb_split)
+        return (ft_free_split(split), ft_free_split(xyz_split), 1);
+    if (!parse_xyz(xyz_split, xyz, 0))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    if (!parse_xyz(rgb_split, rgb, 1))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0 || rgb[2] > 1)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    brightness = budget_ft_atof(split[2]);
+    if (brightness < 0 || brightness > 1)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    world->canvas->lightsource.color = set_vector(rgb[0], rgb[1], rgb[2], brightness);
+    world->canvas->lightsource.position = set_vector(xyz[0], xyz[1], xyz[2], 0);
+    return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 0);
+}
+
+int parse_sphere(t_world *world, char *line)
+{
+    char **split;
+    char **xyz_split;
+    char **rgb_split;
+    double xyz[3];
+    double rgb[3];
+    double radius;
+
+    split = ft_split(line, ' ');
+    if (!split)
+        return (1);
+    xyz_split = ft_split(split[1], ',');
+    if (!xyz_split)
+        return (ft_free_split(split), 1);
+    rgb_split = ft_split(split[3], ',');
+    if (!rgb_split)
+        return (ft_free_split(split), ft_free_split(xyz_split), 1);
+    if (!parse_xyz(xyz_split, xyz, 0))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    if (!parse_xyz(rgb_split, rgb, 0))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    rgb[0] /= 255;
+    rgb[1] /= 255;
+    rgb[2] /= 255;
+    if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0 || rgb[2] > 1)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    radius = budget_ft_atof(split[2]);
+    if (radius < 0)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    t_shape *shape = new_shape(0);
+    shape->origin = set_vector(xyz[0], xyz[1], xyz[2], 1);
+    shape->material.ambient = world->ambient_intensity;
+    shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1], rgb[2], 0));
+    shape->radius = radius;
+    world->shapes[world->nr_shapes] = shape;
+    world->nr_shapes++;
+    return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 0);
+}
+
+int parse_plane(t_world *world, char *line)
+{
+    char **split;
+    char **xyz_split;
+    char **rgb_split;
+    char **normal_split;
+    double xyz[3];
+    double rgb[3];
+    double normal[3];
+
+    split = ft_split(line, ' ');
+    if (!split)
+        return (1);
+    xyz_split = ft_split(split[1], ',');
+    if (!xyz_split)
+        return (ft_free_split(split), 1);
+    rgb_split = ft_split(split[3], ',');
+    if (!rgb_split)
+        return (ft_free_split(split), ft_free_split(xyz_split), 1);
+    normal_split = ft_split(split[2], ',');
+    if (!normal_split)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    if (!parse_xyz(xyz_split, xyz, 0))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    if (!parse_xyz(rgb_split, rgb, 0))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    if (!parse_xyz(normal_split, normal, 1))
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), ft_free_split(normal_split), 1);
+    if (normal[0] < -1 || normal[0] > 1 || normal[1] < -1 || normal[1] > 1 || normal[2] < -1 || normal[2] > 1)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), ft_free_split(normal_split), 1);
+    rgb[0] /= 255;
+    rgb[1] /= 255;
+    rgb[2] /= 255;
+    if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0 || rgb[2] > 1)
+        return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 1);
+    t_shape *shape = new_shape(1);
+    shape->origin = set_vector(xyz[0], xyz[1], xyz[2], 1);
+    shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
+    shape->material.ambient = world->ambient_intensity;
+    shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1], rgb[2], 0));
+    shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
+    world->shapes[world->nr_shapes] = shape;
+    world->nr_shapes++;
+    return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(rgb_split), 0);
 }
 
 int parse_input(char *file_name, t_world *world)
@@ -158,12 +278,12 @@ int parse_input(char *file_name, t_world *world)
             parse_ambient_light(world, input[i]);
         else if (input[i][0] == 'C')
             parse_camera(world, input[i]);
-        // else if (input[i][0] == 'L')
-        //     parse_light(world, input[i]);
-        // else if (ft_strncmp(input[i], "sp", 2) == 0)
-        //     parse_sphere(world, input[i]);
-        // else if (ft_strncmp(input[i], "pl", 2) == 0)
-        //     parse_plane(world, input[i]);
+        else if (input[i][0] == 'L')
+            parse_light(world, input[i]);
+        else if (ft_strncmp(input[i], "sp", 2) == 0)
+            parse_sphere(world, input[i]);
+        else if (ft_strncmp(input[i], "pl", 2) == 0)
+            parse_plane(world, input[i]);
         i++;
     }
     return (0);

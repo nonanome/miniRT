@@ -36,17 +36,13 @@ int	make_test_world(t_world *world)
 	world->shapes[0]->material = set_material(color4, 0.1, 0.9, 0.9, 200.0);
 	// ceiling
 	world->shapes[1] = new_shape(1);
-	world->shapes[1]->default_transformation = translation(0, 5, 0);
+	world->shapes[1]->default_transformation = translation(0, 20, 0);
 	world->shapes[1]->material = set_material(color4, 0.1, 0.9, 0.9, 200.0);
 	// sphere	
 	world->shapes[2] = new_shape(0);
 	world->shapes[2]->default_transformation = translation(0, 5, 0);
 	world->shapes[2]->material = set_material(color, 0.1, 0.7, 0.3, 200.0);
 	world->nr_shapes = 3;
-	world->all_sorted = calloc(sizeof(double *) ,100);
-	if (!world->all_sorted)
-		return (1);
-	world->all_sorted[0] = 0;
 	return (0);
 }
 
@@ -66,11 +62,11 @@ int	main(void)
 	world = get_world(6);
 	if (!world)
 		return (1);
-	if (make_test_world(world))
-	{
-		free_world(world);
+	init_canvas(world->canvas);
+	world->all_sorted = calloc(sizeof(double *) ,100);
+	if (!world->all_sorted)
 		return (1);
-	}
+	world->all_sorted[0] = 0;
 	world->camera = camera(800, 400, PI / 3);
 	if (!world->camera)
 	{

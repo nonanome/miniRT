@@ -42,7 +42,7 @@ t_intersec *intersect_plane(t_intersec *result, t_ray ray, t_shape plane) {
     result->times = malloc(2 * sizeof(double));
     discriminant_values[0] = dotProduct(ray.direction, plane.normal);
     discriminant_values[1] = -dotProduct(ray.origin, plane.normal);
-    if (discriminant_values[1] / discriminant_values[0] <= 0.0001) {
+    if (discriminant_values[1] / discriminant_values[0] < EPSILON) {
         free(discriminant_values);
         result->times[0] = 0;
         result->times[1] = 0;

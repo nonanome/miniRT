@@ -39,7 +39,7 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 
 			inverse_transform = invert_matrix
 				(shape.default_transformation, 4);
-			local_normal = set_vector(0, 1, 0, 0);
+			local_normal = shape.normal;
 			transpose_inverse_transform = transpose_matrix
 				(inverse_transform, 4);
 			return (multiply_vector_and_matrix(local_normal,
