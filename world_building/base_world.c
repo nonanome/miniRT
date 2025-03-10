@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/25 14:32:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/10 18:30:48 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,15 @@ t_world	*get_world(int shapes)
 	if (!world->env)
 		return (free(world->canvas), free(world), NULL);
 	world->shapes = (t_shape **)malloc(sizeof(t_shape *) * shapes);
+	if (!world->shapes)
+		return (free(world->env), free(world->canvas), free(world), NULL);
+	world->ambient = malloc(sizeof(xyzvektor));
+	if (!world->ambient)
+		return (free(world->shapes), free(world->env), free(world->canvas), free(world), NULL);
+	*(world->ambient) = set_vector(0, 0, 0, 0);
+	world->ambient_intensity = 0;
+	world->nr_shapes = 0;
+	world->all_sorted = NULL;
 	return (world);
 }
 
