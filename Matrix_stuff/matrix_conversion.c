@@ -69,13 +69,18 @@ double get_determinante_of_3x3(double **a)
 	double **submatrix1;
 	double **submatrix2;
 	double **submatrix3;
+	double determinante;
 
 	submatrix1 = get_submatrix(a, 0, 0, 3);
 	submatrix2 = get_submatrix(a, 0, 1, 3);
 	submatrix3 = get_submatrix(a, 0, 2, 3);
-	return (a[0][0] * get_determinante_of_2(submatrix1)
+	determinante = (a[0][0] * get_determinante_of_2(submatrix1)
 	- a[0][1] * get_determinante_of_2(submatrix2)
 	+ a[0][2] * get_determinante_of_2(submatrix3));
+	free_double_ptr(submatrix1, 2);
+	free_double_ptr(submatrix2, 2);
+	free_double_ptr(submatrix3, 2);
+	return (determinante);
 }
 
 double get_minor(double **a, int i, int j, int size)
@@ -88,7 +93,7 @@ double get_minor(double **a, int i, int j, int size)
 		determinante = get_determinante_of_2(submatrix);
 	else
 		determinante = get_determinante_of_3x3(submatrix);
-	free_double_ptr(submatrix, 2);
+	free_double_ptr(submatrix, size - 1);
 	return (determinante);
 }
 

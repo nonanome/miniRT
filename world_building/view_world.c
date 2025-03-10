@@ -6,14 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/05 16:37:00 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/02/25 19:33:08 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../miniRT.h"
 #include "world.h"
 
-t_ray	ray_for_pixel(t_camera cam, int px, int py)
+t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 {
 	double		xoffset;
 	double		yoffset;
@@ -26,13 +25,13 @@ t_ray	ray_for_pixel(t_camera cam, int px, int py)
 	xyzvektor	origin;
 	double		**inv;
 
-	xoffset = (px + 0.5) * cam.pixel_size;
-	yoffset = (py + 0.5) * cam.pixel_size;
-	world_x = cam.half_width - xoffset;
-	world_y = cam.half_height - yoffset;
+	xoffset = (px + 0.5) * cam->pixel_size;
+	yoffset = (py + 0.5) * cam->pixel_size;
+	world_x = cam->half_width - xoffset;
+	world_y = cam->half_height - yoffset;
 	pixel = set_vector(world_x, world_y, -1, 1);
 	origin = set_vector(0, 0, 0, 1);
-	inv = invert_matrix(cam.transform, 4);
+	inv = invert_matrix(cam->transform, 4);
 	pixel = multiply_vector_and_matrix(pixel, inv);
 	origin = multiply_vector_and_matrix(origin, inv);
 	ray.origin = origin;
@@ -40,29 +39,35 @@ t_ray	ray_for_pixel(t_camera cam, int px, int py)
 	return (ray);
 }
 
-t_camera	camera(int hsize, int vsize, double field_of_view)
+t_camera	*camera(int hsize, int vsize, double field_of_view)
 {
-	t_camera	cam;
+	t_camera	*cam;
 	double		half_view;
 	double		aspect;
 
-	cam.hsize = hsize;
-	cam.vsize = vsize;
-	cam.field_of_view = field_of_view;
-	cam.transform = get_identity_matrix();
-	half_view = tan(cam.field_of_view / 2);
-	aspect = (double)cam.hsize / (double)cam.vsize;
+	cam = malloc(sizeof(t_camera));
+	if (!cam)
+		return (NULL);
+	cam->hsize = hsize;
+	cam->vsize = vsize;
+	cam->field_of_view = field_of_view;
+	cam->transform = malloc(sizeof(double *) * 4);
+	if (!cam->transform)
+		return (cam);
+	cam->transform = get_identity_matrix();
+	half_view = tan(cam->field_of_view / 2);
+	aspect = (double)cam->hsize / (double)cam->vsize;
 	if (aspect >= 1)
 	{
-		cam.half_width = half_view;
-		cam.half_height = half_view / aspect;
+		cam->half_width = half_view;
+		cam->half_height = half_view / aspect;
 	}
 	else
 	{
-		cam.half_width = half_view * aspect;
-		cam.half_height = half_view;
+		cam->half_width = half_view * aspect;
+		cam->half_height = half_view;
 	}
-	cam.pixel_size = (cam.half_width * 2) / cam.hsize;
+	cam->pixel_size = (cam->half_width * 2) / cam->hsize;
 	return (cam);
 }
 
@@ -117,10 +122,12 @@ double	**view_transform(xyzvektor from, xyzvektor to, xyzvektor up)
 	orientation = matrix(left.x, left.y, left.z, 0, true_up.x, true_up.y,
 			true_up.z, 0, -forward.x, -forward.y, -forward.z, 0, 0, 0, 0, 1);
 	translation_mat = translation(-from.x, -from.y, -from.z);
+	if (!orientation || !translation_mat)
+		return (NULL);
 	return (multiply_matrix(orientation, translation_mat));
 }
 
-mlx_image_t	*render_image(t_camera cam, t_world *world)
+mlx_image_t	*render_image(t_camera *cam, t_world *world)
 {
 	mlx_image_t	*image;
 	int			x;
@@ -128,12 +135,12 @@ mlx_image_t	*render_image(t_camera cam, t_world *world)
 	t_ray		ray;
 	xyzvektor	color;
 
-	image = mlx_new_image(world->canvas->mlx_ptr, cam.hsize, cam.vsize);
+	image = mlx_new_image(world->canvas->mlx_ptr, cam->hsize, cam->vsize);
 	y = 0;
-	while (y < cam.vsize)
+	while (y < cam->vsize)
 	{
 		x = 0;
-		while (x < cam.hsize)
+		while (x < cam->hsize)
 		{
 			ray = ray_for_pixel(cam, x, y);
 			color = color_at(world, ray);

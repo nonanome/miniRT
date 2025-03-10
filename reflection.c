@@ -10,7 +10,7 @@ xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale)
 	return normalize(substraction(in, n));
 }
 
-xyzvektor calculate_normale(t_shape shape, xyzvektor point)
+xyzvektor sphere_normal(t_shape shape, xyzvektor point)
 {
 	xyzvektor local_point;
 	xyzvektor local_normal;
@@ -25,6 +25,26 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 	world_normal = multiply_vector_and_matrix(local_normal, transpose_inverse_transform);
 	world_normal.w = 0;
 	return normalize(world_normal);
+}
+
+xyzvektor calculate_normale(t_shape shape, xyzvektor point)
+{
+	if (shape.type == 0)
+		return sphere_normal(shape, point);
+	else if (shape.type == 1)
+		{
+			double **inverse_transform;
+			double **transpose_inverse_transform;
+			xyzvektor local_normal;
+
+			inverse_transform = invert_matrix
+				(shape.default_transformation, 4);
+			local_normal = set_vector(0, 1, 0, 0);
+			transpose_inverse_transform = transpose_matrix
+				(inverse_transform, 4);
+			return (multiply_vector_and_matrix(local_normal,
+					transpose_inverse_transform));
+		}
 }
 
 xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow)

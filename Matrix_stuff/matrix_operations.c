@@ -28,6 +28,8 @@ double **multiply_matrix(double **a, double **b)
 	result = malloc(4 * (sizeof(double *)));
 	while (++ row < 4)
 		result[row] = malloc(4 * (sizeof(double)));
+	if (!result)
+		return NULL;
 	row = -1;
 	column = -1;
 	while (++ row < 4)
