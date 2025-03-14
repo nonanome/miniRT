@@ -17,35 +17,6 @@ t_material	set_material(xyzvektor color, double ambient, double diffuse,
 	return (material);
 }
 
-int	make_test_world(t_world *world)
-{
-	xyzvektor	color;
-	xyzvektor	color2;
-	xyzvektor	color3;
-	xyzvektor	color4;
-
-	color = set_vector(0.5, 1.0, 0.1, 1.0);
-	color2 = set_vector(0.1, 1.0, 0.5, 1.0);
-	color3 = set_vector(1.0, 0.8, 0.1, 1.0);
-	color4 = set_vector(1.0, 0.9, 0.9, 1.0);
-	if (!world)
-		return (1);
-	init_canvas(world->canvas);
-	// //floor
-	world->shapes[0] = new_shape(1);
-	world->shapes[0]->material = set_material(color4, 0.1, 0.9, 0.9, 200.0);
-	// ceiling
-	world->shapes[1] = new_shape(1);
-	world->shapes[1]->default_transformation = translation(0, 20, 0);
-	world->shapes[1]->material = set_material(color4, 0.1, 0.9, 0.9, 200.0);
-	// sphere	
-	world->shapes[2] = new_shape(0);
-	world->shapes[2]->default_transformation = translation(0, 5, 0);
-	world->shapes[2]->material = set_material(color, 0.1, 0.7, 0.3, 200.0);
-	world->nr_shapes = 3;
-	return (0);
-}
-
 int	main(void)
 {
 	t_world			*world;
@@ -67,7 +38,7 @@ int	main(void)
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
-	world->camera = camera(800, 400, PI / 3);
+	world->camera = camera(200, 100, PI / 3);
 	if (!world->camera)
 	{
 		free_world(world);

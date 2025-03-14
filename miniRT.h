@@ -81,7 +81,6 @@ xyzvektor			get_color_from_uint(uint32_t color);
 xyzvektor			point_of_intersection(t_intersec *intersec, t_ray ray);
 
 xyzvektor			set_black(void);
-t_sphere			new_sphere(void);
 t_light				default_light(void);
 t_material			default_material(void);
 
