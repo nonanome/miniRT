@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:03:30 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 12:25:16 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 17:03:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,3 +20,12 @@ int budget_get_next_line(int fd, char **line);
 char **process_file(char *file_name);
 double budget_ft_atof(char *str);
 int	budget_get_next_line(int fd, char **line);
+int	parse_light(t_world *world, char *line);
+int	parse_camera(t_world *world, char *line);
+int	parse_ambient_light(t_world *world, char *line);
+int	parse_sphere(t_world *world, char *line);
+int	parse_plane(t_world *world, char *line);
+int	parse_cylinder(t_world *world, char *line);
+void	ft_free_split(char **split);
+int	parse_xyz(char **split, double *xyz, int mode);
+int	parse_common_shape(char **split, double pos[3], double rgb[3]);
