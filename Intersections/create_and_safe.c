@@ -61,6 +61,8 @@ t_intersec *local_intersect(t_intersec *result, t_ray ray, t_shape *shape) {
     } else if (shape->type == 1) {
         return intersect_plane(result, ray, *shape);
     }
+    // else if (shape->type == 2) {
+    //     return intersect_cylinder(result, ray, *shape);
 	return NULL;
 }
 
