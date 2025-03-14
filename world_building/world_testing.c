@@ -38,7 +38,7 @@ int	main(void)
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
-	world->camera = camera(200, 100, PI / 3);
+	world->camera = camera(300, 150, PI / 3);
 	if (!world->camera)
 	{
 		free_world(world);
@@ -49,7 +49,6 @@ int	main(void)
 		free_world(world);
 		return (1);
 	}
-	world->canvas->lightsource.position = set_vector(-10, 3, -10, 0);
 	image = render_image(world->camera, world);
 	if (!image)
 	{

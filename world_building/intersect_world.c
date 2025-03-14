@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/10 16:34:21 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 15:16:32 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ xyzvektor	color_at(t_world *world, t_ray ray)
 	int			shape_to_use;
 
 	if (world->canvas->all_intersections.intersections)
-{
-    free(world->canvas->all_intersections.intersections);
-    world->canvas->all_intersections.intersections = NULL;
-    world->canvas->all_intersections.nr_intersections = 0;
-}
+	{
+		free(world->canvas->all_intersections.intersections);
+		world->canvas->all_intersections.intersections = NULL;
+		world->canvas->all_intersections.nr_intersections = 0;
+	}
 	world->canvas->all_intersections.nr_intersection_entries = 0;
 	intersec_to_use = NULL;
 	shape_to_use = 0;

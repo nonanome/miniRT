@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/10 18:30:48 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 12:29:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,23 @@ t_shape *new_shape(int type)
 	shape->default_transformation = get_identity_matrix();
 	shape->material = default_material();
 	shape->id = globalID++;
-	if (type == 0) // sphere
+	if (type == 0)
 	{
 		shape->radius = 1;
 		shape->minimum = -INFINITY;
 		shape->maximum = INFINITY;
 		shape->closed = false;
 	}
-	else if (type == 1) // plane
+	else if (type == 1)
 	{
 		shape->normal = set_vector(0, 1, 0, 0);
 		shape->minimum = -INFINITY;
 		shape->maximum = INFINITY;
 		shape->closed = false;
 	}
-	else if (type == 2) // cylinder
+	else if (type == 2)
 	{
+		shape->radius = 1;
 		shape->minimum = -INFINITY;
 		shape->maximum = INFINITY;
 		shape->closed = false;
@@ -89,7 +90,7 @@ void	free_world(t_world *world)
 			while (world->nr_shapes--)
 			{
 			free(world->shapes[world->nr_shapes]->default_transformation);
-			
+			free(world->shapes[world->nr_shapes]);
 			}
 		}
 	free(world);
