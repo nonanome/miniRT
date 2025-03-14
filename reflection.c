@@ -45,6 +45,8 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 			return (multiply_vector_and_matrix(local_normal,
 					transpose_inverse_transform));
 		}
+	else if (shape.type == 2)
+		return (set_vector(point.x, 0, point.z, 0));
 }
 
 xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow)

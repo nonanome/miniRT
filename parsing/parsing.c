@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 12:11:38 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 15:46:15 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char	**process_file(char *file_name)
 		input[i] = line;
 		i++;
 	}
-	input[i] = NULL;
+	input[i] = line;
+	input[++i] = NULL;
 	return (input);
 }
 
@@ -179,6 +180,8 @@ int	parse_common_shape(char **split, double pos[3], double rgb[3])
 	if (!pos_split)
 		return (1);
 	rgb_split = ft_split(split[3], ',');
+	if (split[0][0] == 'c')
+		rgb_split = ft_split(split[5], ',');
 	if (!rgb_split)
 		return (ft_free_split(pos_split), 1);
 	if (!parse_xyz(pos_split, pos, 0))
@@ -242,12 +245,46 @@ int	parse_plane(t_world *world, char *line)
 		|| normal[1] < -1 || normal[1] > 1 || normal[2] < -1 || normal[2] > 1)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(1);
-	shape->origin = set_vector(xyz[0], xyz[1], xyz[2], 1);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
+	world->shapes[world->nr_shapes] = shape;
+	world->nr_shapes++;
+	ft_free_split(normal_split);
+	return (ft_free_split(split), 0);
+}
+
+int	parse_cylinder(t_world *world, char *line)
+{
+	char	**split;
+	char	**normal_split;
+	double	xyz[3];
+	double	rgb[3];
+	double	normal[3];
+	t_shape	*shape;
+
+	split = ft_split(line, ' ');
+	if (!split)
+		return (1);
+	if (parse_common_shape(split, xyz, rgb))
+		return (ft_free_split(split), 1);
+	normal_split = ft_split(split[2], ',');
+	if (!normal_split)
+		return (ft_free_split(split), 1);
+	if (!parse_xyz(normal_split, normal, 1) || normal[0] < -1 || normal[0] > 1
+		|| normal[1] < -1 || normal[1] > 1 || normal[2] < -1 || normal[2] > 1)
+		return (ft_free_split(normal_split), ft_free_split(split), 1);
+	shape = new_shape(2);
+	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
+	shape->material.ambient = world->ambient_intensity;
+	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1], rgb[2], 0));
+	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
+	shape->radius = budget_ft_atof(split[3]) / 2;
+	shape->maximum = budget_ft_atof(split[4]);
+	if (split[5])
+		shape->closed = budget_ft_atof(split[5]);
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
 	ft_free_split(normal_split);
@@ -286,6 +323,11 @@ int	parse_input(char *file_name, t_world *world)
 		else if (ft_strncmp(input[i], "pl", 2) == 0)
 		{
 			if (parse_plane(world, input[i]))
+				return (1);
+		}
+		else if (ft_strncmp(input[i], "cy", 2) == 0)
+		{
+			if (parse_cylinder(world, input[i]))
 				return (1);
 		}
 		i++;
