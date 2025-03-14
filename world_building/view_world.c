@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/02/25 19:33:08 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 20:35:20 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 	pixel = multiply_vector_and_matrix(pixel, inv);
 	origin = multiply_vector_and_matrix(origin, inv);
 	ray.origin = origin;
+	free_double_ptr(inv, 4);
 	ray.direction = normalize(substraction(pixel, origin));
 	return (ray);
 }
@@ -51,10 +52,6 @@ t_camera	*camera(int hsize, int vsize, double field_of_view)
 	cam->hsize = hsize;
 	cam->vsize = vsize;
 	cam->field_of_view = field_of_view;
-	cam->transform = malloc(sizeof(double *) * 4);
-	if (!cam->transform)
-		return (cam);
-	cam->transform = get_identity_matrix();
 	half_view = tan(cam->field_of_view / 2);
 	aspect = (double)cam->hsize / (double)cam->vsize;
 	if (aspect >= 1)
@@ -115,6 +112,7 @@ double	**view_transform(xyzvektor from, xyzvektor to, xyzvektor up)
 	xyzvektor	true_up;
 	double		**orientation;
 	double		**translation_mat;
+	double		**ret;
 
 	forward = normalize(substraction(to, from));
 	left = crossProduct(forward, normalize(up));
@@ -124,7 +122,10 @@ double	**view_transform(xyzvektor from, xyzvektor to, xyzvektor up)
 	translation_mat = translation(-from.x, -from.y, -from.z);
 	if (!orientation || !translation_mat)
 		return (NULL);
-	return (multiply_matrix(orientation, translation_mat));
+	ret = multiply_matrix(orientation, translation_mat);
+	free_double_ptr(translation_mat, 4);
+	free_double_ptr(orientation, 4);
+	return (ret);
 }
 
 mlx_image_t	*render_image(t_camera *cam, t_world *world)

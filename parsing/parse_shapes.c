@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 17:00:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 19:55:50 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	parse_plane(t_world *world, char *line)
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
+	free_double_ptr(shape->default_transformation, 4);
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
@@ -95,6 +96,7 @@ int	parse_cylinder(t_world *world, char *line)
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1], rgb[2], 0));
+	free_double_ptr(shape->default_transformation, 4);
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	shape->radius = budget_ft_atof(split[3]) / 2;
 	shape->maximum = budget_ft_atof(split[4]);

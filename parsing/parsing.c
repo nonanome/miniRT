@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 17:03:13 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 19:52:53 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,9 @@ int	parse_input(char *file_name, t_world *world)
 		}
 		i++;
 	}
+	i = 0;
+	while (input[i])
+		free(input[i++]);
+	free(input);
 	return (0);
 }

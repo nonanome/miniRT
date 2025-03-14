@@ -24,11 +24,15 @@ xyzvektor sphere_normal(t_shape shape, xyzvektor point)
 	transpose_inverse_transform = transpose_matrix(inverse_transform, 4);
 	world_normal = multiply_vector_and_matrix(local_normal, transpose_inverse_transform);
 	world_normal.w = 0;
+	free_double_ptr(transpose_inverse_transform, 4);
+	free_double_ptr(inverse_transform, 4);
 	return normalize(world_normal);
 }
 
 xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 {
+	xyzvektor ret;
+
 	if (shape.type == 0)
 		return sphere_normal(shape, point);
 	else if (shape.type == 1)
@@ -42,8 +46,11 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 			local_normal = shape.normal;
 			transpose_inverse_transform = transpose_matrix
 				(inverse_transform, 4);
-			return (multiply_vector_and_matrix(local_normal,
-					transpose_inverse_transform));
+			free_double_ptr(inverse_transform, 4);
+			ret = multiply_vector_and_matrix(local_normal,
+				transpose_inverse_transform);
+			free_double_ptr(transpose_inverse_transform, 4);
+			return (ret);
 		}
 	else if (shape.type == 2)
 		return (set_vector(point.x, 0, point.z, 0));

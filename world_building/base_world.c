@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 12:29:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 19:40:36 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ t_shape *new_shape(int type)
 		return (NULL);
 	shape->type = type;
 	shape->origin = set_vector(0, 0, 0, 1);
-	shape->default_transformation = (double **)malloc(sizeof(double *) * 4);
-	if (!shape->default_transformation)
-		return (free(shape), NULL);
 	shape->default_transformation = get_identity_matrix();
 	shape->material = default_material();
 	shape->id = globalID++;
@@ -85,13 +82,23 @@ void	free_world(t_world *world)
 		free(world->canvas->img);
 	if (world->env)
 		free(world->env);
+	if (world->ambient)
+		free(world->ambient);
+	if (world->camera)
+	{
+		free_double_ptr(world->camera->transform, 4);
+		free(world->camera);
+	}
 	if (world->shapes)
 		{
 			while (world->nr_shapes--)
 			{
-			free(world->shapes[world->nr_shapes]->default_transformation);
-			free(world->shapes[world->nr_shapes]);
+				free_double_ptr(world->shapes[world->nr_shapes]->default_transformation, 4);
+				free(world->shapes[world->nr_shapes]);
 			}
 		}
+	free(world->shapes);
+	free(world->canvas);
+	free(world->all_sorted);
 	free(world);
 }

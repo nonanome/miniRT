@@ -13,6 +13,7 @@
 void				save_intersection(t_c *canvas, t_intersec *new_intersection,
 						int i, int j);
 t_intersec			*intersect(t_shape *shape, t_ray ray);
+t_intersec			*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder);
 xyzvektor			ray_position(t_ray ray, double time);
 double				get_smallest_positive_value(t_intersec *intersection1);
 xyzvektor			identify_hit(t_all_intersec all_intersections);
