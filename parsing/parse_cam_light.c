@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 16:59:40 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 19:48:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	parse_camera(t_world *world, char *line)
 	world->camera->transform = view_transform(set_vector(xyz[0], xyz[1], xyz[2],
 				1), set_vector(normal[0], normal[1], normal[2], 0),
 			set_vector(0, 1, 0, 0));
-	return (ft_free_split(split), ft_free_split(xyz_split), 0);
+	return (ft_free_split(split), ft_free_split(xyz_split), ft_free_split(normal_split), 0);
 }
 
 int	parse_light(t_world *world, char *line)

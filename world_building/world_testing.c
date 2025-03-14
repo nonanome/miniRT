@@ -38,7 +38,7 @@ int	main(void)
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
-	world->camera = camera(300, 150, PI / 3);
+	world->camera = camera(100, 50, PI / 3);
 	if (!world->camera)
 	{
 		free_world(world);

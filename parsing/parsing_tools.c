@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 17:03:30 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/14 18:43:07 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,13 @@ int	parse_common_shape(char **split, double pos[3], double rgb[3])
 	if (!pos_split)
 		return (1);
 	rgb_split = ft_split(split[3], ',');
-	if (split[0][0] == 'c')
-		rgb_split = ft_split(split[5], ',');
 	if (!rgb_split)
 		return (ft_free_split(pos_split), 1);
+	if (split[0][0] == 'c')
+	{
+		ft_free_split(rgb_split);
+		rgb_split = ft_split(split[5], ',');
+	}
 	if (!parse_xyz(pos_split, pos, 0))
 		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
 	if (!parse_xyz(rgb_split, rgb, 0))
