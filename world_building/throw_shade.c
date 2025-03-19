@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:05:47 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/19 18:03:50 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ bool	is_shadowed(t_world *world, xyzvektor point)
 	ray.direction = normalize(v);
 	empty_intersections(world->canvas);
 	intersect_world(world, ray);
-	hit_intersection = hit(world->canvas->all_intersections);
+	if(world->canvas->all_intersections.intersections != NULL)
+		hit_intersection = hit(world->canvas->all_intersections);
 	if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
     	return (empty_intersections(world->canvas), true);
 	return (empty_intersections(world->canvas), false);
@@ -86,6 +87,7 @@ xyzvektor shade_hit(t_world *world, t_comp comp)
 	local_canvas = *(world->canvas);
 	local_canvas.normale = comp.normalv;
 	local_canvas.eyevector = comp.eyev;
+	in_shadow = true;
 	in_shadow = is_shadowed(world, comp.over_point);
 	empty_intersections(world->canvas);
 	return (lightning(comp.object->material, comp.over_point, local_canvas, in_shadow));
