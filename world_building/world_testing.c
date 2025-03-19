@@ -49,6 +49,8 @@ int	main(void)
 		free_world(world);
 		return (1);
 	}
+	if(!world->camera->transform)
+		return (1);
 	mlx_delete_image(world->canvas->mlx_ptr, image);
 	image = render_image(world->camera, world);
 	if (!image)
