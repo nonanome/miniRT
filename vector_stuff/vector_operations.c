@@ -12,6 +12,8 @@ xyzvektor normalize(xyzvektor a)
 {
 	xyzvektor result;
 
+	if(magnitude(a) == 0)
+		return a;
 	result.x = a.x / magnitude(a);
 	result.y = a.y / magnitude(a);
 	result.z = a.z / magnitude(a);

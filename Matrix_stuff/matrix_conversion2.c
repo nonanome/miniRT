@@ -10,10 +10,10 @@ double **invert_matrix(double **a, int size)
 	determinante = get_determinant_of_bigger_matrix(a, size);
 	if(determinante == 0)
 		return 0;
-	result = malloc(size * (sizeof(double *)));
+	result = MALLOC(size * (sizeof(double *)));
 	i = -1;
 	while(++ i < size)
-		result[i] = malloc(size * (sizeof(double)));
+		result[i] = MALLOC(size * (sizeof(double)));
 	i = -1;
 	j = -1;
 	while(++ i < size)
@@ -56,8 +56,8 @@ void free_double_ptr(double **a, int size)
 	i = 0;
 	while(i < size)
 	{
-		free(a[i]);
+		FREE(a[i]);
 		i ++;
 	}
-	free(a);
+	FREE(a);
 }

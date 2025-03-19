@@ -12,7 +12,7 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 	double		discriminant;
 	xyzvektor	sphere_to_ray;
 
-	discriminant_values = malloc(3 * sizeof(double));
+	discriminant_values = MALLOC(3 * sizeof(double));
 	sphere_to_ray = substraction(ray.origin, sphere.origin);
 	discriminant_values[0] = dotProduct(ray.direction, ray.direction);
 	discriminant_values[1] = 2 * dotProduct(ray.direction, sphere_to_ray);
@@ -21,16 +21,16 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 	discriminant = get_discriminant(discriminant_values);
 	if (discriminant < 0)
 	{
-		free(discriminant_values);
+		FREE(discriminant_values);
 		return (NULL);
 	}
-	result->times = malloc(2 * sizeof(double));
+	result->times = MALLOC(2 * sizeof(double));
 	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
 			* discriminant_values[0]);
 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
 			* discriminant_values[0]);
 	result->object_id = sphere.id;
-	free(discriminant_values);
+	FREE(discriminant_values);
 	return (result);
 }
 
@@ -39,18 +39,18 @@ t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 	double	*discriminant_values;
 	double	discriminant;
 
-	discriminant_values = malloc(3 * sizeof(double));
-	result->times = malloc(2 * sizeof(double));
+	discriminant_values = MALLOC(3 * sizeof(double));
+	result->times = MALLOC(2 * sizeof(double));
 	discriminant_values[0] = dotProduct(ray.direction, plane.normal);
 	if (discriminant_values[0] == 0)
 	{
-		free(discriminant_values);
+		FREE(discriminant_values);
 		return (NULL);
 	}
 	discriminant_values[1] = -dotProduct(ray.origin, plane.normal);
 	if (discriminant_values[1] / discriminant_values[0] < EPSILON)
 	{
-		free(discriminant_values);
+		FREE(discriminant_values);
 		result->times[0] = 0;
 		result->times[1] = 0;
 		return (result);
@@ -58,7 +58,7 @@ t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 	result->times[0] = discriminant_values[1] / discriminant_values[0];
 	result->times[1] = discriminant_values[1] / discriminant_values[0];
 	result->object_id = plane.id;
-	free(discriminant_values);
+	FREE(discriminant_values);
 	return (result);
 }
 
@@ -83,7 +83,7 @@ t_intersec	*intersect(t_shape *shape, t_ray ray)
 	t_intersec	*result;
 	double		**inverted;
 
-	result = malloc(sizeof(t_intersec));
+	result = MALLOC(sizeof(t_intersec));
 	inverted = invert_matrix(shape->default_transformation, 4);
 	ray = transform(ray, inverted);
 	free_double_ptr(inverted, 4);

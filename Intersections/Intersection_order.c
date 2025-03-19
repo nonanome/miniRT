@@ -46,7 +46,7 @@ void	save_intersection(t_c *canvas, t_intersec *new_intersection, int i , int j)
 	old_intersections = canvas->all_intersections.intersections;
 	nr_intersec = canvas->all_intersections.nr_intersections + 1;
 	canvas->all_intersections.nr_intersections = nr_intersec;
-	intersections_sorted = malloc (nr_intersec * sizeof(t_intersec));
+	intersections_sorted = MALLOC (nr_intersec * sizeof(t_intersec));
 	if(nr_intersec == 1)
 	{
 		canvas->all_intersections.intersections = new_intersection;	

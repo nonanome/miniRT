@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   view_world.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 20:35:20 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_camera	*camera(int hsize, int vsize, double field_of_view)
 	double		half_view;
 	double		aspect;
 
-	cam = malloc(sizeof(t_camera));
+	cam = MALLOC(sizeof(t_camera));
 	if (!cam)
 		return (NULL);
 	cam->hsize = hsize;
@@ -75,13 +75,13 @@ double	**matrix(double lx, double ly, double lz, double lw, double ux,
 	double	**mat;
 	int		i;
 
-	mat = (double **)malloc(4 * sizeof(double *));
+	mat = (double **)MALLOC(4 * sizeof(double *));
 	if (!mat)
 		return (NULL);
 	i = 0;
 	while (i < 4)
 	{
-		mat[i] = (double *)malloc(4 * sizeof(double));
+		mat[i] = (double *)MALLOC(4 * sizeof(double));
 		if (!mat[i])
 			return (NULL);
 		i++;

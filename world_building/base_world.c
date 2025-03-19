@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base_world.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 19:40:36 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_shape *new_shape(int type)
 {
 	t_shape	*shape;
 
-	shape = (t_shape *)malloc(sizeof(t_shape));
+	shape = (t_shape *)MALLOC(sizeof(t_shape));
 	if (!shape)
 		return (NULL);
 	shape->type = type;
@@ -52,21 +52,21 @@ t_world	*get_world(int shapes)
 {
 	t_world	*world;
 
-	world = (t_world *)malloc(sizeof(t_world));
+	world = (t_world *)MALLOC(sizeof(t_world));
 	if (!world)
 		return (NULL);
 	world->canvas = (t_c *)calloc(sizeof(t_c), 1);
 	if (!world->canvas)
-		return (free(world), NULL);
-	world->env = (t_env *)malloc(sizeof(t_env));
+		return (FREE(world), NULL);
+	world->env = (t_env *)MALLOC(sizeof(t_env));
 	if (!world->env)
-		return (free(world->canvas), free(world), NULL);
-	world->shapes = (t_shape **)malloc(sizeof(t_shape *) * shapes);
+		return (FREE(world->canvas), FREE(world), NULL);
+	world->shapes = (t_shape **)MALLOC(sizeof(t_shape *) * shapes);
 	if (!world->shapes)
-		return (free(world->env), free(world->canvas), free(world), NULL);
-	world->ambient = malloc(sizeof(xyzvektor));
+		return (FREE(world->env), FREE(world->canvas), FREE(world), NULL);
+	world->ambient = MALLOC(sizeof(xyzvektor));
 	if (!world->ambient)
-		return (free(world->shapes), free(world->env), free(world->canvas), free(world), NULL);
+		return (FREE(world->shapes), FREE(world->env), FREE(world->canvas), FREE(world), NULL);
 	*(world->ambient) = set_vector(0, 0, 0, 0);
 	world->ambient_intensity = 0;
 	world->nr_shapes = 0;
@@ -79,26 +79,26 @@ void	free_world(t_world *world)
 	if (!world)
 		return ;
 	if (world->canvas)
-		free(world->canvas->img);
+		FREE(world->canvas->img);
 	if (world->env)
-		free(world->env);
+		FREE(world->env);
 	if (world->ambient)
-		free(world->ambient);
+		FREE(world->ambient);
 	if (world->camera)
 	{
 		free_double_ptr(world->camera->transform, 4);
-		free(world->camera);
+		FREE(world->camera);
 	}
 	if (world->shapes)
 		{
 			while (world->nr_shapes--)
 			{
 				free_double_ptr(world->shapes[world->nr_shapes]->default_transformation, 4);
-				free(world->shapes[world->nr_shapes]);
+				FREE(world->shapes[world->nr_shapes]);
 			}
 		}
-	free(world->shapes);
-	free(world->canvas);
-	free(world->all_sorted);
-	free(world);
+	FREE(world->shapes);
+	FREE(world->canvas);
+	FREE(world->all_sorted);
+	FREE(world);
 }

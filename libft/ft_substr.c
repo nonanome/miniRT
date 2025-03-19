@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:02:15 by kkuhn             #+#    #+#             */
-/*   Updated: 2024/10/20 16:57:52 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_substr(char const	*s, size_t start, size_t len)
 		len = ft_strlen(s) - start;
 	if (ft_strlen(s) - start < len)
 		len = ft_strlen(s) - start;
-	substring = (char *) malloc (len + 1); //MALLOC!
+	substring = (char *) MALLOC (len + 1); //MALLOC!
 	if (substring == 0)
 		return (0);
 	while (i < len && s[i + start] != 0)

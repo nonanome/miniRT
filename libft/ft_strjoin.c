@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 20:18:48 by kkuhn             #+#    #+#             */
-/*   Updated: 2024/10/20 17:44:55 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return ft_strdup((char *)s2);
 	if (s2 == 0)
 		return ft_strdup((char *)s1);
-	joined_str = (char *) malloc (ft_strlen(s1) + ft_strlen(s2) + 1); //MALLOC!
+	joined_str = (char *) MALLOC (ft_strlen(s1) + ft_strlen(s2) + 1); //MALLOC!
 	if (joined_str == NULL)
 		return (NULL);
 	while (s1[i] != 0)
