@@ -25,9 +25,9 @@ double **multiply_matrix(double **a, double **b)
 	int column;
 
 	row = -1;
-	result = malloc(4 * (sizeof(double *)));
+	result = MALLOC(4 * (sizeof(double *)));
 	while (++ row < 4)
-		result[row] = malloc(4 * (sizeof(double)));
+		result[row] = MALLOC(4 * (sizeof(double)));
 	if (!result)
 		return NULL;
 	row = -1;

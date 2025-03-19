@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:20:12 by kkuhn             #+#    #+#             */
-/*   Updated: 2024/10/20 16:09:23 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	*ft_calloc(int count, int size)
 {
 	char	*allocated_memory;
 
-	allocated_memory = (void *) malloc (count * size); //MALLOC!
+	allocated_memory = (void *) MALLOC (count * size); //MALLOC!
 	if (allocated_memory == 0)
 		return (NULL);
 	ft_memset(allocated_memory, 0, count * size);

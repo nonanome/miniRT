@@ -8,7 +8,7 @@ double *extract_submatrix_row(double *a, int ii, int size)
 
 	i = 0;
 	j = 0;
-	row = malloc((size - 1) * (sizeof(double)));
+	row = MALLOC((size - 1) * (sizeof(double)));
 	while(i < size)
 	{
 		if (i != ii)
@@ -27,7 +27,7 @@ double **get_submatrix(double **a, int ii, int jj, int size)
 	int i;
 	int j;
 
-	result = malloc((size - 1) * (sizeof(double *)));
+	result = MALLOC((size - 1) * (sizeof(double *)));
 	j = 0;
 	i = 0;
 	while(i < (size))

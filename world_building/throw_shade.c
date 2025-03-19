@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   throw_shade.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 20:30:16 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:05:47 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	empty_intersections(t_c *canvas)
 	if (canvas->all_intersections.intersections)
 	{
 		while (i < canvas->all_intersections.nr_intersection_entries)
-			free(canvas->all_intersections.intersections[i++].times);
-		free(canvas->all_intersections.intersections);
+			FREE(canvas->all_intersections.intersections[i++].times);
+		FREE(canvas->all_intersections.intersections);
 		canvas->all_intersections.nr_intersection_entries = 0;
 		canvas->all_intersections.nr_intersections = 0;
 	}

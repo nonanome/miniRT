@@ -53,11 +53,19 @@ world_building/intersect_world.o world_building/throw_shade.o world_building/vie
 
 OBJ = $(OBJECTS:.o=.c)
 
+# Step to download and compile MLX42 if not already present
+MLX_DIR = MLX42
 
-all: miniRT
+$(MLX_DIR):
+	git clone https://github.com/codam-coding-college/MLX42.git
+	cd $(MLX_DIR) && cmake -B build -S . && cmake --build build 
 
+all: $(MLX_DIR) miniRT
+
+# miniRT: ${GC} $(MLX) ${OBJECTS}
+# 	gcc ${GC} $(OBJECTS) $(MLX) -o $@ -ldl -lglfw -pthread -lm -lX11 -lXext
 miniRT: ${GC} $(MLX) ${OBJECTS}
-	    gcc ${GC} $(OBJECTS) $(MLX) -o $@ -ldl -lglfw -pthread -lm -lX11 -lXext
+	gcc ${GC} $(OBJECTS) $(MLX) -o $@ -ldl -lglfw -pthread -lm
 
 main.o: main.c
 	gcc -c ${CFLAGS} $< -o $@
@@ -71,10 +79,12 @@ ${OBJECTS}:	${OBJ}
 
 clean:
 	rm -f ${OBJECTS} *.o
+	rm -rf MLX42
 
 fclean:
 	make clean
 	make -C ./libft fclean
 	rm -f ${OBJECTS} ${NAME}
+	rm -rf ${MLX_DIR}
 
-re:	fclean all
+re: fclean all

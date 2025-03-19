@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   budget_get_next_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 12:10:22 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 15:08:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	budget_get_next_line(int fd, char **line)
 	int		i;
 
 	i = 0;
-	*line = malloc(5);
+	*line = MALLOC(5);
 	if (!*line)
 		return (-1);
 	(*line)[0] = '\0';
@@ -32,10 +32,10 @@ int	budget_get_next_line(int fd, char **line)
 			return (1);
 		temp = *line;
 		*line = ft_strjoin(*line, buffer);
-		free(temp);
+		FREE(temp);
 		ret = read(fd, buffer, 1);
 		if (ret < 0 || !*line)
-			return (free(*line), -1);
+			return (FREE(*line), -1);
 		i++;
 	}
 	if (ret == 0)

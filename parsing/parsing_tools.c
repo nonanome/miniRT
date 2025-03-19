@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_tools.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 18:43:07 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:18:15 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	ft_free_split(char **split)
 	i = 0;
 	while (split[i])
 	{
-		free(split[i]);
+		FREE(split[i]);
 		i++;
 	}
-	free(split);
+	FREE(split);
 }
 
 int	parse_xyz(char **split, double *xyz, int mode)
@@ -32,6 +32,12 @@ int	parse_xyz(char **split, double *xyz, int mode)
 	i = 0;
 	while (split[i])
 	{
+		if(i >= 3)
+		{
+			write(2, "Error\nWrong Input", ft_strlen("Error\nWrong Input"));
+			exit(0);
+		}
+
 		xyz[i] = budget_ft_atof(split[i]);
 		if (mode == 1 && (xyz[i] < -1 || xyz[i] > 1))
 			return (0);

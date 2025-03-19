@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:35:55 by kkuhn             #+#    #+#             */
-/*   Updated: 2024/10/20 20:58:02 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	if (!*s)
 	{
-		strarray = malloc(1 * sizeof(char *)); //MALLOC!
+		strarray = MALLOC(1 * sizeof(char *)); //MALLOC!
 		if (!strarray)
 			return (NULL);
 		strarray[0] = 0;
 		return (strarray);
 	}
-	strarray = (char **) malloc ((ft_stringcounter(s, c) + 1) * sizeof(char *)); //MALLOC!
+	strarray = (char **) MALLOC ((ft_stringcounter(s, c) + 1) * sizeof(char *)); //MALLOC!
 	if (strarray == 0)
 		return (0);
 	strarray = ft_split2(s, c, &j, strarray);

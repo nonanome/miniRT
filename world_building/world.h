@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 20:24:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:08:01 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define WORLD_H
 
 # include "../structs.h"
+# include "../miniRT.h"
 
 double		**multiply_matrix(double **a, double **b);
 xyzvektor	calculate_normale(t_shape shape, xyzvektor point);

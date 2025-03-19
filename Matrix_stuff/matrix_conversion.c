@@ -45,10 +45,10 @@ double **transpose_matrix(double **a, int size)
 	int i;
 	int j;
 
-	result = malloc(size * (sizeof(double *)));
+	result = MALLOC(size * (sizeof(double *)));
 	i = -1;
 	while(++ i < size)
-		result[i] = malloc(size * (sizeof(double)));
+		result[i] = MALLOC(size * (sizeof(double)));
 	i = 0;
 	j = 0;
 	while(i < size)

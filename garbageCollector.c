@@ -7,6 +7,34 @@ void *get_adress_of_list()
 	return &list;
 }
 
+void	delete_lst_data(t_list *list, void *data)
+{
+	void	*next;
+
+	if (list == 0)
+		return ;
+	while(list)
+	{
+		next = list->next;
+		if (list->content != NULL && &list->content == data)
+		{
+			free(list->content);
+			list->content = NULL;
+		}
+		list = next;
+	}
+
+}
+
+void	FREE(void *data)
+{
+	void	*ptrlist;
+	void	*next;
+
+	ptrlist = get_adress_of_list();
+	delete_lst_data(ptrlist, data);
+}
+
 void *MALLOC(int size)
 {
 	void *ptrlist;
@@ -25,5 +53,5 @@ void __attribute__ ((destructor))	free_list(void)
 	void	*ptrlist;
 
 	ptrlist = get_adress_of_list();
-	ft_lstclear(ptrlist, free);
+	ft_lstclear(ptrlist, FREE);
 }

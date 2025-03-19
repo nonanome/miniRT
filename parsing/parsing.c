@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 19:52:53 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/18 20:52:38 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+void look_for_double_uppercase(char **input , int A, int C, int L)
+{
+	while(*input)
+	{
+		if(*input[0] == 'A')
+			A ++;
+		if(*input[0] == 'C')
+			C ++;
+		if(*input[0] == 'L')
+			L ++;
+		input ++;
+	}
+	if(A > 1 || C > 1 || L > 1)
+	{
+		write(2, "input contains double capital letter object",
+			ft_strlen("input contains double capital letter object"));
+		exit(0);
+	}
+}
 
 char	**process_file(char *file_name)
 {
@@ -21,7 +41,7 @@ char	**process_file(char *file_name)
 
 	i = 0;
 	fd = open(file_name, O_RDONLY);
-	input = malloc(100 * sizeof(char *));
+	input = MALLOC(100 * sizeof(char *));
 	if (!input)
 		return (NULL);
 	while (budget_get_next_line(fd, &line) > 0)
@@ -31,6 +51,7 @@ char	**process_file(char *file_name)
 	}
 	input[i] = line;
 	input[++i] = NULL;
+	look_for_double_uppercase(input, 0, 0, 0);
 	return (input);
 }
 
@@ -77,7 +98,7 @@ int	parse_input(char *file_name, t_world *world)
 	}
 	i = 0;
 	while (input[i])
-		free(input[i++]);
-	free(input);
+		FREE(input[i++]);
+	FREE(input);
 	return (0);
 }

@@ -66,6 +66,8 @@ t_material			default_material(void);
 void				free_double_ptr(double **a, int size);
 void				show_matrix(double **a, int size);
 void				*MALLOC(int size);
+void				FREE(void *data);
+
 // sphere
 void				set_transform(t_shape *shape, double **translation);
 t_material			default_material(void);
