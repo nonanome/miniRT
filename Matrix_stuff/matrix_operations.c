@@ -47,6 +47,9 @@ xyzvektor	multiply_vector_and_matrix(xyzvektor a, double **b)
 {
 	xyzvektor	result;
 
+
+	if(b == 0)
+		return a;
 	result.x = a.x * b[0][0] + a.y * b[0][1] + a.z * b[0][2] + a.w * b[0][3];
 	result.y = a.x * b[1][0] + a.y * b[1][1] + a.z * b[1][2] + a.w * b[1][3];
 	result.z = a.x * b[2][0] + a.y * b[2][1] + a.z * b[2][2] + a.w * b[2][3];
