@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 19:55:50 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/20 18:32:19 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	parse_sphere(t_world *world, char *line)
 	double	radius;
 	t_shape	*shape;
 
+	check_spere_or_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
@@ -48,6 +49,7 @@ int	parse_plane(t_world *world, char *line)
 	double	normal[3];
 	t_shape	*shape;
 
+	check_plane_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
@@ -81,6 +83,7 @@ int	parse_cylinder(t_world *world, char *line)
 	double	normal[3];
 	t_shape	*shape;
 
+	check_cylinder_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
