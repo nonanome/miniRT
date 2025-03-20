@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 19:30:46 by kkuhn             #+#    #+#             */
-/*   Updated: 2024/03/20 17:31:51 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/20 20:30:28 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 		ft_lstdelone (*lst, (*del));
 		(*lst) = next;
 	}
+	*lst = NULL;
 }

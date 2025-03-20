@@ -8,7 +8,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "structs.h"
-
+void clean_memory(void);
 // intersection
 void				save_intersection(t_c *canvas, t_intersec *new_intersection,
 						int i, int j);
