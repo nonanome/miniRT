@@ -1,5 +1,7 @@
 #include "garbageCollector.h"
 
+
+
 void *get_adress_of_list()
 {
 	static t_list list;
@@ -48,10 +50,10 @@ void *MALLOC(int size)
 	return content;
 }
 
-void __attribute__ ((destructor))	free_list(void)
+void __attribute__ ((destructor)) free_list(void)
 {
-	void	*ptrlist;
-
-	ptrlist = get_adress_of_list();
-	ft_lstclear(ptrlist, FREE);
+    t_list *ptrlist= get_adress_of_list();
+    if (ptrlist != NULL) {
+        ft_lstclear(&ptrlist, free);
+    }
 }

@@ -38,19 +38,19 @@ void check_camera_line(char *line)
 	char **split_on_space;
 
 	split_on_space = ft_split(line, ' ');
-	if(count_split(split_on_space) != 4)
+	if (count_split(split_on_space) != 4)
 	{
 		write(2, "camera line in wrong form", 
 			ft_strlen("camera line in wrong form"));
 		exit(1);
 	}
-	if(count_split(ft_split(split_on_space[1], ',')) != 3 ||
-	count_split(ft_split(split_on_space[2], ',')) != 3)
+	if (count_split(ft_split(split_on_space[1], ',')) != 3 ||
+		count_split(ft_split(split_on_space[2], ',')) != 3)
 	{
 		write(2, "camera line in wrong form", 
 			ft_strlen("camera line in wrong form"));
 		exit(1);
-	}	
+	}
 }
 
 void check_plane_line(char *line)
@@ -62,7 +62,7 @@ void check_plane_line(char *line)
 	{
 		write(2, "plane line in wrong form", 
 			ft_strlen("plane line in wrong form"));
-		exit(1);
+		exit(0);
 	}
 	if (count_split(ft_split(split_on_space[1], ',')) != 3 ||
 		count_split(ft_split(split_on_space[2], ',')) != 3 ||
@@ -70,7 +70,7 @@ void check_plane_line(char *line)
 	{
 		write(2, "plane line in wrong form",
 			ft_strlen("plane line in wrong form"));
-		exit(1);
+		exit(0);
 	}
 }
 
