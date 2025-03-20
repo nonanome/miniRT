@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/20 18:32:19 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/20 21:30:11 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ int	parse_cylinder(t_world *world, char *line)
 	free_double_ptr(shape->default_transformation, 4);
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	shape->radius = budget_ft_atof(split[3]) / 2;
-	shape->maximum = budget_ft_atof(split[4]);
+	shape->maximum = budget_ft_atof(split[4]) / 2;
+	shape->minimum = -budget_ft_atof(split[4]) / 2;
 	if (split[5])
 		shape->closed = budget_ft_atof(split[5]);
 	world->shapes[world->nr_shapes] = shape;
