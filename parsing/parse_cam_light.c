@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cam_light.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 19:48:06 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/20 18:31:57 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	parse_ambient_light(t_world *world, char *line)
 	double	g;
 	double	b;
 
+	check_ambient_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
@@ -43,6 +44,10 @@ int	parse_ambient_light(t_world *world, char *line)
 }
 
 
+
+
+
+
 int	parse_camera(t_world *world, char *line)
 {
 	char	**split;
@@ -51,6 +56,7 @@ int	parse_camera(t_world *world, char *line)
 	double	xyz[3];
 	double	normal[3];
 
+	check_camera_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
@@ -87,6 +93,7 @@ int	parse_light(t_world *world, char *line)
 	double	rgb[3];
 	double	brightness;
 
+	check_spere_or_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
