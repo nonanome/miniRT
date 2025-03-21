@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/20 22:03:06 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/21 18:12:14 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ void cut_cylinder(t_intersec *result, t_ray ray, t_shape shape)
 	if (shape.minimum > tmp || shape.maximum < tmp)
 		result->times[1] = -1;
 
-	if(result->times[0] != -1 && result->times[1] != -1)
-		return;
+	// if(result->times[0] == -1 && result->times[1] == -1)
 	//     if (fabs(ray.direction.y) > EPSILON)
     // {
     //     double t_bottom = (shape.minimum - ray.origin.y) / ray.direction.y;
@@ -107,6 +106,69 @@ void cut_cylinder(t_intersec *result, t_ray ray, t_shape shape)
 	return ;
 }
 
+// void caps(t_intersec *result, t_ray ray, t_shape shape)
+// {
+//     if (fabs(ray.direction.y) > EPSILON)
+//     {
+//         double t_top = (shape.maximum - ray.origin.y) / ray.direction.y;
+//         double x = ray.origin.x + t_top * ray.direction.x;
+//         double z = ray.origin.z + t_top * ray.direction.z;
+//         if (x * x + z * z <= 1.0)
+//         {
+//             if (result->times[0] == -1 || t_top < result->times[0])
+//             {
+//                 result->times[1] = result->times[0];
+//                 result->times[0] = t_top;
+//             }
+//             else if (result->times[1] == -1 || t_top < result->times[1])
+//             {
+//                 result->times[1] = t_top;
+//             }
+//         }
+//     }
+// }
+
+void cap_top(t_intersec *result, t_ray ray, t_shape shape)
+{
+    if (fabs(ray.direction.y) > EPSILON)
+    {
+        double t_top = (shape.maximum - ray.origin.y) / ray.direction.y;
+        double x_top = ray.origin.x + t_top * ray.direction.x;
+        double z_top = ray.origin.z + t_top * ray.direction.z;
+        if (x_top * x_top + z_top * z_top <= 1.0)
+        {
+            if (result->times[0] == -1 || t_top < result->times[0])
+            {
+                result->times[1] = result->times[0];
+                result->times[0] = t_top;
+            }
+            else if (result->times[1] == -1 || t_top < result->times[1])
+            {
+                result->times[1] = t_top;
+            }
+        }
+    }
+}
+
+void cap_bottom(t_intersec *result, t_ray ray, t_shape shape)
+{
+	double t_bottom = (shape.minimum - ray.origin.y) / ray.direction.y;
+	double x_bottom = ray.origin.x + t_bottom * ray.direction.x;
+	double z_bottom = ray.origin.z + t_bottom * ray.direction.z;
+	if (x_bottom * x_bottom + z_bottom * z_bottom <= 1.0)
+	{
+		if (result->times[0] == -1 || t_bottom < result->times[0])
+		{
+			result->times[1] = result->times[0];
+			result->times[0] = t_bottom;
+		}
+		else if (result->times[1] == -1 || t_bottom < result->times[1])
+		{
+			result->times[1] = t_bottom;
+		}
+	}
+}
+
 t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 {
 	double	*discriminant_values;
@@ -135,6 +197,10 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 			* discriminant_values[0]);
 	result->object_id = cylinder.id;
 	cut_cylinder(result, ray, cylinder);
+	if(result->times[0] == -1)
+		cap_top(result, ray, cylinder);
+	if(result->times[1] == -1)
+		cap_bottom(result, ray, cylinder);
 	FREE(discriminant_values);
 	return (result);
 }
