@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/20 18:31:57 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/21 19:47:05 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,9 @@ int	parse_light(t_world *world, char *line)
 	if (!rgb_split)
 		return (ft_free_split(split), ft_free_split(xyz_split), 1);
 	if (!parse_xyz(xyz_split, xyz, 0))
-		return (ft_free_split(split), ft_free_split(xyz_split),
-			ft_free_split(rgb_split), 1);
+		exit (1);
 	if (!parse_xyz(rgb_split, rgb, 0))
-		return (ft_free_split(split), ft_free_split(xyz_split),
-			ft_free_split(rgb_split), 1);
+		exit (1);
 	rgb[0] /= 255;
 	rgb[1] /= 255;
 	rgb[2] /= 255;

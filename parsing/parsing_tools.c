@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:18:15 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/21 19:51:56 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ void	ft_free_split(char **split)
 int	parse_xyz(char **split, double *xyz, int mode)
 {
 	int	i;
+	float number_to_parse;
 
 	i = 0;
 	while (split[i])
 	{
-		if(i >= 3)
+		number_to_parse = budget_ft_atof(split[i]);
+		if (i >= 3 || mode == 1 && (number_to_parse < -1
+				|| number_to_parse > 1))
 		{
 			write(2, "Error\nWrong Input", ft_strlen("Error\nWrong Input"));
 			exit(0);
 		}
-
-		xyz[i] = budget_ft_atof(split[i]);
-		if (mode == 1 && (xyz[i] < -1 || xyz[i] > 1))
-			return (0);
+		xyz[i] = number_to_parse;
 		i++;
 	}
 	return (1);
