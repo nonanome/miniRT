@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 12:09:13 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 13:00:13 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ typedef struct ray
 
 }					t_ray;
 
+typedef struct s_checker
+{
+	bool			enable;
+	xyzvektor		color1;
+	xyzvektor		color2;
+	xyzvektor		origin;
+	double			**default_transformation;
+
+}					t_checker;
+
 typedef struct material
 {
 	uint32_t		color;
@@ -58,6 +68,7 @@ typedef struct material
 	double			diffuse;
 	double			specular;
 	double			shininess;
+	t_checker		checker;
 }					t_material;
 
 typedef struct s_shape
@@ -132,47 +143,39 @@ typedef struct canvas
 	xyzvektor		eyevector;
 }					t_c;
 
-typedef struct visualize_struct
-{
-	xyzvektor		world_coordinates;
-	xyzvektor		intersectionpoint;
-	xyzvektor		color;
-	t_intersec		*intersec;
-}					v_s;
-
 typedef struct s_camera
 {
-	int		hsize;
-	int		vsize;
-	double	pixel_size;
-	double	field_of_view;
-	double	**transform;
-	double	half_width;
-	double	half_height;
-}				t_camera;
+	int				hsize;
+	int				vsize;
+	double			pixel_size;
+	double			field_of_view;
+	double			**transform;
+	double			half_width;
+	double			half_height;
+}					t_camera;
 
 typedef struct s_world
 {
-	t_shape	**shapes;
-	long		nr_shapes;
-	t_c			*canvas;
-	double		*all_sorted;
-	t_env		*env;
-	xyzvektor	*ambient;
-	double		ambient_intensity;
-	t_camera	*camera;
-}				t_world;
+	t_shape			**shapes;
+	long			nr_shapes;
+	t_c				*canvas;
+	double			*all_sorted;
+	t_env			*env;
+	xyzvektor		*ambient;
+	double			ambient_intensity;
+	t_camera		*camera;
+}					t_world;
 
 typedef struct s_comp
 {
-	double	t;
-	t_shape	*object;
-	xyzvektor	point;
-	xyzvektor	over_point;
-	xyzvektor	eyev;
-	xyzvektor	normalv;
-	xyzvektor	reflectv;
-	bool	inside;
-}				t_comp;
+	double			t;
+	t_shape			*object;
+	xyzvektor		point;
+	xyzvektor		over_point;
+	xyzvektor		eyev;
+	xyzvektor		normalv;
+	xyzvektor		reflectv;
+	bool			inside;
+}					t_comp;
 
 #endif

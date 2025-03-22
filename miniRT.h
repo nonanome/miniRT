@@ -86,8 +86,9 @@ xyzvektor			point_of_intersection(t_intersec *intersec, t_ray ray);
 xyzvektor			set_black(void);
 t_light				default_light(void);
 t_material			default_material(void);
+xyzvektor			pattern_at(t_shape shape, xyzvektor point);
 
-xyzvektor			lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow);
+xyzvektor			lightning(t_shape shape, xyzvektor point, t_c canvas, bool in_shadow);
 xyzvektor			calculate_reflection(xyzvektor in, xyzvektor normale);
 t_shape 			*new_shape(int type);
 xyzvektor 			calculate_wall_coordinate(int x, int y, double pixel_size, double half);

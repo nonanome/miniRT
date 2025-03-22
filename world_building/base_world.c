@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   base_world.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 13:17:39 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "world.h"
 
-t_shape *new_shape(int type)
+t_shape	*new_shape(int type)
 {
 	t_shape	*shape;
 
@@ -66,7 +66,8 @@ t_world	*get_world(int shapes)
 		return (FREE(world->env), FREE(world->canvas), FREE(world), NULL);
 	world->ambient = MALLOC(sizeof(xyzvektor));
 	if (!world->ambient)
-		return (FREE(world->shapes), FREE(world->env), FREE(world->canvas), FREE(world), NULL);
+		return (FREE(world->shapes), FREE(world->env), FREE(world->canvas),
+			FREE(world), NULL);
 	*(world->ambient) = set_vector(0, 0, 0, 0);
 	world->ambient_intensity = 0;
 	world->nr_shapes = 0;
@@ -90,13 +91,14 @@ void	free_world(t_world *world)
 		FREE(world->camera);
 	}
 	if (world->shapes)
+	{
+		while (world->nr_shapes--)
 		{
-			while (world->nr_shapes--)
-			{
-				free_double_ptr(world->shapes[world->nr_shapes]->default_transformation, 4);
-				FREE(world->shapes[world->nr_shapes]);
-			}
+			free_double_ptr(world->shapes[world->nr_shapes]->default_transformation,
+				4);
+			FREE(world->shapes[world->nr_shapes]);
 		}
+	}
 	FREE(world->shapes);
 	FREE(world->canvas);
 	FREE(world->all_sorted);

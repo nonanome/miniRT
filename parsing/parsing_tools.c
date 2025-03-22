@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_tools.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/21 19:51:56 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 10:17:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	parse_xyz(char **split, double *xyz, int mode)
 				|| number_to_parse > 1))
 		{
 			write(2, "Error\nWrong Input", ft_strlen("Error\nWrong Input"));
-			exit(0);
+			return (-1);
 		}
 		xyz[i] = number_to_parse;
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_intersect.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/21 18:12:14 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 13:25:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ void create_rotation_matrix(xyzvektor normal, double rotation[3][3])
 {
     double axis[3] = {0.0, 1.0, 0.0};
     double dot = normal.x * axis[0] + normal.y * axis[1] + normal.z * axis[2];
-    double cross[3] = {
-        normal.y * axis[2] - normal.z * axis[1],
-        normal.z * axis[0] - normal.x * axis[2],
-        normal.x * axis[1] - normal.y * axis[0]
-    };
+    double cross[3] = {0, 0, 0};
+    cross[0] = normal.y * axis[2] - normal.z * axis[1];
+    cross[1] = normal.z * axis[0] - normal.x * axis[2];
+    cross[2] = normal.x * axis[1] - normal.y * axis[0];
     double sin_theta = sqrt(cross[0] * cross[0] + cross[1] * cross[1] + cross[2] * cross[2]);
     double cos_theta = dot;
     rotation[0][0] = cos_theta + cross[0] * cross[0] * (1 - cos_theta);
