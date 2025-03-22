@@ -6,11 +6,44 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 10:17:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:17:59 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+int	parse_ratio(char *str, double *ratio)
+{
+	*ratio = budget_ft_atof(str);
+	return (*ratio < 0.0 || *ratio > 1.0);
+}
+
+int	parse_rgb(const char *str, double rgb[3])
+{
+	char	**split;
+	int		val;
+	int		i;
+
+	i = 0;
+	split = ft_split(str, ',');
+	if (!split || count_split(split) != 3)
+	{
+		ft_free_split(split);
+		return (1);
+	}
+	while (i < 3)
+	{
+		val = ft_atoi(split[i]);
+		if (val < 0 || val > 255)
+		{
+			ft_free_split(split);
+			return (1);
+		}
+		rgb[i++] = val / 255.0;
+	}
+	ft_free_split(split);
+	return (0);
+}
 
 void	ft_free_split(char **split)
 {
@@ -27,8 +60,8 @@ void	ft_free_split(char **split)
 
 int	parse_xyz(char **split, double *xyz, int mode)
 {
-	int	i;
-	float number_to_parse;
+	int		i;
+	float	number_to_parse;
 
 	i = 0;
 	while (split[i])
@@ -38,7 +71,7 @@ int	parse_xyz(char **split, double *xyz, int mode)
 				|| number_to_parse > 1))
 		{
 			write(2, "Error\nWrong Input", ft_strlen("Error\nWrong Input"));
-			return (-1);
+			return (0);
 		}
 		xyz[i] = number_to_parse;
 		i++;
@@ -46,31 +79,15 @@ int	parse_xyz(char **split, double *xyz, int mode)
 	return (1);
 }
 
-int	parse_common_shape(char **split, double pos[3], double rgb[3])
+int	count_split(char **split_string)
 {
-	char	**pos_split;
-	char	**rgb_split;
+	int	i;
 
-	pos_split = ft_split(split[1], ',');
-	if (!pos_split)
-		return (1);
-	rgb_split = ft_split(split[3], ',');
-	if (!rgb_split)
-		return (ft_free_split(pos_split), 1);
-	if (split[0][0] == 'c')
+	i = 0;
+	while (*split_string != 0)
 	{
-		ft_free_split(rgb_split);
-		rgb_split = ft_split(split[5], ',');
+		split_string++;
+		i++;
 	}
-	if (!parse_xyz(pos_split, pos, 0))
-		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
-	if (!parse_xyz(rgb_split, rgb, 0))
-		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
-	rgb[0] /= 255;
-	rgb[1] /= 255;
-	rgb[2] /= 255;
-	if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0
-		|| rgb[2] > 1)
-		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
-	return (ft_free_split(pos_split), ft_free_split(rgb_split), 0);
+	return (i);
 }

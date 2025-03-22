@@ -1,42 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_lineparsing.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
+/*   Updated: 2025/03/22 16:52:16 by qhahn            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../miniRT.h"
-
-int	count_split(char **split_string)
-{
-	int	i;
-
-	i = 0;
-	while (*split_string != 0)
-	{
-		split_string++;
-		i++;
-	}
-	return (i);
-}
 
 void	check_spere_or_light_line(char *line)
 {
 	char	**split_on_space;
-	int 	split_count;
+	int		split_count;
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
 	if (split_count != 4 && split_count != 7)
 	{
-		write(2, "sphere or light line in wrong form",
-			ft_strlen("sphere line in wrong form"));
+		write(2, "sphere or light line in wrong form", 34);
 		exit(1);
 	}
 	if (count_split(ft_split(split_on_space[1], ',')) != 3
 		|| count_split(ft_split(split_on_space[3], ',')) != 3)
 	{
-		write(2, "sphere or light line in wrong form",
-			ft_strlen("sphere line in wrong form"));
+		write(2, "sphere or light line in wrong form", 34);
 		exit(1);
 	}
-	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3 || count_split(ft_split(split_on_space[5], ',')) != 3 || count_split(ft_split(split_on_space[6], ',')) != 3))
+	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3
+			|| count_split(ft_split(split_on_space[5], ',')) != 3
+			|| count_split(ft_split(split_on_space[6], ',')) != 3))
 	{
-		write(2, "cylinder line in wrong form",
-			ft_strlen("cylinder line in wrong form"));
+		write(2, "sphere or light line in wrong form", 34);
 		exit(1);
 	}
 }
@@ -78,14 +76,14 @@ void	check_plane_line(char *line)
 		|| count_split(ft_split(split_on_space[2], ',')) != 3
 		|| count_split(ft_split(split_on_space[3], ',')) != 3)
 	{
-		write(2, "plane line in wrong form",
-			ft_strlen("plane line in wrong form"));
+		write(2, "plane line in wrong form", 24);
 		exit(0);
 	}
-	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3 || count_split(ft_split(split_on_space[5], ',')) != 3 || count_split(ft_split(split_on_space[6], ',')) != 3))
+	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3
+			|| count_split(ft_split(split_on_space[5], ',')) != 3
+			|| count_split(ft_split(split_on_space[6], ',')) != 3))
 	{
-		write(2, "cylinder line in wrong form",
-			ft_strlen("cylinder line in wrong form"));
+		write(2, "plane line in wrong form", 24);
 		exit(1);
 	}
 }
@@ -126,14 +124,14 @@ void	check_cylinder_line(char *line)
 		|| count_split(ft_split(split_on_space[2], ',')) != 3
 		|| count_split(ft_split(split_on_space[5], ',')) != 3)
 	{
-		write(2, "cylinder line in wrong form",
-			ft_strlen("cylinder line in wrong form"));
+		write(2, "cylinder line in wrong form", 27);
 		exit(1);
 	}
-	if (split_count == 9 && (count_split(ft_split(split_on_space[6], ',')) != 3 || count_split(ft_split(split_on_space[7], ',')) != 3 || count_split(ft_split(split_on_space[8], ',')) != 3))
+	if (split_count == 9 && (count_split(ft_split(split_on_space[6], ',')) != 3
+			|| count_split(ft_split(split_on_space[7], ',')) != 3
+			|| count_split(ft_split(split_on_space[8], ',')) != 3))
 	{
-		write(2, "cylinder line in wrong form",
-			ft_strlen("cylinder line in wrong form"));
+		write(2, "cylinder line in wrong form", 27);
 		exit(1);
 	}
 }
