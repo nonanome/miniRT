@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:22:07 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 {
 	double		*discriminant_values;
 	double		discriminant;
-	xyzvektor	sphere_to_ray;
+	t_xyzvektor	sphere_to_ray;
 
 	discriminant_values = MALLOC(3 * sizeof(double));
 	sphere_to_ray = substraction(ray.origin, sphere.origin);

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:32:52 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int			save_intersection(t_c *canvas, t_intersec *new_intersection, int i,
 t_intersec	*intersect(t_shape *shape, t_ray ray);
 t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray,
 				t_shape cylinder);
-xyzvektor	ray_position(t_ray ray, double time);
+t_xyzvektor	ray_position(t_ray ray, double time);
 double		get_smallest_positive_value(t_intersec *intersection1);
-xyzvektor	identify_hit(t_all_intersec all_intersections);
+t_xyzvektor	identify_hit(t_all_intersec all_intersections);
 t_ray		transform(t_ray ray, double **transformation);
 
 // trasnformation
@@ -42,21 +42,21 @@ double		**rotation_z(double degree);
 double		**shearing(double *proportions);
 
 // vector operations
-xyzvektor	crossProduct(xyzvektor a, xyzvektor b);
-double		dotProduct(xyzvektor a, xyzvektor b);
-xyzvektor	substraction(xyzvektor a, xyzvektor b);
-xyzvektor	addition(xyzvektor a, xyzvektor b);
-double		magnitude(xyzvektor a);
-xyzvektor	normalize(xyzvektor a);
-xyzvektor	negateTuple(xyzvektor a);
-xyzvektor	scalarMultiplication(xyzvektor a, double b);
-xyzvektor	scalarDivision(xyzvektor a, double b);
-xyzvektor	hadamard_product(xyzvektor a, xyzvektor b);
-xyzvektor	set_vector(double x, double y, double z, double w);
+t_xyzvektor	crossProduct(t_xyzvektor a, t_xyzvektor b);
+double		dotProduct(t_xyzvektor a, t_xyzvektor b);
+t_xyzvektor	substraction(t_xyzvektor a, t_xyzvektor b);
+t_xyzvektor	addition(t_xyzvektor a, t_xyzvektor b);
+double		magnitude(t_xyzvektor a);
+t_xyzvektor	normalize(t_xyzvektor a);
+t_xyzvektor	negateTuple(t_xyzvektor a);
+t_xyzvektor	scalarMultiplication(t_xyzvektor a, double b);
+t_xyzvektor	scalarDivision(t_xyzvektor a, double b);
+t_xyzvektor	hadamard_product(t_xyzvektor a, t_xyzvektor b);
+t_xyzvektor	set_vector(double x, double y, double z, double w);
 
 // matrix operations
 double		**multiply_matrix(double **a, double **b);
-xyzvektor	multiply_vector_and_matrix(xyzvektor a, double **b);
+t_xyzvektor	multiply_vector_and_matrix(t_xyzvektor a, double **b);
 double		**get_identity_matrix(void);
 int			compare_matrix(double **a, double **b, int size);
 double		**transpose_matrix(double **a, int size);
@@ -70,7 +70,7 @@ double		get_determinant_of_bigger_matrix(double **a, int size);
 double		get_determinante_of_3x3(double **a);
 
 // color operations
-uint32_t	get_color_from_tuple(xyzvektor color);
+uint32_t	get_color_from_tuple(t_xyzvektor color);
 void		init_canvas(t_c *canvas);
 t_ray		init_ray(void);
 
@@ -87,25 +87,25 @@ void		set_transform(t_shape *shape, double **translation);
 t_material	default_material(void);
 
 // ray
-xyzvektor	calculate_reflection(xyzvektor in, xyzvektor normale);
-xyzvektor	calculate_normale(t_shape shape, xyzvektor point);
+t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);
+t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point);
 
 void		visualize(void *input);
 int			min_of(int a, int b);
-uint32_t	get_color_from_tuple(xyzvektor color);
-xyzvektor	get_color_from_uint(uint32_t color);
-xyzvektor	point_of_intersection(t_intersec *intersec, t_ray ray);
+uint32_t	get_color_from_tuple(t_xyzvektor color);
+t_xyzvektor	get_color_from_uint(uint32_t color);
+t_xyzvektor	point_of_intersection(t_intersec *intersec, t_ray ray);
 
-xyzvektor	set_black(void);
+t_xyzvektor	set_black(void);
 t_light		default_light(void);
 t_material	default_material(void);
-xyzvektor	pattern_at(t_shape shape, xyzvektor point);
+t_xyzvektor	pattern_at(t_shape shape, t_xyzvektor point);
 
-xyzvektor	lightning(t_shape shape, xyzvektor point, t_c canvas,
+t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 				bool in_shadow);
-xyzvektor	calculate_reflection(xyzvektor in, xyzvektor normale);
+t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);
 t_shape		*new_shape(int type);
-xyzvektor	calculate_wall_coordinate(int x, int y, double pixel_size,
+t_xyzvektor	calculate_wall_coordinate(int x, int y, double pixel_size,
 				double half);
 int			count_split(char **split_string);
 

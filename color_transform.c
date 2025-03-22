@@ -10,7 +10,7 @@ int min_of(int a, int b)
 }
 
 
-uint32_t	get_color_from_tuple(xyzvektor color)
+uint32_t	get_color_from_tuple(t_xyzvektor color)
 {
 	uint8_t a = 255;
     uint8_t r = min_of(color.x * 255, 255);
@@ -24,9 +24,9 @@ uint32_t	get_color_from_tuple(xyzvektor color)
 
 
 
-xyzvektor	get_color_from_uint(uint32_t color)
+t_xyzvektor	get_color_from_uint(uint32_t color)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 	uint8_t a = color & 0xFF;
 	uint8_t r = (color >> 24) & 0xFF;
     uint8_t g = (color >> 16) & 0xFF;

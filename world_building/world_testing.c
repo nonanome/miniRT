@@ -4,7 +4,7 @@
 
 #define PI 3.14159265358979323846
 
-t_material	set_material(xyzvektor color, double ambient, double diffuse,
+t_material	set_material(t_xyzvektor color, double ambient, double diffuse,
 		double specular, double shininess)
 {
 	t_material	material;
@@ -22,13 +22,13 @@ int	main(void)
 	t_world			*world;
 	t_ray			ray;
 	t_comp			comp;
-	xyzvektor		shadestuff;
+	t_xyzvektor		shadestuff;
 	double			**retmatrix;
 	double			**rot;
 	double			**trans;
 	mlx_image_t		*image;
 	unsigned int	color;
-	xyzvektor		color2;
+	t_xyzvektor		color2;
 
 	world = get_world(6);
 	if (!world)

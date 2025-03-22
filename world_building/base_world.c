@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 13:17:39 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_world	*get_world(int shapes)
 	world->shapes = (t_shape **)MALLOC(sizeof(t_shape *) * shapes);
 	if (!world->shapes)
 		return (FREE(world->env), FREE(world->canvas), FREE(world), NULL);
-	world->ambient = MALLOC(sizeof(xyzvektor));
+	world->ambient = MALLOC(sizeof(t_xyzvektor));
 	if (!world->ambient)
 		return (FREE(world->shapes), FREE(world->env), FREE(world->canvas),
 			FREE(world), NULL);

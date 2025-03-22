@@ -1,20 +1,20 @@
 #include "miniRT.h"
 
-xyzvektor calculate_reflection(xyzvektor in, xyzvektor normale)
+t_xyzvektor calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 {
 	double dot;
-	xyzvektor n;
+	t_xyzvektor n;
 
 	dot = 2 * dotProduct(in, normale);
 	n = scalarMultiplication(normale, dot);
 	return normalize(substraction(in, n));
 }
 
-xyzvektor sphere_normal(t_shape shape, xyzvektor point)
+t_xyzvektor sphere_normal(t_shape shape, t_xyzvektor point)
 {
-	xyzvektor local_point;
-	xyzvektor local_normal;
-	xyzvektor world_normal;
+	t_xyzvektor local_point;
+	t_xyzvektor local_normal;
+	t_xyzvektor world_normal;
 	double **inverse_transform;
 	double **transpose_inverse_transform;
 
@@ -29,9 +29,9 @@ xyzvektor sphere_normal(t_shape shape, xyzvektor point)
 	return normalize(world_normal);
 }
 
-xyzvektor calculate_normale(t_shape shape, xyzvektor point)
+t_xyzvektor calculate_normale(t_shape shape, t_xyzvektor point)
 {
-	xyzvektor ret;
+	t_xyzvektor ret;
 
 	if (shape.type == 0)
 		return sphere_normal(shape, point);
@@ -39,7 +39,7 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 		{
 			double **inverse_transform;
 			double **transpose_inverse_transform;
-			xyzvektor local_normal;
+			t_xyzvektor local_normal;
 
 			inverse_transform = invert_matrix
 				(shape.default_transformation, 4);
@@ -56,7 +56,7 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 		return (set_vector(point.x, 0, point.z, 0));
 }
 
-xyzvektor lightning(t_shape shape, xyzvektor point, t_c canvas, bool in_shadow)
+t_xyzvektor lightning(t_shape shape, t_xyzvektor point, t_c canvas, bool in_shadow)
 {
 	t_store store;
     double light_dot_normale;
@@ -98,11 +98,11 @@ xyzvektor lightning(t_shape shape, xyzvektor point, t_c canvas, bool in_shadow)
 // {
 // 	t_sphere sphere = new_sphere();
 // 	t_c canvas;
-// 	xyzvektor point;
-// 	xyzvektor eye;
+// 	t_xyzvektor point;
+// 	t_xyzvektor eye;
 // 	uint32_t colors;
-// 	xyzvektor color;
-// 	xyzvektor normale;
+// 	t_xyzvektor color;
+// 	t_xyzvektor normale;
 
 // 	init_canvas(&canvas);
 // 	point.x = 0;

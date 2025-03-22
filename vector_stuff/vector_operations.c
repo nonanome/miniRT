@@ -1,44 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector_operations.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 17:24:22 by qhahn             #+#    #+#             */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../miniRT.h"
 
-double magnitude(xyzvektor a)
+double	magnitude(t_xyzvektor a)
 {
-	double result;
+	double	result;
 
 	result = sqrt(a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w);
-	return result;
+	return (result);
 }
 
-xyzvektor normalize(xyzvektor a)
+t_xyzvektor	normalize(t_xyzvektor a)
 {
-	xyzvektor result;
+	t_xyzvektor	result;
 
-	if(magnitude(a) == 0)
-		return a;
+	if (magnitude(a) == 0)
+		return (a);
 	result.x = a.x / magnitude(a);
 	result.y = a.y / magnitude(a);
 	result.z = a.z / magnitude(a);
 	result.w = a.w / magnitude(a);
-	return result;
+	return (result);
 }
 
-xyzvektor negateTuple(xyzvektor a)
+t_xyzvektor	negateTuple(t_xyzvektor a)
 {
-	xyzvektor result;
+	t_xyzvektor	result;
 
 	result.x = -a.x;
 	result.y = -a.y;
 	result.z = -a.z;
 	result.w = -a.w;
-	return result;
+	return (result);
 }
 
-xyzvektor set_vector(double x, double y, double z, double w)
+t_xyzvektor	set_vector(double x, double y, double z, double w)
 {
-	xyzvektor return_vector;
+	t_xyzvektor return_vector;
 
 	return_vector.x = x;
 	return_vector.y = y;
 	return_vector.z = z;
 	return_vector.w = w;
-	return return_vector;
+	return (return_vector);
 }

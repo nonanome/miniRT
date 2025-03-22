@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:25:28 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:25:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ double	**multiply_matrix(double **a, double **b)
 	return (result);
 }
 
-xyzvektor	multiply_vector_and_matrix(xyzvektor a, double **b)
+t_xyzvektor	multiply_vector_and_matrix(t_xyzvektor a, double **b)
 {
-	xyzvektor	result;
+	t_xyzvektor	result;
 
 	if (b == 0)
 		return (a);

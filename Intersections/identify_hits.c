@@ -6,13 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:17 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:21:46 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-xyzvektor	identify_hit(t_all_intersec all_intersections)
+t_xyzvektor	identify_hit(t_all_intersec all_intersections)
 {
 	t_intersec	hit_intersection;
 	t_ray		ray;
@@ -24,11 +24,11 @@ xyzvektor	identify_hit(t_all_intersec all_intersections)
 	return (ray_position(ray, time_of_hit));
 }
 
-xyzvektor	point_of_intersection(t_intersec *intersec, t_ray ray)
+t_xyzvektor	point_of_intersection(t_intersec *intersec, t_ray ray)
 {
 	double		time_of_intersection;
-	xyzvektor	way;
-	xyzvektor	point_of_intersection;
+	t_xyzvektor	way;
+	t_xyzvektor	point_of_intersection;
 
 	time_of_intersection = get_smallest_positive_value(intersec);
 	way = scalarMultiplication(ray.direction, time_of_intersection);

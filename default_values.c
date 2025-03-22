@@ -3,7 +3,7 @@
 t_material default_material(void)
 {
 	t_material dm;
-	xyzvektor color;
+	t_xyzvektor color;
 
 	color.x = 1;
 	color.y = 0;
@@ -22,8 +22,8 @@ t_material default_material(void)
 t_light default_light(void)
 {
 	t_light source;
-	xyzvektor color;
-	xyzvektor position;
+	t_xyzvektor color;
+	t_xyzvektor position;
 
 	color.x = 1;
 	color.y = 1;
@@ -56,9 +56,9 @@ t_sphere new_sphere()
 	return result;
 }
 
-xyzvektor set_black(void)
+t_xyzvektor set_black(void)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = 0;
 	result.y = 0;
