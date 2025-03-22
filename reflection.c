@@ -88,7 +88,8 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_s
 		// {
 		// 	return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource[i].color), 0.1));
 		// }
-		shadow_factor = in_shadow[i] ? 0.1 : 1.0;
+		// shadow_factor = in_shadow[i] ? 0.1 : 1.0;
+		shadow_factor = 1.0;
 		store.materialcolor = get_color_from_uint(material.color);
 		store.lightsourcecolor = canvas.lightsource[i].color;
 		store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
