@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:24:22 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:30:48 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_xyzvektor	normalize(t_xyzvektor a)
 	return (result);
 }
 
-t_xyzvektor	negateTuple(t_xyzvektor a)
+t_xyzvektor	negate_tuple(t_xyzvektor a)
 {
 	t_xyzvektor	result;
 
@@ -46,7 +46,7 @@ t_xyzvektor	negateTuple(t_xyzvektor a)
 
 t_xyzvektor	set_vector(double x, double y, double z, double w)
 {
-	t_xyzvektor return_vector;
+	t_xyzvektor	return_vector;
 
 	return_vector.x = x;
 	return_vector.y = y;

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:32:24 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_xyzvektor	hit(t_all_intersec all_intersections)
 		{
 			hit_intersection = all_intersections.intersections[i].ray.origin;
 			hit_intersection = addition(hit_intersection,
-					scalarMultiplication(all_intersections.intersections[i].ray.direction,
+					scalar_multiplication(all_intersections.intersections[i].ray.direction,
 						all_intersections.intersections[i].times[0]));
 			hit_intersection.w = all_intersections.intersections[i].times[0];
 			if (all_intersections.intersections[i].times[0] < 0
@@ -50,7 +50,7 @@ t_xyzvektor	hit(t_all_intersec all_intersections)
 			{
 				hit_intersection.w = all_intersections.intersections[i].times[1];
 				hit_intersection = addition(all_intersections.intersections[i].ray.origin,
-						scalarMultiplication(all_intersections.intersections[i].ray.direction,
+						scalar_multiplication(all_intersections.intersections[i].ray.direction,
 							all_intersections.intersections[i].times[1]));
 				hit_intersection.w = all_intersections.intersections[i].times[1];
 			}

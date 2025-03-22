@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:17 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:32:24 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_xyzvektor	point_of_intersection(t_intersec *intersec, t_ray ray)
 	t_xyzvektor	point_of_intersection;
 
 	time_of_intersection = get_smallest_positive_value(intersec);
-	way = scalarMultiplication(ray.direction, time_of_intersection);
+	way = scalar_multiplication(ray.direction, time_of_intersection);
 	point_of_intersection = addition(ray.origin, way);
 	return (point_of_intersection);
 }

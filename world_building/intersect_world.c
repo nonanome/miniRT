@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:34:04 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,15 +145,15 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.t = intersection->times[0];
 	comps.object = shape;
 	comps.point = point_of_intersection(intersection, ray);
-	comps.eyev = negateTuple(ray.direction);
+	comps.eyev = negate_tuple(ray.direction);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
 			comps.point.y + comps.normalv.y * EPSILON, comps.point.z
 			+ comps.normalv.z * EPSILON, 1);
-	if (dotProduct(comps.normalv, comps.eyev) < 0)
+	if (dot_product(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = true;
-		comps.normalv = negateTuple(comps.normalv);
+		comps.normalv = negate_tuple(comps.normalv);
 	}
 	else
 		comps.inside = false;

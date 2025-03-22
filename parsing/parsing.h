@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:03:30 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:17:25 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:30:17 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ void	check_spere_or_light_line(char *line);
 void	check_plane_line(char *line);
 void	check_cylinder_line(char *line);
 void	check_ambient_light_line(char *line);
-int		parse_rgb(const char *str, double rgb[3]);
+int		parse_rgb(char *str, double rgb[3]);
 int		parse_ratio(char *str, double *ratio);

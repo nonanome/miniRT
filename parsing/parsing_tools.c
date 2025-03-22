@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:17:59 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:30:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	parse_ratio(char *str, double *ratio)
 	return (*ratio < 0.0 || *ratio > 1.0);
 }
 
-int	parse_rgb(const char *str, double rgb[3])
+int	parse_rgb(char *str, double rgb[3])
 {
 	char	**split;
 	int		val;

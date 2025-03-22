@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:34:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ double		**rotation_z(double degree);
 double		**shearing(double *proportions);
 
 // vector operations
-t_xyzvektor	crossProduct(t_xyzvektor a, t_xyzvektor b);
-double		dotProduct(t_xyzvektor a, t_xyzvektor b);
+t_xyzvektor	cross_product(t_xyzvektor a, t_xyzvektor b);
+double		dot_product(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	substraction(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	addition(t_xyzvektor a, t_xyzvektor b);
 double		magnitude(t_xyzvektor a);
 t_xyzvektor	normalize(t_xyzvektor a);
-t_xyzvektor	negateTuple(t_xyzvektor a);
-t_xyzvektor	scalarMultiplication(t_xyzvektor a, double b);
-t_xyzvektor	scalarDivision(t_xyzvektor a, double b);
+t_xyzvektor	negate_tuple(t_xyzvektor a);
+t_xyzvektor	scalar_multiplication(t_xyzvektor a, double b);
+t_xyzvektor	scalar_division(t_xyzvektor a, double b);
 t_xyzvektor	hadamard_product(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	set_vector(double x, double y, double z, double w);
 
