@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_world.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:45:47 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/21 20:29:49 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	find_nearest_intersection(t_intersec *intersections,
 	}
 }
 
-t_xyzvektor	color_at(t_world *world, t_ray ray)
+xyzvektor	color_at(t_world *world, t_ray ray)
 {
 	t_comp		comp;
 	t_intersec	*intersec_to_use;
@@ -60,9 +60,57 @@ t_xyzvektor	color_at(t_world *world, t_ray ray)
 	if (!intersec_to_use)
 		return (set_black());
 	comp = prepare_computations(intersec_to_use, ray,
-			(world->shapes[shape_to_use]));
+	 		(world->shapes[shape_to_use]));
 	empty_intersections(world->canvas);
 	return (shade_hit(world, comp));
+}
+
+static void	save_intersections(t_c *canvas, t_intersec *new_intersection,
+		t_world *world)
+{
+	int		i;
+	double	*new_times;
+
+	i = 0;
+	if (canvas->all_intersections.nr_intersections == 0)
+	{
+		canvas->all_intersections.intersections = MALLOC(sizeof(t_intersec));
+		if (!canvas->all_intersections.intersections)
+			exit(1);
+	}
+	else
+	{
+		canvas->all_intersections.intersections = realloc(canvas->all_intersections.intersections,
+				sizeof(t_intersec)
+				* (canvas->all_intersections.nr_intersection_entries + 1));
+		if (!canvas->all_intersections.intersections)
+			exit(1);
+	}
+	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
+	new_times = MALLOC(2 * sizeof(double));
+	if (!new_times)
+		exit(1);
+	new_times[0] = new_intersection->times[0];
+	new_times[1] = new_intersection->times[1];
+	FREE(new_intersection->times);
+	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries].times = new_times;
+	canvas->all_intersections.nr_intersection_entries++;
+	while (i != 2)
+	{
+		if (canvas->all_intersections.nr_intersections % 100 >= 90)
+		{
+			world->all_sorted = realloc(world->all_sorted, sizeof(double *)
+					* (world->canvas->all_intersections.nr_intersections
+						+ 110));
+			if (!world->all_sorted)
+				exit(1);
+		}
+		world->all_sorted[world->canvas->all_intersections.nr_intersections
+			+ i] = new_times[i];
+		i++;
+	}
+	canvas->all_intersections.nr_intersections += i;
+	FREE(new_intersection);
 }
 
 static void	sort_intersections(double *all_sorted)
@@ -97,15 +145,15 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.t = intersection->times[0];
 	comps.object = shape;
 	comps.point = point_of_intersection(intersection, ray);
-	comps.eyev = negate_tuple(ray.direction);
+	comps.eyev = negateTuple(ray.direction);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
 			comps.point.y + comps.normalv.y * EPSILON, comps.point.z
 			+ comps.normalv.z * EPSILON, 1);
-	if (dot_product(comps.normalv, comps.eyev) < 0)
+	if (dotProduct(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = true;
-		comps.normalv = negate_tuple(comps.normalv);
+		comps.normalv = negateTuple(comps.normalv);
 	}
 	else
 		comps.inside = false;
@@ -124,7 +172,12 @@ int	intersect_world(t_world *world, t_ray ray)
 	{
 		new_intersection = intersect(world->shapes[i], ray);
 		if (new_intersection)
+		{
+			// printf("World debug - id: %d, times: %p, t0: %f, t1: %f\n",
+			// 	new_intersection->object_id, new_intersection->times,
+			// 	new_intersection->times[0], new_intersection->times[1]);
 			save_intersections(world->canvas, new_intersection, world);
+		}
 		i++;
 	}
 	sort_intersections(world->all_sorted);

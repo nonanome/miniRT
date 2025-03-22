@@ -22,7 +22,8 @@ void	init_canvas(t_c *canvas)
 	canvas->half_size = canvas->worldheight / 2;
 	canvas->all_intersections.nr_intersections = 0;
 	canvas->all_intersections.intersections = NULL;
-	canvas->lightsource = default_light();
+	canvas->num_lights = 0;
+	// canvas->lightsource = default_light();
 }
 
 t_ray	init_ray(void)
