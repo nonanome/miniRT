@@ -74,6 +74,8 @@ t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 	return (result);
 }
 
+
+
 t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 {
 	if (shape->type == 0)
@@ -87,6 +89,10 @@ t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 	else if (shape->type == 2)
 	{
 		return (cylinder_intersect(result, ray, *shape));
+	}
+	else if(shape->type == 3)
+	{
+		return (cone_intersect(result, ray, *shape));
 	}
 }
 

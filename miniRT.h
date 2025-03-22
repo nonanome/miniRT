@@ -18,6 +18,7 @@ xyzvektor			ray_position(t_ray ray, double time);
 double				get_smallest_positive_value(t_intersec *intersection1);
 xyzvektor			identify_hit(t_all_intersec all_intersections);
 t_ray				transform(t_ray ray, double **transformation);
+t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cylinder);
 
 // trasnformation
 double				**translation(double x, double y, double z);

@@ -29,6 +29,19 @@ xyzvektor sphere_normal(t_shape shape, xyzvektor point)
 	return normalize(world_normal);
 }
 
+xyzvektor calc_cone_normal(t_shape cone, xyzvektor point)
+{
+	xyzvektor normal;
+	double tangens_theta;
+
+	tangens_theta = cone.radius / (cone.maximum - cone.minimum);
+	normal.x = 2 * point.x;
+	normal.y = - 2 * point.y * pow(tangens_theta, 2);
+	normal.z = 2 * point.z;
+	normal = normalize(normal);
+	return normal;
+}
+
 xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 {
 	xyzvektor ret;
@@ -54,6 +67,8 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 		}
 	else if (shape.type == 2)
 		return (set_vector(point.x, 0, point.z, 0));
+	else if (shape.type == 3)
+		return (calc_cone_normal(shape, point));
 }
 
 xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_shadow)
@@ -66,6 +81,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_s
 	i = -1;
 	store.diffuse = set_black();
 	store.specular = set_black();
+	store.ambient = set_black();
 	while(++ i < canvas.num_lights)
 	{
 		// if (in_shadow[i])
@@ -81,6 +97,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_s
 		light_dot_normale = dotProduct(store.light_vector, canvas.normale);
 		if (light_dot_normale >= 0) 
 		{
+			
 			store.diffuse = addition(store.diffuse,scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale * shadow_factor));
 			store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
 			store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));

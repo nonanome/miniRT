@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/21 20:51:56 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 16:19:58 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ int	parse_input(char *file_name, t_world *world)
 		else if (ft_strncmp(input[i], "cy", 2) == 0)
 		{
 			if (parse_cylinder(world, input[i]))
+				return (1);
+		}
+		else if (ft_strncmp(input[i], "co", 2) == 0)
+		{
+			if (parse_cone(world, input[i]))
 				return (1);
 		}
 		i++;
