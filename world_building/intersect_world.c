@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:38:44 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 19:43:28 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	find_nearest_intersection(t_intersec *intersections,
 	}
 }
 
-xyzvektor	color_at(t_world *world, t_ray ray)
+xyzvektor	color_at(t_world *world, t_ray ray, t_shape shape)
 {
 	t_comp		comp;
 	t_intersec	*intersec_to_use;
@@ -62,7 +62,7 @@ xyzvektor	color_at(t_world *world, t_ray ray)
 	comp = prepare_computations(intersec_to_use, ray,
 	 		(world->shapes[shape_to_use]));
 	empty_intersections(world->canvas);
-	return (shade_hit(world, comp));
+	return (shade_hit(world, comp, *world->shapes[shape_to_use]));
 }
 
 static void	save_intersections(t_c *canvas, t_intersec *new_intersection,

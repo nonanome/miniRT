@@ -55,6 +55,8 @@ double				**invert_matrix(double **a, int size);
 double				get_cofactor(double **a, int i, int j, int size);
 double				get_determinant_of_bigger_matrix(double **a, int size);
 double				get_determinante_of_3x3(double **a);
+void create_rotation_matrix(xyzvektor normal, double rotation[3][3]);
+void transform_ray(t_ray *ray, double rotation[3][3]);
 
 // color operations
 uint32_t			get_color_from_tuple(xyzvektor color);
