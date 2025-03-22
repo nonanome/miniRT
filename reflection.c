@@ -56,34 +56,37 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 		return (set_vector(point.x, 0, point.z, 0));
 }
 
-xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow)
+xyzvektor lightning(t_shape shape, xyzvektor point, t_c canvas, bool in_shadow)
 {
 	t_store store;
     double light_dot_normale;
 
+	if (shape.material.checker.enable)
+		store.materialcolor = pattern_at(shape, point);
+	else
+		store.materialcolor = get_color_from_uint(shape.material.color);
 	if (in_shadow)
 	{
-		return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource.color), 0.1));
+		return (scalarMultiplication(hadamard_product(store.materialcolor, canvas.lightsource.color), 0.1));
 	}
-	store.materialcolor = get_color_from_uint(material.color);
 	store.lightsourcecolor = canvas.lightsource.color;
     store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
     store.light_vector = normalize(substraction(canvas.lightsource.position, point));
-	store.ambient = scalarMultiplication(store.effective_color , material.ambient);
+	store.ambient = scalarMultiplication(store.effective_color , shape.material.ambient);
     light_dot_normale = dotProduct(store.light_vector, canvas.normale);
 	store.diffuse = set_black();
     store.specular = set_black();
 	if (light_dot_normale >= 0) 
 	{
-        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
+        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, shape.material.diffuse) ,light_dot_normale);
         store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
         store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));
         if (store.reflect_dot_eye <= 0)
 			store.specular = set_black();  
         else 
 		{
-            store.factor = pow(store.reflect_dot_eye, material.shininess);
-            store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor, material.specular), store.factor);
+            store.factor = pow(store.reflect_dot_eye, shape.material.shininess);
+            store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor, shape.material.specular), store.factor);
         }
     }
     return addition(addition(store.ambient , store.diffuse)  ,store.specular);

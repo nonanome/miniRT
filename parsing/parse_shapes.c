@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/20 21:30:11 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 13:17:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int	parse_sphere(t_world *world, char *line)
 	check_spere_or_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
-		return (1);
+	return (1);
 	if (parse_common_shape(split, xyz, rgb))
-		return (ft_free_split(split), 1);
+	return (ft_free_split(split), 1);
 	radius = budget_ft_atof(split[2]);
 	if (radius < 0)
-		return (ft_free_split(split), 1);
+	return (ft_free_split(split), 1);
 	shape = new_shape(0);
 	shape->origin = set_vector(xyz[0], xyz[1], xyz[2], 1);
 	shape->material.ambient = world->ambient_intensity;

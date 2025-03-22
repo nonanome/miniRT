@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   throw_shade.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/19 18:03:50 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 13:05:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,5 @@ xyzvektor shade_hit(t_world *world, t_comp comp)
 	in_shadow = true;
 	in_shadow = is_shadowed(world, comp.over_point);
 	empty_intersections(world->canvas);
-	return (lightning(comp.object->material, comp.over_point, local_canvas, in_shadow));
+	return (lightning(*(comp.object), comp.over_point, local_canvas, in_shadow));
 }

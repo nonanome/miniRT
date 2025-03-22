@@ -1,7 +1,5 @@
 #include "miniRT.h"
 
-
-
 t_material default_material(void)
 {
 	t_material dm;
@@ -17,6 +15,7 @@ t_material default_material(void)
 	dm.diffuse = 0.9;
 	dm.specular = 0.9;
 	dm.shininess = 200.0;
+	dm.checker.enable = false;
 	return dm;
 }
 

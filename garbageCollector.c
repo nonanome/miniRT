@@ -1,7 +1,5 @@
 #include "garbageCollector.h"
 
-
-
 void *get_adress_of_list()
 {
 	static t_list list;

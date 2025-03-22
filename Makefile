@@ -50,19 +50,16 @@ GC = main.o garbageCollector.o vector_stuff/vector_vector_operations.o vector_st
 Matrix_stuff/matrix_conversion2.o Matrix_stuff/matrix_operations.o Matrix_stuff/submatrix.o Matrix_stuff/transformation.o Intersections/Intersection_order.o Intersections/create_and_safe.o \
 Intersections/identify_hits.o Intersections/cylinder_intersect.o Transformation/transformation.o default_values.o color_transform.o reflection.o initialisation.o world_building/base_world.o world_building/world_testing.o\
 world_building/intersect_world.o world_building/throw_shade.o world_building/view_world.o parsing/parsing.o parsing/parsing_atof.o parsing/budget_get_next_line.o parsing/parse_cam_light.o parsing/parse_shapes.o parsing/parsing_tools.o\
-parsing/check_lineparsing.o
+parsing/check_lineparsing.o checker.o
 
 OBJ = $(OBJECTS:.o=.c)
-
-# Step to download and compile MLX42 if not already present
 MLX_DIR = MLX42
+
+all: $(MLX_DIR) miniRT
 
 $(MLX_DIR):
 	git clone https://github.com/codam-coding-college/MLX42.git
 	cd $(MLX_DIR) && cmake -B build -S . && cmake --build build 
-
-all: $(MLX_DIR) miniRT
-
 # miniRT: ${GC} $(MLX) ${OBJECTS}
 # 	gcc ${GC} $(OBJECTS) $(MLX) -o $@ -ldl -lglfw -pthread -lm -lX11 -lXext
 miniRT: ${GC} $(MLX) ${OBJECTS}
