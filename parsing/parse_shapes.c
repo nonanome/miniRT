@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 18:35:18 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 20:22:58 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	parse_cone(t_world *world, char *line)
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1], rgb[2], 0));
 	free_double_ptr(shape->default_transformation, 4);
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
-	shape->radius = budget_ft_atof(split[3]) / 2;
+	shape->radius = budget_ft_atof(split[3]);
 	shape->maximum = budget_ft_atof(split[4]) / 2;
 	shape->minimum = - budget_ft_atof(split[4]) / 2;
 	if (split[5])
