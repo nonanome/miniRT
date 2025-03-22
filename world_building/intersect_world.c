@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/21 20:29:49 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ xyzvektor	color_at(t_world *world, t_ray ray)
 	if (!intersec_to_use)
 		return (set_black());
 	comp = prepare_computations(intersec_to_use, ray,
-			(world->shapes[shape_to_use]));
+	 		(world->shapes[shape_to_use]));
 	empty_intersections(world->canvas);
 	return (shade_hit(world, comp));
 }

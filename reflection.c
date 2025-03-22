@@ -56,38 +56,82 @@ xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 		return (set_vector(point.x, 0, point.z, 0));
 }
 
-xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool in_shadow)
+xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_shadow)
 {
 	t_store store;
     double light_dot_normale;
+	double shadow_factor;
+	int i;
 
-	if (in_shadow)
-	{
-		return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource.color), 0.1));
-	}
-	store.materialcolor = get_color_from_uint(material.color);
-	store.lightsourcecolor = canvas.lightsource.color;
-    store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
-    store.light_vector = normalize(substraction(canvas.lightsource.position, point));
-	store.ambient = scalarMultiplication(store.effective_color , material.ambient);
-    light_dot_normale = dotProduct(store.light_vector, canvas.normale);
+	i = -1;
 	store.diffuse = set_black();
-    store.specular = set_black();
-	if (light_dot_normale >= 0) 
+	store.specular = set_black();
+	while(++ i < canvas.num_lights)
 	{
-        store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
-        store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
-        store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));
-        if (store.reflect_dot_eye <= 0)
-			store.specular = set_black();  
-        else 
+		// if (in_shadow[i])
+		// {
+		// 	return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource[i].color), 0.1));
+		// }
+		shadow_factor = in_shadow[i] ? 0.1 : 1.0;
+		store.materialcolor = get_color_from_uint(material.color);
+		store.lightsourcecolor = canvas.lightsource[i].color;
+		store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
+		store.light_vector = normalize(substraction(canvas.lightsource[i].position, point));
+		store.ambient = addition(store.ambient,scalarMultiplication(store.effective_color , material.ambient));
+		light_dot_normale = dotProduct(store.light_vector, canvas.normale);
+		if (light_dot_normale >= 0) 
 		{
-            store.factor = pow(store.reflect_dot_eye, material.shininess);
-            store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor, material.specular), store.factor);
-        }
-    }
+			store.diffuse = addition(store.diffuse,scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale * shadow_factor));
+			store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
+			store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));
+			if(store.reflect_dot_eye > 0) 
+			{
+				store.factor = pow(store.reflect_dot_eye, material.shininess);
+				store.specular = addition(store.specular,scalarMultiplication(scalarMultiplication(store.lightsourcecolor, material.specular), store.factor * shadow_factor));
+			}
+		}
+	}
+	FREE(in_shadow);
     return addition(addition(store.ambient , store.diffuse)  ,store.specular);
 }
+
+// xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_shadow)
+// {
+// 	t_store store;
+//     double light_dot_normale;
+// 	int i;
+
+// 	i = -1;
+// 	store.diffuse = set_black();
+// 	store.specular = set_black();
+// 	while(++ i < canvas.num_lights)
+// 	{
+// 		if (in_shadow[i])
+// 		{
+// 			return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource[i].color), 0.1));
+// 		}
+// 		store.materialcolor = get_color_from_uint(material.color);
+// 		store.lightsourcecolor = canvas.lightsource[i].color;
+// 		store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
+// 		store.light_vector = normalize(substraction(canvas.lightsource[i].position, point));
+// 		store.ambient = scalarMultiplication(store.effective_color , material.ambient);
+// 		light_dot_normale = dotProduct(store.light_vector, canvas.normale);
+// 		if (light_dot_normale >= 0) 
+// 		{
+// 			store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, material.diffuse) ,light_dot_normale);
+// 			store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
+// 			store.reflect_dot_eye = dotProduct(store.reflectv, negateTuple(canvas.eyevector));
+// 			if(store.reflect_dot_eye > 0) 
+// 			{
+// 				store.factor = pow(store.reflect_dot_eye, material.shininess);
+// 				store.specular = scalarMultiplication(scalarMultiplication(store.lightsourcecolor, material.specular), store.factor);
+// 			}
+// 		}
+// 	}
+
+
+//     return addition(addition(store.ambient , store.diffuse)  ,store.specular);
+// }
 
 
 //reflection_test

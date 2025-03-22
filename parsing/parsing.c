@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:52:38 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/21 20:51:56 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void look_for_double_uppercase(char **input , int A, int C, int L)
 			L ++;
 		input ++;
 	}
-	if(A > 1 || C > 1 || L > 1)
+	if(A > 1 || C > 1)
 	{
 		write(2, "input contains double capital letter object",
 			ft_strlen("input contains double capital letter object"));

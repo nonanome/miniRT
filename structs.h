@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/14 12:09:13 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/21 20:20:05 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,14 @@ typedef struct canvas
 {
 	int				width;
 	int				height;
+	int				num_lights;
 	double			pixel_size;
 	double			half_size;
 	double			worldheight;
 	mlx_image_t		*img;
 	mlx_t			*mlx_ptr;
 	t_all_intersec	all_intersections;
-	t_light			lightsource;
+	t_light			*lightsource;
 	xyzvektor		normale;
 	xyzvektor		eyevector;
 }					t_c;

@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:08:01 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 15:21:25 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ double		dotProduct(xyzvektor a, xyzvektor b);
 xyzvektor	addition(xyzvektor a, xyzvektor b);
 xyzvektor	scalarMultiplication(xyzvektor a, double b);
 xyzvektor	lightning(t_material material, xyzvektor point, t_c canvas,
-				bool in_shadow);
+				bool *in_shadow);
 t_ray		init_ray(void);
 double		magnitude(xyzvektor a);
 int			parse_input(char *file_name, t_world *world);
 void		free_double_ptr(double **a, int size);
 void		empty_intersections(t_c *canvas);
 // test
-bool		is_shadowed(t_world *world, xyzvektor point);
+bool		*is_shadowed(t_world *world, xyzvektor point);
 
 #endif
