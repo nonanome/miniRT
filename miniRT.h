@@ -1,4 +1,16 @@
-#ifndef MINTRT_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   miniRT.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
+/*   Updated: 2025/03/22 16:23:41 by qhahn            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINIRT_H
 
 # define MINIRT_H
 
@@ -10,7 +22,7 @@
 # include "structs.h"
 void clean_memory(void);
 // intersection
-void				save_intersection(t_c *canvas, t_intersec *new_intersection,
+int				save_intersection(t_c *canvas, t_intersec *new_intersection,
 						int i, int j);
 t_intersec			*intersect(t_shape *shape, t_ray ray);
 t_intersec			*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder);
