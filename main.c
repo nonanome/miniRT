@@ -10,9 +10,9 @@
 
 
 
-xyzvektor ray_position(t_ray ray, double time)
+t_xyzvektor ray_position(t_ray ray, double time)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result = addition(ray.origin, scalarMultiplication(ray.direction, time));
 	return result; 
@@ -58,9 +58,9 @@ xyzvektor ray_position(t_ray ray, double time)
 // 	}
 // }
 
-xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half)
+t_xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 	result.x = x / pixel_size - half;
 	result.y = half - y / pixel_size;
 	result.z = 10;
@@ -77,13 +77,13 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 // int main(void)
 // {
 // 	t_sphere sphere = new_sphere();
-// 	xyzvektor point;
+// 	t_xyzvektor point;
 
 // 	point.x = 0;
 // 	point.y = 1;
 // 	point.z = 0;
 
-// 	xyzvektor normal = calculate_normale_of_sphere(sphere, point);
+// 	t_xyzvektor normal = calculate_normale_of_sphere(sphere, point);
 
 // 	printf("%f %f %f", normal.x, normal.y, normal.z);
 // }
@@ -137,9 +137,9 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 
 // int main(void)
 // {
-// 	xyzvektor a;
-// 	xyzvektor normale;
-// 	xyzvektor reflect;
+// 	t_xyzvektor a;
+// 	t_xyzvektor normale;
+// 	t_xyzvektor reflect;
 
 // 	a.x = 0;
 // 	a.y = -1;
@@ -158,9 +158,9 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 // {
 // 	t_ray ray;
 // 	t_ray ray2;
-// 	xyzvektor origin;
-// 	xyzvektor origin2;
-// 	xyzvektor direction;
+// 	t_xyzvektor origin;
+// 	t_xyzvektor origin2;
+// 	t_xyzvektor direction;
 // 	t_c canvas;
 
 // 	init_canvas(&canvas);
@@ -274,7 +274,7 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 
 // int main(void)
 // {
-// 	xyzvektor a;
+// 	t_xyzvektor a;
 
 // 	a.x = 2;
 // 	a.y = 3;
@@ -289,7 +289,7 @@ xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double half
 // 	proportion[4] = 0;
 // 	proportion[5] = 1;
 // 	double **scale = shearing(proportion);
-// 	xyzvektor result = multiply_vector_and_matrix(a, scale);
+// 	t_xyzvektor result = multiply_vector_and_matrix(a, scale);
 
 // 	printf("%f\n", result.x);
 // 	printf("%f\n", result.y);

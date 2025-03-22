@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 15:36:15 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 	double		pixel_x;
 	double		pixel_y;
 	t_ray		ray;
-	xyzvektor	pixel;
-	xyzvektor	origin;
+	t_xyzvektor	pixel;
+	t_xyzvektor	origin;
 	double		**inv;
 
 	xoffset = (px + 0.5) * cam->pixel_size;
@@ -106,11 +106,11 @@ double	**matrix(double lx, double ly, double lz, double lw, double ux,
 	return (mat);
 }
 
-double	**view_transform(xyzvektor from, xyzvektor to, xyzvektor up)
+double	**view_transform(t_xyzvektor from, t_xyzvektor to, t_xyzvektor up)
 {
-	xyzvektor	forward;
-	xyzvektor	left;
-	xyzvektor	true_up;
+	t_xyzvektor	forward;
+	t_xyzvektor	left;
+	t_xyzvektor	true_up;
 	double		**orientation;
 	double		**translation_mat;
 	double		**ret;
@@ -135,7 +135,7 @@ mlx_image_t	*render_image(t_camera *cam, t_world *world)
 	int			x;
 	int			y;
 	t_ray		ray;
-	xyzvektor	color;
+	t_xyzvektor	color;
 
 	image = mlx_new_image(world->canvas->mlx_ptr, cam->hsize, cam->vsize);
 	y = 0;

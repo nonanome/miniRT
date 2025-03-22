@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 15:35:20 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	empty_intersections(t_c *canvas)
 	canvas->all_intersections.intersections = NULL;
 }
 
-xyzvektor	hit(t_all_intersec all_intersections)
+t_xyzvektor	hit(t_all_intersec all_intersections)
 {
 	int			i;
-	xyzvektor	hit_intersection;
+	t_xyzvektor	hit_intersection;
 
 	i = 0;
 	hit_intersection = set_vector(0, 0, 0, 0);
@@ -61,12 +61,12 @@ xyzvektor	hit(t_all_intersec all_intersections)
 	return (hit_intersection);
 }
 
-bool	is_shadowed(t_world *world, xyzvektor point)
+bool	is_shadowed(t_world *world, t_xyzvektor point)
 {
 	t_ray		ray;
-	xyzvektor	v;
+	t_xyzvektor	v;
 	double		distance;
-	xyzvektor	hit_intersection;
+	t_xyzvektor	hit_intersection;
 
 	v = substraction(world->canvas->lightsource.position, point);
 	distance = magnitude(v);
@@ -82,9 +82,9 @@ bool	is_shadowed(t_world *world, xyzvektor point)
 	return (empty_intersections(world->canvas), false);
 }
 
-xyzvektor	shade_hit(t_world *world, t_comp comp)
+t_xyzvektor	shade_hit(t_world *world, t_comp comp)
 {
-	xyzvektor	retvalue;
+	t_xyzvektor	retvalue;
 	t_c			local_canvas;
 	bool		in_shadow;
 

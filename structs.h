@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 13:00:13 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:15 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,33 @@ typedef struct s_koord
 	double			y;
 	double			z;
 	double			w;
-}					xyzvektor;
+}					t_xyzvektor;
 
 typedef struct point_data
 {
-	xyzvektor		position;
-	xyzvektor		velocity;
+	t_xyzvektor		position;
+	t_xyzvektor		velocity;
 }					t_point;
 
 typedef struct environment
 {
-	xyzvektor		wind;
-	xyzvektor		gravity;
+	t_xyzvektor		wind;
+	t_xyzvektor		gravity;
 }					t_env;
 
 typedef struct ray
 {
-	xyzvektor		origin;
-	xyzvektor		direction;
+	t_xyzvektor		origin;
+	t_xyzvektor		direction;
 
 }					t_ray;
 
 typedef struct s_checker
 {
 	bool			enable;
-	xyzvektor		color1;
-	xyzvektor		color2;
-	xyzvektor		origin;
+	t_xyzvektor		color1;
+	t_xyzvektor		color2;
+	t_xyzvektor		origin;
 	double			**default_transformation;
 
 }					t_checker;
@@ -74,12 +74,12 @@ typedef struct material
 typedef struct s_shape
 {
 	int				id;
-	xyzvektor		origin;
+	t_xyzvektor		origin;
 	double			**default_transformation;
 	t_material		material;
 	int				type;
 	double			radius;
-	xyzvektor		normal;
+	t_xyzvektor		normal;
 	double			minimum;
 	double			maximum;
 	bool			closed;
@@ -88,7 +88,7 @@ typedef struct s_shape
 typedef struct sphere
 {
 	int				id;
-	xyzvektor		origin;
+	t_xyzvektor		origin;
 	double			radius;
 	double			**default_transformation;
 	t_material		material;
@@ -110,22 +110,22 @@ typedef struct intersections
 
 typedef struct pointlight
 {
-	xyzvektor		color;
-	xyzvektor		position;
+	t_xyzvektor		color;
+	t_xyzvektor		position;
 }					t_light;
 
 typedef struct reflection_data_store
 {
-	xyzvektor		effective_color;
-	xyzvektor		materialcolor;
-	xyzvektor		lightsourcecolor;
-	xyzvektor		light_vector;
-	xyzvektor		ambient;
-	xyzvektor		diffuse;
-	xyzvektor		specular;
+	t_xyzvektor		effective_color;
+	t_xyzvektor		materialcolor;
+	t_xyzvektor		lightsourcecolor;
+	t_xyzvektor		light_vector;
+	t_xyzvektor		ambient;
+	t_xyzvektor		diffuse;
+	t_xyzvektor		specular;
 	double			reflect_dot_eye;
 	double			factor;
-	xyzvektor		reflectv;
+	t_xyzvektor		reflectv;
 }					t_store;
 
 typedef struct canvas
@@ -139,8 +139,8 @@ typedef struct canvas
 	mlx_t			*mlx_ptr;
 	t_all_intersec	all_intersections;
 	t_light			lightsource;
-	xyzvektor		normale;
-	xyzvektor		eyevector;
+	t_xyzvektor		normale;
+	t_xyzvektor		eyevector;
 }					t_c;
 
 typedef struct s_camera
@@ -161,7 +161,7 @@ typedef struct s_world
 	t_c				*canvas;
 	double			*all_sorted;
 	t_env			*env;
-	xyzvektor		*ambient;
+	t_xyzvektor		*ambient;
 	double			ambient_intensity;
 	t_camera		*camera;
 }					t_world;
@@ -170,11 +170,11 @@ typedef struct s_comp
 {
 	double			t;
 	t_shape			*object;
-	xyzvektor		point;
-	xyzvektor		over_point;
-	xyzvektor		eyev;
-	xyzvektor		normalv;
-	xyzvektor		reflectv;
+	t_xyzvektor		point;
+	t_xyzvektor		over_point;
+	t_xyzvektor		eyev;
+	t_xyzvektor		normalv;
+	t_xyzvektor		reflectv;
 	bool			inside;
 }					t_comp;
 

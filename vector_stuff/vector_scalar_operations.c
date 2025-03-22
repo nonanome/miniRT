@@ -1,9 +1,9 @@
 #include "../miniRT.h"
 #include <stdio.h>
 
-xyzvektor scalarMultiplication(xyzvektor a, double b)
+t_xyzvektor scalarMultiplication(t_xyzvektor a, double b)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = a.x * b;
 	result.y = a.y * b;
@@ -12,9 +12,9 @@ xyzvektor scalarMultiplication(xyzvektor a, double b)
 	return result;
 }
 
-xyzvektor scalarDivision(xyzvektor a, double b)
+t_xyzvektor scalarDivision(t_xyzvektor a, double b)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = a.x / b;
 	result.y = a.y / b;

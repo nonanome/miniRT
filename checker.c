@@ -6,13 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 09:18:39 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 13:34:29 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_checker	checker_init(xyzvektor color1, xyzvektor color2)
+t_checker	checker_init(t_xyzvektor color1, t_xyzvektor color2)
 {
 	t_checker	new;
 
@@ -24,9 +24,9 @@ t_checker	checker_init(xyzvektor color1, xyzvektor color2)
 	return (new);
 }
 
-xyzvektor	pattern_at(t_shape shape, xyzvektor point)
+t_xyzvektor	pattern_at(t_shape shape, t_xyzvektor point)
 {
-	xyzvektor	object_point_vec;
+	t_xyzvektor	object_point_vec;
 	double		**object_point;
 	double		sum;
 

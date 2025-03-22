@@ -6,13 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:11:30 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void create_rotation_matrix(xyzvektor normal, double rotation[3][3])
+void create_rotation_matrix(t_xyzvektor normal, double rotation[3][3])
 {
     double axis[3] = {0.0, 1.0, 0.0};
     double dot = normal.x * axis[0] + normal.y * axis[1] + normal.z * axis[2];

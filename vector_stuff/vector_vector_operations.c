@@ -1,8 +1,8 @@
 #include "../miniRT.h"
 
-xyzvektor addition(xyzvektor a, xyzvektor b)
+t_xyzvektor addition(t_xyzvektor a, t_xyzvektor b)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
@@ -11,9 +11,9 @@ xyzvektor addition(xyzvektor a, xyzvektor b)
 	return result;
 }
 
-xyzvektor substraction(xyzvektor a, xyzvektor b)
+t_xyzvektor substraction(t_xyzvektor a, t_xyzvektor b)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = a.x - b.x;
 	result.y = a.y - b.y;
@@ -23,7 +23,7 @@ xyzvektor substraction(xyzvektor a, xyzvektor b)
 }
 
 
-double dotProduct(xyzvektor a, xyzvektor b)
+double dotProduct(t_xyzvektor a, t_xyzvektor b)
 {
 	double result;
 
@@ -31,9 +31,9 @@ double dotProduct(xyzvektor a, xyzvektor b)
 	return result;
 }
 
-xyzvektor crossProduct(xyzvektor a, xyzvektor b)
+t_xyzvektor crossProduct(t_xyzvektor a, t_xyzvektor b)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = a.y * b.z - a.z * b.y;
 	result.y = a.z * b.x - a.x * b.z;
@@ -45,9 +45,9 @@ xyzvektor crossProduct(xyzvektor a, xyzvektor b)
 	return result;
 }
 
-xyzvektor hadamard_product(xyzvektor a, xyzvektor b)
+t_xyzvektor hadamard_product(t_xyzvektor a, t_xyzvektor b)
 {
-	xyzvektor result;
+	t_xyzvektor result;
 
 	result.x = a.x * b.x;
 	result.y = a.y * b.y ;

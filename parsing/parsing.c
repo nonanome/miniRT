@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:52:38 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:22:57 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void look_for_double_uppercase(char **input , int A, int C, int L)
+void	look_for_double_uppercase(char **input, int A, int C, int L)
 {
-	while(*input)
+	while (*input)
 	{
-		if(*input[0] == 'A')
-			A ++;
-		if(*input[0] == 'C')
-			C ++;
-		if(*input[0] == 'L')
-			L ++;
-		input ++;
+		if (*input[0] == 'A')
+			A++;
+		if (*input[0] == 'C')
+			C++;
+		if (*input[0] == 'L')
+			L++;
+		input++;
 	}
-	if(A > 1 || C > 1 || L > 1)
+	if (A > 1 || C > 1 || L > 1)
 	{
 		write(2, "input contains double capital letter object",
 			ft_strlen("input contains double capital letter object"));

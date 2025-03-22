@@ -18,7 +18,7 @@ void show_matrix(double **a, int size)
 	}
 }
 
-void show_vector(xyzvektor a)
+void show_vector(t_xyzvektor a)
 {
 	printf("%f %f %f %f", a.x, a.y, a.z, a.w);
 }

@@ -16,8 +16,8 @@ void init_canvas(t_c *canvas)
 t_ray init_ray(void)
 {
 	t_ray ray;
-	xyzvektor origin;
-	xyzvektor direction;
+	t_xyzvektor origin;
+	t_xyzvektor direction;
 
 	origin.x = 0;
 	origin.y = 0;
