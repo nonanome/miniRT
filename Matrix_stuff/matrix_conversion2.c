@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix_conversion2.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 16:25:10 by qhahn             #+#    #+#             */
+/*   Updated: 2025/03/22 16:25:15 by qhahn            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../miniRT.h"
 
 double	**invert_matrix(double **a, int size)
@@ -49,7 +61,7 @@ double	get_determinant_of_bigger_matrix(double **a, int size)
 
 void	free_double_ptr(double **a, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < size)
