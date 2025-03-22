@@ -35,12 +35,14 @@ xyzvektor calc_cone_normal(t_shape cone, xyzvektor point)
 	double tangens_theta;
 
 	tangens_theta = cone.radius / (cone.maximum - cone.minimum);
-	normal.x = point.x;
-	normal.y = - point.y * tangens_theta * tangens_theta;
-	normal.z = point.z;
+	normal.x = - point.x * tangens_theta * tangens_theta;
+	normal.y = point.y;
+	normal.z = point.z ;
 	normal = normalize(normal);
 	return normal;
 }
+
+
 
 xyzvektor calculate_normale(t_shape shape, xyzvektor point)
 {
