@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   view_world.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/19 19:57:09 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 15:36:15 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 	pixel = multiply_vector_and_matrix(pixel, inv);
 	origin = multiply_vector_and_matrix(origin, inv);
 	ray.origin = origin;
-	if(inv)
+	if (inv)
 		free_double_ptr(inv, 4);
 	ray.direction = normalize(substraction(pixel, origin));
 	return (ray);

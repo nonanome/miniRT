@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 14:47:39 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 15:58:04 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	add_checker(t_world *world, char **split, int type)
 		j++;
 	}
 	world->shapes[world->nr_shapes - 1]->material.checker.color1 = get_color_from_uint(world->shapes[world->nr_shapes - 1]->material.color);
-	world->shapes[world->nr_shapes - 1]->material.checker.color2 = set_vector(budget_ft_atof(split_split[0][0]), budget_ft_atof(split_split[0][1]), budget_ft_atof(split_split[0][2]), 0);
+	world->shapes[world->nr_shapes - 1]->material.checker.color2 = set_vector(budget_ft_atof(split_split[0][0]) /255, budget_ft_atof(split_split[0][1])/255, budget_ft_atof(split_split[0][2])/255, 1);
 	world->shapes[world->nr_shapes - 1]->material.checker.enable = true;
 	world->shapes[world->nr_shapes - 1]->material.checker.origin = set_vector(budget_ft_atof(split_split[1][0]), budget_ft_atof(split_split[1][1]), budget_ft_atof(split_split[1][2]), 0);
 }
