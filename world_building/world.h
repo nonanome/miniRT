@@ -6,15 +6,15 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:34:14 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 19:18:45 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WORLD_H
 # define WORLD_H
 
-# include "../structs.h"
 # include "../miniRT.h"
+# include "../structs.h"
 
 double		**multiply_matrix(double **a, double **b);
 t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point);
@@ -65,7 +65,8 @@ void		free_double_ptr(double **a, int size);
 void		empty_intersections(t_c *canvas);
 t_checker	checker_init(t_xyzvektor color1, t_xyzvektor color2);
 t_xyzvektor	pattern_at(t_shape shape, t_xyzvektor point);
-// test
-bool		is_shadowed(t_world *world, t_xyzvektor point);
-
+void		save_intersections(t_c *canvas, t_intersec *new_intersection,
+				t_world *world);
+double		**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
+				t_xyzvektor t);
 #endif
