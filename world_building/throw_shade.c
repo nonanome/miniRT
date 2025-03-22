@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 18:30:21 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 19:44:55 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ xyzvektor	hit(t_all_intersec all_intersections)
 // 	return (empty_intersections(world->canvas), false);
 // }
 
-bool	*is_shadowed(t_world *world, xyzvektor point)
+
+
+bool	*is_shadowed(t_world *world, xyzvektor point, t_shape shape)
 {
 	t_ray		ray;
 	xyzvektor	v;
@@ -91,6 +93,7 @@ bool	*is_shadowed(t_world *world, xyzvektor point)
 	xyzvektor	hit_intersection;
 	int i;
 	bool 		*shadows;
+	double rotation[3][3];
 
 	i = -1;
 	shadows = malloc(world->canvas->num_lights * sizeof(bool));
@@ -101,11 +104,14 @@ bool	*is_shadowed(t_world *world, xyzvektor point)
 		v = substraction(world->canvas->lightsource[i].position, point);
 		distance = magnitude(v);
 		ray.direction = normalize(v);
+		create_rotation_matrix(shape.normal, rotation);
+		transform_ray(&ray, rotation);
 		empty_intersections(world->canvas);
 		intersect_world(world, ray);
-		hit_intersection.w = INFINITY;
 		if(world->canvas->all_intersections.intersections != NULL)
 			hit_intersection = hit(world->canvas->all_intersections);
+		else
+			hit_intersection.w = INFINITY;
 		if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
 			shadows[i] = true;
 		else
@@ -115,7 +121,7 @@ bool	*is_shadowed(t_world *world, xyzvektor point)
 	return shadows;
 }
 
-xyzvektor shade_hit(t_world *world, t_comp comp)
+xyzvektor shade_hit(t_world *world, t_comp comp, t_shape shape)
 {
 	xyzvektor retvalue;
 	t_c local_canvas;
@@ -125,7 +131,7 @@ xyzvektor shade_hit(t_world *world, t_comp comp)
 	local_canvas.normale = comp.normalv;
 	local_canvas.eyevector = comp.eyev;
 	// in_shadow = true;
-	in_shadow = is_shadowed(world, comp.over_point);
+	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
 	return (lightning(comp.object->material, comp.over_point, local_canvas, in_shadow));
 }

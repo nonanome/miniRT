@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:50:06 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 18:53:05 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,9 +216,11 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
 			* discriminant_values[0]);
 	result->object_id = cone.id;
-	cut_cone(result, ray, cone);
+	cut_cylinder(result, ray, cone);
 	// if(result->times[0] == -1)
 	// 	cap_top(result, ray, cone);
+	// if(result->times[1] == -1)
+	// 	cap_bottom(result, ray, cone);
 	FREE(discriminant_values);
 	return (result);
 }

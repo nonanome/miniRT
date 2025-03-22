@@ -35,9 +35,9 @@ xyzvektor calc_cone_normal(t_shape cone, xyzvektor point)
 	double tangens_theta;
 
 	tangens_theta = cone.radius / (cone.maximum - cone.minimum);
-	normal.x = 2 * point.x;
-	normal.y = - 2 * point.y * pow(tangens_theta, 2);
-	normal.z = 2 * point.z;
+	normal.x = point.x;
+	normal.y = - point.y * tangens_theta * tangens_theta;
+	normal.z = point.z;
 	normal = normalize(normal);
 	return normal;
 }
@@ -84,12 +84,7 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_s
 	store.ambient = set_black();
 	while(++ i < canvas.num_lights)
 	{
-		// if (in_shadow[i])
-		// {
-		// 	return (scalarMultiplication(hadamard_product(get_color_from_uint(material.color), canvas.lightsource[i].color), 0.1));
-		// }
-		// shadow_factor = in_shadow[i] ? 0.1 : 1.0;
-		shadow_factor = 1.0;
+		shadow_factor = in_shadow[i] ? 0.1 : 1.0;
 		store.materialcolor = get_color_from_uint(material.color);
 		store.lightsourcecolor = canvas.lightsource[i].color;
 		store.effective_color = hadamard_product(store.materialcolor, store.lightsourcecolor);
@@ -111,6 +106,11 @@ xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_s
 	}
 	FREE(in_shadow);
     return addition(addition(store.ambient , store.diffuse)  ,store.specular);
+	xyzvektor result;
+	result.x = 1;
+	result.y = 0;
+	result.z = 0;
+	return result;
 }
 
 // xyzvektor lightning(t_material material, xyzvektor point, t_c canvas, bool *in_shadow)

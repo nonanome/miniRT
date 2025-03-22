@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 15:21:25 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 19:44:30 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int			intersect_world(t_world *world, t_ray ray);
 t_intersec	*intersect(t_shape *shape, t_ray ray);
 t_comp		prepare_computations(t_intersec *intersection, t_ray ray,
 				t_shape *shape);
-xyzvektor	shade_hit(t_world *world, t_comp comp);
-xyzvektor	color_at(t_world *world, t_ray ray);
+xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape);
+xyzvektor	color_at(t_world *world, t_ray ray, t_shape shape);
 double		**view_transform(xyzvektor from, xyzvektor to, xyzvektor up);
 t_camera	*camera(int hsize, int vsize, double field_of_view);
 t_ray		ray_for_pixel(t_camera *cam, int px, int py);
@@ -64,6 +64,6 @@ int			parse_input(char *file_name, t_world *world);
 void		free_double_ptr(double **a, int size);
 void		empty_intersections(t_c *canvas);
 // test
-bool		*is_shadowed(t_world *world, xyzvektor point);
+bool		*is_shadowed(t_world *world, xyzvektor point, t_shape shape);
 
 #endif
