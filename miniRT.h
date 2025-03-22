@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:24:43 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 16:32:52 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,6 @@ xyzvektor	calculate_reflection(xyzvektor in, xyzvektor normale);
 t_shape		*new_shape(int type);
 xyzvektor	calculate_wall_coordinate(int x, int y, double pixel_size,
 				double half);
+int			count_split(char **split_string);
 
 #endif
