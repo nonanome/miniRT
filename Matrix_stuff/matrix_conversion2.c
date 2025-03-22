@@ -1,63 +1,61 @@
 #include "../miniRT.h"
 
-double **invert_matrix(double **a, int size)
+double	**invert_matrix(double **a, int size)
 {
-	double **result;
-	double determinante;
-	int i;
-	int j;
+	double	**result;
+	double	determinante;
+	int		i;
+	int		j;
 
 	determinante = get_determinant_of_bigger_matrix(a, size);
-	if(determinante == 0)
-		return 0;
+	if (determinante == 0)
+		return (0);
 	result = MALLOC(size * (sizeof(double *)));
 	i = -1;
-	while(++ i < size)
+	while (++i < size)
 		result[i] = MALLOC(size * (sizeof(double)));
 	i = -1;
 	j = -1;
-	while(++ i < size)
+	while (++i < size)
 	{
-		while(++ j < size)
+		while (++j < size)
 			result[i][j] = get_cofactor(a, j, i, size) / determinante;
 		j = -1;
 	}
-	return result;
+	return (result);
 }
 
-double get_cofactor(double **a, int i, int j, int size)
+double	get_cofactor(double **a, int i, int j, int size)
 {
-	if((i + j) % 2 != 0)
-		return -get_minor(a, i, j, size);
-	return get_minor(a, i, j , size);
+	if ((i + j) % 2 != 0)
+		return (-get_minor(a, i, j, size));
+	return (get_minor(a, i, j, size));
 }
 
-double get_determinant_of_bigger_matrix(double **a, int size)
+double	get_determinant_of_bigger_matrix(double **a, int size)
 {
-	double result;
-	int i;
+	double	result;
+	int		i;
 
 	result = 0;
 	i = 0;
-	while(i < size)
+	while (i < size)
 	{
 		result = result + get_cofactor(a, 0, i, size) * a[0][i];
-		i ++;
+		i++;
 	}
-	return result;
+	return (result);
 }
 
-
-
-void free_double_ptr(double **a, int size)
+void	free_double_ptr(double **a, int size)
 {
 	int i;
 
 	i = 0;
-	while(i < size)
+	while (i < size)
 	{
 		FREE(a[i]);
-		i ++;
+		i++;
 	}
 	FREE(a);
 }

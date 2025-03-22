@@ -76,7 +76,7 @@ xyzvektor lightning(t_shape shape, xyzvektor point, t_c canvas, bool in_shadow)
     light_dot_normale = dotProduct(store.light_vector, canvas.normale);
 	store.diffuse = set_black();
     store.specular = set_black();
-	if (light_dot_normale >= 0) 
+	if (light_dot_normale >= 0)
 	{
         store.diffuse = scalarMultiplication(scalarMultiplication(store.effective_color, shape.material.diffuse) ,light_dot_normale);
         store.reflectv = calculate_reflection(store.light_vector, canvas.normale);
