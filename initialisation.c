@@ -3,8 +3,8 @@
 void init_canvas(t_c *canvas)
 {
 	canvas->worldheight = 8;
-	canvas->height = 100;
-	canvas->width = 100;
+	canvas->height = 400;
+	canvas->width = 400;
 	canvas->mlx_ptr = mlx_init(canvas->width, canvas->height, "miniRT", false);
 	canvas->pixel_size = canvas->height / canvas->worldheight;
 	canvas->half_size = canvas->worldheight / 2;
