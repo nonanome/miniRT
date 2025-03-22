@@ -14,7 +14,7 @@ t_xyzvektor ray_position(t_ray ray, double time)
 {
 	t_xyzvektor result;
 
-	result = addition(ray.origin, scalarMultiplication(ray.direction, time));
+	result = addition(ray.origin, scalar_multiplication(ray.direction, time));
 	return result; 
 }
 
@@ -111,7 +111,7 @@ t_xyzvektor calculate_wall_coordinate(int x, int y, double pixel_size, double ha
 // 		{
 // 			vs_data.world_coordinates = calculate_wall_coordinate(x, y, canvas->pixel_size, canvas->half_size);
 // 			ray.direction = normalize(substraction(vs_data.world_coordinates, ray.origin));
-// 			canvas->eyevector = negateTuple(ray.direction);
+// 			canvas->eyevector = negate_tuple(ray.direction);
 // 			vs_data.intersec = intersect(sphere1, ray);
 // 			if(vs_data.intersec != NULL)
 // 			{

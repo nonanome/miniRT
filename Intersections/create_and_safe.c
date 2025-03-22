@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:34:04 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 
 	discriminant_values = MALLOC(3 * sizeof(double));
 	sphere_to_ray = substraction(ray.origin, sphere.origin);
-	discriminant_values[0] = dotProduct(ray.direction, ray.direction);
-	discriminant_values[1] = 2 * dotProduct(ray.direction, sphere_to_ray);
-	discriminant_values[2] = dotProduct(sphere_to_ray, sphere_to_ray)
+	discriminant_values[0] = dot_product(ray.direction, ray.direction);
+	discriminant_values[1] = 2 * dot_product(ray.direction, sphere_to_ray);
+	discriminant_values[2] = dot_product(sphere_to_ray, sphere_to_ray)
 		- sphere.radius * sphere.radius;
 	discriminant = get_discriminant(discriminant_values);
 	if (discriminant < 0)
@@ -53,13 +53,13 @@ t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 
 	discriminant_values = MALLOC(3 * sizeof(double));
 	result->times = MALLOC(2 * sizeof(double));
-	discriminant_values[0] = dotProduct(ray.direction, plane.normal);
+	discriminant_values[0] = dot_product(ray.direction, plane.normal);
 	if (discriminant_values[0] == 0)
 	{
 		FREE(discriminant_values);
 		return (NULL);
 	}
-	discriminant_values[1] = -dotProduct(ray.origin, plane.normal);
+	discriminant_values[1] = -dot_product(ray.origin, plane.normal);
 	if (discriminant_values[1] / discriminant_values[0] < EPSILON)
 	{
 		FREE(discriminant_values);
