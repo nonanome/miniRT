@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 15:20:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/22 18:30:21 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,14 @@ bool	*is_shadowed(t_world *world, xyzvektor point)
 	shadows = malloc(world->canvas->num_lights * sizeof(bool));
 	ray = init_ray();
 	ray.origin = point;
-	empty_intersections(world->canvas);
-	intersect_world(world, ray);
 	while(++ i < world->canvas->num_lights)
 	{
 		v = substraction(world->canvas->lightsource[i].position, point);
 		distance = magnitude(v);
 		ray.direction = normalize(v);
+		empty_intersections(world->canvas);
+		intersect_world(world, ray);
+		hit_intersection.w = INFINITY;
 		if(world->canvas->all_intersections.intersections != NULL)
 			hit_intersection = hit(world->canvas->all_intersections);
 		if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
