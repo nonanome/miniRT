@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 17:43:32 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,15 @@ t_shape	*new_shape(int type)
 	shape->default_transformation = get_identity_matrix();
 	shape->material = default_material();
 	shape->id = globalID++;
+	shape->minimum = -INFINITY;
+	shape->maximum = INFINITY;
+	shape->closed = false;
 	if (type == 0)
-	{
 		shape->radius = 1;
-		shape->minimum = -INFINITY;
-		shape->maximum = INFINITY;
-		shape->closed = false;
-	}
 	else if (type == 1)
-	{
 		shape->normal = set_vector(0, 1, 0, 0);
-		shape->minimum = -INFINITY;
-		shape->maximum = INFINITY;
-		shape->closed = false;
-	}
 	else if (type == 2)
-	{
 		shape->radius = 1;
-		shape->minimum = -INFINITY;
-		shape->maximum = INFINITY;
-		shape->closed = false;
-	}
 	return (shape);
 }
 
@@ -90,14 +78,11 @@ void	free_world(t_world *world)
 		free_double_ptr(world->camera->transform, 4);
 		FREE(world->camera);
 	}
-	if (world->shapes)
+	while (world->nr_shapes--)
 	{
-		while (world->nr_shapes--)
-		{
-			free_double_ptr(world->shapes[world->nr_shapes]->default_transformation,
-				4);
-			FREE(world->shapes[world->nr_shapes]);
-		}
+		free_double_ptr(world->shapes[world->nr_shapes]->default_transformation,
+			4);
+		FREE(world->shapes[world->nr_shapes]);
 	}
 	FREE(world->shapes);
 	FREE(world->canvas);
