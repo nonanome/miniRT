@@ -6,11 +6,40 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 13:17:23 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 14:47:39 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+void	add_checker(t_world *world, char **split, int type)
+{
+	int i;
+	char ***split_split;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (split[i++])
+		;
+	if ((i != 8 && (type == 0 || type == 1)) || (i != 10 && type == 2))
+		return ;
+	split_split = ft_calloc(4, sizeof(char **));
+	if (type == 0 || type == 1)
+		i = 4;
+	else
+		i = 6;
+	while (split[i])
+	{
+		split_split[j] = ft_split(split[i], ',');
+		i++;
+		j++;
+	}
+	world->shapes[world->nr_shapes - 1]->material.checker.color1 = get_color_from_uint(world->shapes[world->nr_shapes - 1]->material.color);
+	world->shapes[world->nr_shapes - 1]->material.checker.color2 = set_vector(budget_ft_atof(split_split[0][0]), budget_ft_atof(split_split[0][1]), budget_ft_atof(split_split[0][2]), 0);
+	world->shapes[world->nr_shapes - 1]->material.checker.enable = true;
+	world->shapes[world->nr_shapes - 1]->material.checker.origin = set_vector(budget_ft_atof(split_split[1][0]), budget_ft_atof(split_split[1][1]), budget_ft_atof(split_split[1][2]), 0);
+}
 
 int	parse_sphere(t_world *world, char *line)
 {
@@ -37,6 +66,7 @@ int	parse_sphere(t_world *world, char *line)
 	shape->radius = radius;
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
+	add_checker(world, split, 0);
 	return (ft_free_split(split), 0);
 }
 
@@ -71,6 +101,7 @@ int	parse_plane(t_world *world, char *line)
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
 	ft_free_split(normal_split);
+	add_checker(world, split, 1);
 	return (ft_free_split(split), 0);
 }
 
@@ -109,5 +140,6 @@ int	parse_cylinder(t_world *world, char *line)
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
 	ft_free_split(normal_split);
+	add_checker(world, split, 2);
 	return (ft_free_split(split), 0);
 }
