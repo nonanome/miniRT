@@ -1,43 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   submatrix.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 16:25:43 by qhahn             #+#    #+#             */
+/*   Updated: 2025/03/22 16:26:06 by qhahn            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../miniRT.h"
 
-double *extract_submatrix_row(double *a, int ii, int size)
+double	*extract_submatrix_row(double *a, int ii, int size)
 {
-	double *row;
-	int i;
-	int j;
+	double	*row;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
 	row = MALLOC((size - 1) * (sizeof(double)));
-	while(i < size)
+	while (i < size)
 	{
 		if (i != ii)
 		{
 			row[j] = a[i];
-			j ++;
+			j++;
 		}
-		i ++;	
+		i++;
 	}
-	return row;
+	return (row);
 }
 
-double **get_submatrix(double **a, int ii, int jj, int size)
+double	**get_submatrix(double **a, int ii, int jj, int size)
 {
-	double **result;
-	int i;
-	int j;
+	double	**result;
+	int		i;
+	int		j;
 
 	result = MALLOC((size - 1) * (sizeof(double *)));
 	j = 0;
 	i = 0;
-	while(i < (size))
+	while (i < (size))
 	{
 		if (i != ii)
 		{
 			result[j] = extract_submatrix_row(a[i], jj, size);
-			j ++;
+			j++;
 		}
-		i ++;
+		i++;
 	}
-	return result;
+	return (result);
 }
