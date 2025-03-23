@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:52:16 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/22 19:55:01 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	check_camera_line(char *line)
 	}
 }
 
-void	check_plane_line(char *line)
+int	check_plane_line(char *line)
 {
 	char	**split_on_space;
 	int		split_count;
@@ -82,10 +82,8 @@ void	check_plane_line(char *line)
 	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3
 			|| count_split(ft_split(split_on_space[5], ',')) != 3
 			|| count_split(ft_split(split_on_space[6], ',')) != 3))
-	{
-		write(2, "plane line in wrong form", 24);
-		exit(1);
-	}
+		return (write(2, "plane line in wrong form", 24), 1);
+	return (0);
 }
 
 void	check_ambient_light_line(char *line)
