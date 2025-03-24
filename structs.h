@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:43:17 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:04:12 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define PI 3.14159265358979323846
 # define EPSILON 0.00001
 
-static int			g_globalID = 0;
+static int			g_globalid = 0;
 
 typedef struct s_koord
 {

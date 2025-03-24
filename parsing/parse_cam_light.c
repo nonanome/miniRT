@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:27:26 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:02:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,22 +132,18 @@ int	parse_light(t_world *world, char *line)
 		return (ft_free_split(split), 1);
 	parse_xyz_cam_light(split[1], xyz, 0);
 	if (!parse_xyz(rgb_split, rgb, 0))
-		return (ft_free_split(split),
-			ft_free_split(rgb_split), 1);
+		return (ft_free_split(split), ft_free_split(rgb_split), 1);
 	rgb[0] /= 255;
 	rgb[1] /= 255;
 	rgb[2] /= 255;
 	if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0
 		|| rgb[2] > 1)
-		return (ft_free_split(split),
-			ft_free_split(rgb_split), 1);
+		return (ft_free_split(split), ft_free_split(rgb_split), 1);
 	brightness = budget_ft_atof(split[2]);
 	if (brightness < 0 || brightness > 1)
-		return (ft_free_split(split),
-			ft_free_split(rgb_split), 1);
+		return (ft_free_split(split), ft_free_split(rgb_split), 1);
 	new_light.color = set_vector(rgb[0], rgb[1], rgb[2], brightness);
 	new_light.position = set_vector(xyz[0], xyz[1], xyz[2], 0);
 	realloc_light(world->canvas, new_light);
-	return (ft_free_split(split),
-		ft_free_split(rgb_split), 0);
+	return (ft_free_split(split), ft_free_split(rgb_split), 0);
 }
