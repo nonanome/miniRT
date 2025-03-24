@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:34:14 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:34:25 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_xyzvektor	ray_position(t_ray ray, double time);
 double		get_smallest_positive_value(t_intersec *intersection1);
 t_xyzvektor	identify_hit(t_all_intersec all_intersections);
 t_ray		transform(t_ray ray, double **transformation);
+t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cylinder);
 
 // trasnformation
 double		**translation(double x, double y, double z);
@@ -68,6 +69,8 @@ double		**invert_matrix(double **a, int size);
 double		get_cofactor(double **a, int i, int j, int size);
 double		get_determinant_of_bigger_matrix(double **a, int size);
 double		get_determinante_of_3x3(double **a);
+void		create_rotation_matrix(t_xyzvektor normal, double rotation[3][3]);
+void		transform_ray(t_ray *ray, double rotation[3][3]);
 
 // color operations
 uint32_t	get_color_from_tuple(t_xyzvektor color);
@@ -99,14 +102,12 @@ t_xyzvektor	point_of_intersection(t_intersec *intersec, t_ray ray);
 t_xyzvektor	set_black(void);
 t_light		default_light(void);
 t_material	default_material(void);
-t_xyzvektor	pattern_at(t_shape shape, t_xyzvektor point);
 
-t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
-				bool in_shadow);
+t_xyzvektor	lightning(t_material material, t_xyzvektor point, t_c canvas,
+				bool *in_shadow);
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);
 t_shape		*new_shape(int type);
 t_xyzvektor	calculate_wall_coordinate(int x, int y, double pixel_size,
 				double half);
-int			count_split(char **split_string);
 
 #endif

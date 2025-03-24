@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:16:03 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:27:26 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,37 @@ int	parse_camera(t_world *world, char *line)
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	error = parse_xyz_cam_light(split[1], xyz, 0);
-	if (!error)
-		error = parse_xyz_cam_light(split[2], normal, 1);
-	if (!error)
-		error = parse_fov(split[3], &fov);
-	if (!error)
+	if (budget_ft_atof(split[2]) < 0 || budget_ft_atof(split[2]) > 180)
+		return (ft_free_split(split), 1);
+	if (parse_xyz_cam_light(split[1], xyz, 0))
+		return (ft_free_split(split), 1);
+	if (parse_xyz_cam_light(split[2], normal, 1))
+		return (ft_free_split(split), 1);
+	world->camera->field_of_view = budget_ft_atof(split[3]);
+	world->camera->transform = view_transform(set_vector(xyz[0], xyz[1], xyz[2],
+				1), set_vector(normal[0], normal[1], normal[2], 0),
+			set_vector(0, 1, 0, 0));
+	return (ft_free_split(split), 0);
+}
+
+void	realloc_light(t_c *canvas, t_light new_light)
+{
+	t_light	*lights;
+	int		i;
+
+	i = 0;
+	lights = malloc((canvas->num_lights + 1) * sizeof(t_light));
+	while (i < canvas->num_lights)
 	{
-		world->camera->field_of_view = fov;
-		world->camera->transform = view_transform(set_vector(xyz[0], xyz[1],
-					xyz[2], 1), set_vector(normal[0], normal[1], normal[2], 0),
-				set_vector(0, 1, 0, 0));
+		printf("test");
+		lights[i] = canvas->lightsource[i];
+		i++;
 	}
-	ft_free_split(split);
-	return (error);
+	lights[i] = new_light;
+	printf("newlight");
+	FREE(canvas->lightsource);
+	canvas->lightsource = lights;
+	canvas->num_lights++;
 }
 
 int	parse_light(t_world *world, char *line)
@@ -100,21 +117,37 @@ int	parse_light(t_world *world, char *line)
 	double	ratio;
 	double	xyz[3];
 	double	rgb[3];
-	int		error;
+	double	brightness;
+	t_light	new_light;
+	char	**rgb_split;
 
 	check_spere_or_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	error = parse_xyz_cam_light(split[1], xyz, 0) || parse_ratio(split[2],
-			&ratio) || parse_rgb(split[3], rgb);
-	if (!error)
-	{
-		world->canvas->lightsource.color = set_vector(rgb[0], rgb[1], rgb[2],
-				ratio);
-		world->canvas->lightsource.position = set_vector(xyz[0], xyz[1], xyz[2],
-				0);
-	}
-	ft_free_split(split);
-	return (error);
+	if (budget_ft_atof(split[2]) < 0)
+		return (ft_free_split(split), 1);
+	rgb_split = ft_split(split[3], ',');
+	if (!rgb_split)
+		return (ft_free_split(split), 1);
+	parse_xyz_cam_light(split[1], xyz, 0);
+	if (!parse_xyz(rgb_split, rgb, 0))
+		return (ft_free_split(split),
+			ft_free_split(rgb_split), 1);
+	rgb[0] /= 255;
+	rgb[1] /= 255;
+	rgb[2] /= 255;
+	if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0
+		|| rgb[2] > 1)
+		return (ft_free_split(split),
+			ft_free_split(rgb_split), 1);
+	brightness = budget_ft_atof(split[2]);
+	if (brightness < 0 || brightness > 1)
+		return (ft_free_split(split),
+			ft_free_split(rgb_split), 1);
+	new_light.color = set_vector(rgb[0], rgb[1], rgb[2], brightness);
+	new_light.position = set_vector(xyz[0], xyz[1], xyz[2], 0);
+	realloc_light(world->canvas, new_light);
+	return (ft_free_split(split),
+		ft_free_split(rgb_split), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:34:04 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:18:39 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 	else if (shape->type == 2)
 	{
 		return (cylinder_intersect(result, ray, *shape));
+	}
+	else if (shape->type == 3)
+	{
+		return (cone_intersect(result, ray, *shape));
 	}
 }
 

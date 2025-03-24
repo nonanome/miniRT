@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:15 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:43:17 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define PI 3.14159265358979323846
 # define EPSILON 0.00001
 
-static int			globalID = 0;
+static int			g_globalID = 0;
 
 typedef struct s_koord
 {
@@ -132,13 +132,14 @@ typedef struct canvas
 {
 	int				width;
 	int				height;
+	int				num_lights;
 	double			pixel_size;
 	double			half_size;
 	double			worldheight;
 	mlx_image_t		*img;
 	mlx_t			*mlx_ptr;
 	t_all_intersec	all_intersections;
-	t_light			lightsource;
+	t_light			*lightsource;
 	t_xyzvektor		normale;
 	t_xyzvektor		eyevector;
 }					t_c;

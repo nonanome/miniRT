@@ -1,24 +1,26 @@
 #include "miniRT.h"
 
-void show_matrix(double **a, int size)
+void	show_matrix(double **a, int size)
 {
-	int i = 0;
-	int j = 0;
+	int	i;
+	int	j;
 
-	while(i < size)
+	i = 0;
+	j = 0;
+	while (i < size)
 	{
-		while(j < size)
+		while (j < size)
 		{
 			printf("%f ", a[i][j]);
-			j ++;
+			j++;
 		}
 		printf("\n");
 		j = 0;
-		i ++;
+		i++;
 	}
 }
 
-void show_vector(t_xyzvektor a)
+void	show_vector(t_xyzvektor a)
 {
 	printf("%f %f %f %f", a.x, a.y, a.z, a.w);
 }

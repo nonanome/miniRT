@@ -6,11 +6,11 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:55:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 16:35:04 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../miniRT.h"
+#include "parsing.h"
 
 void	check_spere_or_light_line(char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:18:45 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:34:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int			intersect_world(t_world *world, t_ray ray);
 t_intersec	*intersect(t_shape *shape, t_ray ray);
 t_comp		prepare_computations(t_intersec *intersection, t_ray ray,
 				t_shape *shape);
-t_xyzvektor	shade_hit(t_world *world, t_comp comp);
+t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape);
 t_xyzvektor	color_at(t_world *world, t_ray ray);
 double		**view_transform(t_xyzvektor from, t_xyzvektor to, t_xyzvektor up);
 t_camera	*camera(int hsize, int vsize, double field_of_view);
@@ -53,20 +53,19 @@ void		find_nearest_intersection(t_intersec *intersections,
 				int nr_intersections, t_intersec **intersec_to_use,
 				int *shape_to_use);
 t_shape		*new_shape(int type);
-double		dot_product(t_xyzvektor a, t_xyzvektor b);
+double		dotProduct(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	addition(t_xyzvektor a, t_xyzvektor b);
-t_xyzvektor	scalar_multiplication(t_xyzvektor a, double b);
-t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
-				bool in_shadow);
+t_xyzvektor	scalarMultiplication(t_xyzvektor a, double b);
+t_xyzvektor	lightning(t_material material, t_xyzvektor point, t_c canvas,
+				bool *in_shadow);
 t_ray		init_ray(void);
 double		magnitude(t_xyzvektor a);
 int			parse_input(char *file_name, t_world *world);
 void		free_double_ptr(double **a, int size);
 void		empty_intersections(t_c *canvas);
-t_checker	checker_init(t_xyzvektor color1, t_xyzvektor color2);
-t_xyzvektor	pattern_at(t_shape shape, t_xyzvektor point);
-void		save_intersections(t_c *canvas, t_intersec *new_intersection,
-				t_world *world);
 double		**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
 				t_xyzvektor t);
+// test
+bool		*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape);
+
 #endif

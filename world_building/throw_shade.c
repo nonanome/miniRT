@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:57:33 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:33:43 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ t_xyzvektor	hit(t_all_intersec all_intersections)
 		t1 = all_intersections.intersections[i].times[1];
 		if (t0 > 0 && t0 < t1)
 		{
-			hit_intersection = calculate_hit_point
-				(all_intersections.intersections[i], t0);
+			hit_intersection = calculate_hit_point(all_intersections.intersections[i],
+					t0);
 			if (t0 < 0 || t0 > t1)
 			{
-				hit_intersection = calculate_hit_point
-					(all_intersections.intersections[i], t1);
+				hit_intersection = calculate_hit_point(all_intersections.intersections[i],
+						t1);
 			}
 			return (hit_intersection);
 		}
@@ -67,39 +67,55 @@ t_xyzvektor	hit(t_all_intersec all_intersections)
 	return (hit_intersection);
 }
 
-bool	is_shadowed(t_world *world, t_xyzvektor point)
+
+bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 {
 	t_ray		ray;
 	t_xyzvektor	v;
 	double		distance;
 	t_xyzvektor	hit_intersection;
+	int			i;
+	bool		*shadows;
+	double		rotation[3][3];
 
-	v = substraction(world->canvas->lightsource.position, point);
-	distance = magnitude(v);
+	i = -1;
+	shadows = malloc(world->canvas->num_lights * sizeof(bool));
 	ray = init_ray();
 	ray.origin = point;
-	ray.direction = normalize(v);
+	while (++i < world->canvas->num_lights)
+	{
+		v = substraction(world->canvas->lightsource[i].position, point);
+		distance = magnitude(v);
+		ray.direction = normalize(v);
+		create_rotation_matrix(shape.normal, rotation);
+		transform_ray(&ray, rotation);
+		empty_intersections(world->canvas);
+		intersect_world(world, ray);
+		if (world->canvas->all_intersections.intersections != NULL)
+			hit_intersection = hit(world->canvas->all_intersections);
+		else
+			hit_intersection.w = INFINITY;
+		if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
+			shadows[i] = true;
+		else
+			shadows[i] = false;
+	}
 	empty_intersections(world->canvas);
-	intersect_world(world, ray);
-	if (world->canvas->all_intersections.intersections != NULL)
-		hit_intersection = hit(world->canvas->all_intersections);
-	if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
-		return (empty_intersections(world->canvas), true);
-	return (empty_intersections(world->canvas), false);
+	return (shadows);
 }
 
-t_xyzvektor	shade_hit(t_world *world, t_comp comp)
+t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 {
 	t_xyzvektor	retvalue;
 	t_c			local_canvas;
-	bool		in_shadow;
+	bool		*in_shadow;
 
 	local_canvas = *(world->canvas);
 	local_canvas.normale = comp.normalv;
 	local_canvas.eyevector = comp.eyev;
-	in_shadow = true;
-	in_shadow = is_shadowed(world, comp.over_point);
+	// in_shadow = true;
+	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	return (lightning(*(comp.object), comp.over_point, local_canvas,
+	return (lightning(comp.object->material, comp.over_point, local_canvas,
 			in_shadow));
 }

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:26:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:19:40 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,46 +62,24 @@ void cut_cylinder(t_intersec *result, t_ray ray, t_shape shape)
 	if (shape.minimum > tmp || shape.maximum < tmp)
 		result->times[0] = -1;
 	tmp = ray.origin.y + result->times[1] * ray.direction.y;
-	if (shape.minimum > tmp || shape.maximum < tmp)
+	if ((shape.minimum > tmp || shape.maximum < tmp))
 		result->times[1] = -1;
+	return ;
+}
 
-	// if(result->times[0] == -1 && result->times[1] == -1)
-	//     if (fabs(ray.direction.y) > EPSILON)
-    // {
-    //     double t_bottom = (shape.minimum - ray.origin.y) / ray.direction.y;
-    //     double x = ray.origin.x + t_bottom * ray.direction.x;
-    //     double z = ray.origin.z + t_bottom * ray.direction.z;
-    //     if (x * x + z * z <= 1.0)  // Check if the point lies within the cylinder's radius
-    //     {
-    //         if (result->times[0] == -1 || t_bottom < result->times[0])
-    //         {
-    //             result->times[1] = result->times[0];
-    //             result->times[0] = t_bottom;
-    //         }
-    //         else if (result->times[1] == -1 || t_bottom < result->times[1])
-    //         {
-    //             result->times[1] = t_bottom;
-    //         }
-    //     }
-    // }
-    // if (fabs(ray.direction.y) > EPSILON)
-    // {
-    //     double t_top = (shape.maximum - ray.origin.y) / ray.direction.y;
-    //     double x = ray.origin.x + t_top * ray.direction.x;
-    //     double z = ray.origin.z + t_top * ray.direction.z;
-    //     if (x * x + z * z <= 1.0)
-    //     {
-    //         if (result->times[0] == -1 || t_top < result->times[0])
-    //         {
-    //             result->times[1] = result->times[0];
-    //             result->times[0] = t_top;
-    //         }
-    //         else if (result->times[1] == -1 || t_top < result->times[1])
-    //         {
-    //             result->times[1] = t_top;
-    //         }
-    //     }
-    // }
+void cut_cone(t_intersec *result, t_ray ray, t_shape shape)
+{
+	double tmp;
+
+	if (result->times[0] > result->times[1])
+	{
+		tmp = result->times[0];
+		result->times[0] = result->times[1];
+		result->times[1] = tmp;
+	}
+	tmp = ray.origin.y + result->times[0] * ray.direction.y;
+	if (0 > tmp || (shape.maximum) < tmp)
+		result->times[0] = -1;
 	return ;
 }
 
@@ -203,3 +181,139 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 	FREE(discriminant_values);
 	return (result);
 }
+
+
+
+t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
+{
+	double	*discriminant_values;
+	double	discriminant;
+	double rotation[3][3];
+    double tan_theta;
+
+    tan_theta = cone.radius / (cone.maximum - cone.minimum);
+	create_rotation_matrix(cone.normal, rotation);
+    // ray.origin.y -= cone.maximum;
+	transform_ray(&ray, rotation);
+    // ray.origin.y -= cone.maximum;
+	discriminant_values = MALLOC(3 * sizeof(double));
+	result->times = MALLOC(2 * sizeof(double));
+	discriminant_values[0] = ray.direction.x * ray.direction.x + ray.direction.z
+		* ray.direction.z - ray.direction.y * ray.direction.y * tan_theta * tan_theta;
+	if (discriminant_values[0] > -EPSILON && discriminant_values[0] < EPSILON)
+		return (FREE(discriminant_values), NULL);
+	discriminant_values[1] = 2 * ray.origin.x * ray.direction.x + 2
+		* ray.origin.z * ray.direction.z - 2 * ray.origin.y * ray.direction.y * tan_theta * tan_theta;
+	discriminant_values[2] = ray.origin.x * ray.origin.x + ray.origin.z
+		* ray.origin.z - ray.origin.y * ray.origin.y * tan_theta * tan_theta;
+	discriminant = discriminant_values[1] * discriminant_values[1] - 4
+		* discriminant_values[0] * discriminant_values[2];
+	if (discriminant < 0)
+		return (FREE(discriminant_values), NULL);
+	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
+			* discriminant_values[0]);
+	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
+			* discriminant_values[0]);
+	result->object_id = cone.id;
+	cut_cylinder(result, ray, cone);
+	if(result->times[0] == -1)
+		cap_top(result, ray, cone);
+	if(result->times[1] == -1)
+		cap_bottom(result, ray, cone);
+	FREE(discriminant_values);
+	return (result);
+}
+
+// t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
+// {
+// 	double	*discriminant_values;
+// 	double	discriminant;
+// 	double rotation[3][3];
+//     double tan_theta;
+//     double y_shift;
+
+//     tan_theta = cone.radius / (cone.maximum - cone.minimum);
+//     y_shift = cone.maximum; // Verschiebung der Spitze nach y = maximum
+
+// 	create_rotation_matrix(cone.normal, rotation);
+// 	transform_ray(&ray, rotation);
+
+// 	// Verschiebung des Strahls entlang der y-Achse
+// 	ray.origin.y -= y_shift;
+
+// 	discriminant_values = MALLOC(3 * sizeof(double));
+// 	result->times = MALLOC(2 * sizeof(double));
+
+// 	// Anpassung der Diskriminantenberechnung für den Kegel
+// 	discriminant_values[0] = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z
+// 		- ray.direction.y * ray.direction.y * tan_theta * tan_theta;
+// 	if (discriminant_values[0] > -EPSILON && discriminant_values[0] < EPSILON)
+// 		return (FREE(discriminant_values), NULL);
+
+// 	discriminant_values[1] = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z
+// 		- 2 * ray.origin.y * ray.direction.y * tan_theta * tan_theta;
+
+// 	discriminant_values[2] = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z
+// 		- ray.origin.y * ray.origin.y * tan_theta * tan_theta;
+
+// 	discriminant = discriminant_values[1] * discriminant_values[1] - 4
+// 		* discriminant_values[0] * discriminant_values[2];
+// 	if (discriminant < 0)
+// 		return (FREE(discriminant_values), NULL);
+
+// 	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
+// 			* discriminant_values[0]);
+// 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
+// 			* discriminant_values[0]);
+
+// 	result->object_id = cone.id;
+
+// 	// Hier könnten zusätzliche Schnittberechnungen für die Deckel des Kegels hinzugefügt werden
+// 	// z.B. für einen abgeschnittenen Kegel (Frustum)
+
+// 	FREE(discriminant_values);
+// 	return (result);
+// }
+
+// t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
+// {
+// 	double	*discriminant_values;
+// 	double	discriminant;
+// 	double rotation[3][3];
+// 	double tan_theta = cone.radius / (cone.maximum - cone.minimum); // Berechnung von tan(theta) aus Radius und Höhe
+
+// 	create_rotation_matrix(cone.normal, rotation);
+// 	transform_ray(&ray, rotation);
+// 	discriminant_values = MALLOC(3 * sizeof(double));
+// 	result->times = MALLOC(2 * sizeof(double));
+
+// 	// Anpassung der Diskriminantenberechnung für den Kegel
+// 	discriminant_values[0] = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z
+// 		- ray.direction.y * ray.direction.y * tan_theta * tan_theta;
+// 	if (discriminant_values[0] > -EPSILON && discriminant_values[0] < EPSILON)
+// 		return (FREE(discriminant_values), NULL);
+
+// 	discriminant_values[1] = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z
+// 		- 2 * ray.origin.y * ray.direction.y * tan_theta * tan_theta;
+
+// 	discriminant_values[2] = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z
+// 		- ray.origin.y * ray.origin.y * tan_theta * tan_theta;
+
+// 	discriminant = discriminant_values[1] * discriminant_values[1] - 4
+// 		* discriminant_values[0] * discriminant_values[2];
+// 	if (discriminant < 0)
+// 		return (FREE(discriminant_values), NULL);
+
+// 	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
+// 			* discriminant_values[0]);
+// 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
+// 			* discriminant_values[0]);
+
+// 	result->object_id = cone.id;
+
+// 	// Hier könnten zusätzliche Schnittberechnungen für die Deckel des Kegels hinzugefügt werden
+// 	// z.B. für einen abgeschnittenen Kegel (Frustum)
+
+// 	FREE(discriminant_values);
+// 	return (result);
+// }

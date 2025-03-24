@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/22 19:27:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:28:14 by qhahn            ###   ########.fr       */
+/*   Created: 2025/03/24 17:40:51 by qhahn             #+#    #+#             */
+/*   Updated: 2025/03/24 17:40:53 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,5 @@ void	__attribute__((destructor))	free_list(void)
 
 	ptrlist = get_adress_of_list();
 	if (ptrlist != NULL)
-	{
 		ft_lstclear(&ptrlist, free);
-	}
 }
