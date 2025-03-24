@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:32:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:33:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	add_checker(t_world *world, char **split, int type)
 		- 1]->material.checker.origin = set_vector(budget_ft_atof(split_split[1][0]),
 			budget_ft_atof(split_split[1][1]),
 			budget_ft_atof(split_split[1][2]), 0);
+	world->shapes[world->nr_shapes
+		- 1]->material.checker.default_transformation = get_identity_matrix();
 }
 
 int	parse_sphere(t_world *world, char *line)

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:56:57 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:42:07 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,6 @@ t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 	local_canvas.eyevector = comp.eyev;
 	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	return (lightning(comp.object->material, comp.over_point, local_canvas,
+	return (lightning(*(comp.object), comp.over_point, local_canvas,
 			in_shadow));
 }

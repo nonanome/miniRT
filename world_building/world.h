@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:34:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:44:18 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_shape		*new_shape(int type);
 double		dotProduct(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	addition(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	scalarMultiplication(t_xyzvektor a, double b);
-t_xyzvektor	lightning(t_material material, t_xyzvektor point, t_c canvas,
+t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 				bool *in_shadow);
 t_ray		init_ray(void);
 double		magnitude(t_xyzvektor a);
