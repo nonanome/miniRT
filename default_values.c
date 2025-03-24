@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:26:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:26:30 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:04:12 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ t_sphere	new_sphere(void)
 	result.origin.w = 1;
 	result.radius = 1;
 	result.default_transformation = get_identity_matrix();
-	result.id = globalID;
+	result.id = g_globalid;
 	result.material = default_material();
-	globalID++;
+	g_globalid++;
 	return (result);
 }
 

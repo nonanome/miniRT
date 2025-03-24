@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/21 20:20:05 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:04:12 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define PI 3.14159265358979323846
 # define EPSILON 0.00001
 
-static int			globalID = 0;
+static int			g_globalid = 0;
 
 typedef struct s_koord
 {
@@ -30,26 +30,36 @@ typedef struct s_koord
 	double			y;
 	double			z;
 	double			w;
-}					xyzvektor;
+}					t_xyzvektor;
 
 typedef struct point_data
 {
-	xyzvektor		position;
-	xyzvektor		velocity;
+	t_xyzvektor		position;
+	t_xyzvektor		velocity;
 }					t_point;
 
 typedef struct environment
 {
-	xyzvektor		wind;
-	xyzvektor		gravity;
+	t_xyzvektor		wind;
+	t_xyzvektor		gravity;
 }					t_env;
 
 typedef struct ray
 {
-	xyzvektor		origin;
-	xyzvektor		direction;
+	t_xyzvektor		origin;
+	t_xyzvektor		direction;
 
 }					t_ray;
+
+typedef struct s_checker
+{
+	bool			enable;
+	t_xyzvektor		color1;
+	t_xyzvektor		color2;
+	t_xyzvektor		origin;
+	double			**default_transformation;
+
+}					t_checker;
 
 typedef struct material
 {
@@ -58,17 +68,18 @@ typedef struct material
 	double			diffuse;
 	double			specular;
 	double			shininess;
+	t_checker		checker;
 }					t_material;
 
 typedef struct s_shape
 {
 	int				id;
-	xyzvektor		origin;
+	t_xyzvektor		origin;
 	double			**default_transformation;
 	t_material		material;
 	int				type;
 	double			radius;
-	xyzvektor		normal;
+	t_xyzvektor		normal;
 	double			minimum;
 	double			maximum;
 	bool			closed;
@@ -77,7 +88,7 @@ typedef struct s_shape
 typedef struct sphere
 {
 	int				id;
-	xyzvektor		origin;
+	t_xyzvektor		origin;
 	double			radius;
 	double			**default_transformation;
 	t_material		material;
@@ -99,22 +110,22 @@ typedef struct intersections
 
 typedef struct pointlight
 {
-	xyzvektor		color;
-	xyzvektor		position;
+	t_xyzvektor		color;
+	t_xyzvektor		position;
 }					t_light;
 
 typedef struct reflection_data_store
 {
-	xyzvektor		effective_color;
-	xyzvektor		materialcolor;
-	xyzvektor		lightsourcecolor;
-	xyzvektor		light_vector;
-	xyzvektor		ambient;
-	xyzvektor		diffuse;
-	xyzvektor		specular;
+	t_xyzvektor		effective_color;
+	t_xyzvektor		materialcolor;
+	t_xyzvektor		lightsourcecolor;
+	t_xyzvektor		light_vector;
+	t_xyzvektor		ambient;
+	t_xyzvektor		diffuse;
+	t_xyzvektor		specular;
 	double			reflect_dot_eye;
 	double			factor;
-	xyzvektor		reflectv;
+	t_xyzvektor		reflectv;
 }					t_store;
 
 typedef struct canvas
@@ -129,51 +140,43 @@ typedef struct canvas
 	mlx_t			*mlx_ptr;
 	t_all_intersec	all_intersections;
 	t_light			*lightsource;
-	xyzvektor		normale;
-	xyzvektor		eyevector;
+	t_xyzvektor		normale;
+	t_xyzvektor		eyevector;
 }					t_c;
-
-typedef struct visualize_struct
-{
-	xyzvektor		world_coordinates;
-	xyzvektor		intersectionpoint;
-	xyzvektor		color;
-	t_intersec		*intersec;
-}					v_s;
 
 typedef struct s_camera
 {
-	int		hsize;
-	int		vsize;
-	double	pixel_size;
-	double	field_of_view;
-	double	**transform;
-	double	half_width;
-	double	half_height;
-}				t_camera;
+	int				hsize;
+	int				vsize;
+	double			pixel_size;
+	double			field_of_view;
+	double			**transform;
+	double			half_width;
+	double			half_height;
+}					t_camera;
 
 typedef struct s_world
 {
-	t_shape	**shapes;
-	long		nr_shapes;
-	t_c			*canvas;
-	double		*all_sorted;
-	t_env		*env;
-	xyzvektor	*ambient;
-	double		ambient_intensity;
-	t_camera	*camera;
-}				t_world;
+	t_shape			**shapes;
+	long			nr_shapes;
+	t_c				*canvas;
+	double			*all_sorted;
+	t_env			*env;
+	t_xyzvektor		*ambient;
+	double			ambient_intensity;
+	t_camera		*camera;
+}					t_world;
 
 typedef struct s_comp
 {
-	double	t;
-	t_shape	*object;
-	xyzvektor	point;
-	xyzvektor	over_point;
-	xyzvektor	eyev;
-	xyzvektor	normalv;
-	xyzvektor	reflectv;
-	bool	inside;
-}				t_comp;
+	double			t;
+	t_shape			*object;
+	t_xyzvektor		point;
+	t_xyzvektor		over_point;
+	t_xyzvektor		eyev;
+	t_xyzvektor		normalv;
+	t_xyzvektor		reflectv;
+	bool			inside;
+}					t_comp;
 
 #endif

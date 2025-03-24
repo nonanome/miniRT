@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   throw_shade.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:44:55 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/24 17:56:57 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	empty_intersections(t_c *canvas)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (canvas->all_intersections.intersections)
@@ -28,28 +28,38 @@ void	empty_intersections(t_c *canvas)
 	canvas->all_intersections.intersections = NULL;
 }
 
-xyzvektor	hit(t_all_intersec all_intersections)
+static t_xyzvektor	calculate_hit_point(t_intersec intersection, double time)
 {
+	t_xyzvektor	result;
+
+	result = addition(intersection.ray.origin,
+			scalar_multiplication(intersection.ray.direction, time));
+	result.w = time;
+	return (result);
+}
+
+t_xyzvektor	hit(t_all_intersec all_intersections)
+{
+	t_xyzvektor	hit_intersection;
+	double		t0;
+	double		t1;
 	int			i;
-	xyzvektor	hit_intersection;
 
 	i = 0;
 	hit_intersection = set_vector(0, 0, 0, 0);
-	while (i <= all_intersections.nr_intersections /2 -1)
+	while (i <= all_intersections.nr_intersections / 2 - 1)
 	{
-		if (all_intersections.intersections[i].times[0] > 0 && all_intersections.intersections[i].times[0] < all_intersections.intersections[i].times[1])
+		t0 = all_intersections.intersections[i].times[0];
+		t1 = all_intersections.intersections[i].times[1];
+		if (t0 > 0 && t0 < t1)
 		{
-			hit_intersection = all_intersections.intersections[i].ray.origin;
-			hit_intersection = addition(hit_intersection, scalarMultiplication(all_intersections.intersections[i].ray.direction,
-						all_intersections.intersections[i].times[0]));
-			hit_intersection.w = all_intersections.intersections[i].times[0];
-			if (all_intersections.intersections[i].times[0] < 0 || all_intersections.intersections[i].times[0] > all_intersections.intersections[i].times[1])
-				{
-					hit_intersection.w = all_intersections.intersections[i].times[1];
-					hit_intersection = addition(all_intersections.intersections[i].ray.origin, scalarMultiplication(all_intersections.intersections[i].ray.direction,
-						all_intersections.intersections[i].times[1]));
-					hit_intersection.w = all_intersections.intersections[i].times[1];
-				}
+			hit_intersection = calculate_hit_point
+				(all_intersections.intersections[i], t0);
+			if (t0 < 0 || t0 > t1)
+			{
+				hit_intersection = calculate_hit_point
+					(all_intersections.intersections[i], t1);
+			}
 			return (hit_intersection);
 		}
 		i++;
@@ -57,49 +67,22 @@ xyzvektor	hit(t_all_intersec all_intersections)
 	return (hit_intersection);
 }
 
-// bool	is_shadowed(t_world *world, xyzvektor point)
-// {
-// 	t_ray		ray;
-// 	xyzvektor	v;
-// 	double		distance;
-// 	xyzvektor	hit_intersection;
-// 	int i;
 
-// 	i = -1;
-// 	while(++ i < world->canvas->num_lights)
-// 	{
-// 		v = substraction(world->canvas->lightsource[i].position, point);
-// 		distance = magnitude(v);
-// 		ray = init_ray();
-// 		ray.origin = point;
-// 		ray.direction = normalize(v);
-// 		empty_intersections(world->canvas);
-// 		intersect_world(world, ray);
-// 		if(world->canvas->all_intersections.intersections != NULL)
-// 			hit_intersection = hit(world->canvas->all_intersections);
-// 		if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
-// 			return (empty_intersections(world->canvas), true);
-// 	}
-// 	return (empty_intersections(world->canvas), false);
-// }
-
-
-
-bool	*is_shadowed(t_world *world, xyzvektor point, t_shape shape)
+bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 {
 	t_ray		ray;
-	xyzvektor	v;
+	t_xyzvektor	v;
 	double		distance;
-	xyzvektor	hit_intersection;
-	int i;
-	bool 		*shadows;
-	double rotation[3][3];
+	t_xyzvektor	hit_intersection;
+	int			i;
+	bool		*shadows;
+	double		rotation[3][3];
 
 	i = -1;
 	shadows = malloc(world->canvas->num_lights * sizeof(bool));
 	ray = init_ray();
 	ray.origin = point;
-	while(++ i < world->canvas->num_lights)
+	while (++i < world->canvas->num_lights)
 	{
 		v = substraction(world->canvas->lightsource[i].position, point);
 		distance = magnitude(v);
@@ -108,7 +91,7 @@ bool	*is_shadowed(t_world *world, xyzvektor point, t_shape shape)
 		transform_ray(&ray, rotation);
 		empty_intersections(world->canvas);
 		intersect_world(world, ray);
-		if(world->canvas->all_intersections.intersections != NULL)
+		if (world->canvas->all_intersections.intersections != NULL)
 			hit_intersection = hit(world->canvas->all_intersections);
 		else
 			hit_intersection.w = INFINITY;
@@ -118,20 +101,20 @@ bool	*is_shadowed(t_world *world, xyzvektor point, t_shape shape)
 			shadows[i] = false;
 	}
 	empty_intersections(world->canvas);
-	return shadows;
+	return (shadows);
 }
 
-xyzvektor shade_hit(t_world *world, t_comp comp, t_shape shape)
+t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 {
-	xyzvektor retvalue;
-	t_c local_canvas;
-	bool *in_shadow;
+	t_xyzvektor	retvalue;
+	t_c			local_canvas;
+	bool		*in_shadow;
 
 	local_canvas = *(world->canvas);
 	local_canvas.normale = comp.normalv;
 	local_canvas.eyevector = comp.eyev;
-	// in_shadow = true;
 	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	return (lightning(comp.object->material, comp.over_point, local_canvas, in_shadow));
+	return (lightning(comp.object->material, comp.over_point, local_canvas,
+			in_shadow));
 }

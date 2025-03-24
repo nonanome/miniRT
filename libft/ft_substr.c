@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:02:15 by kkuhn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/03/24 18:01:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 // 	return (i);
 // }
 
-char	*ft_substr(char const	*s, size_t start, size_t len)
+char	*ft_substr(char const *s, size_t start, size_t len)
 {
-	char	*substring ;
+	char	*substring;
 	size_t	i;
 
 	i = 0;
@@ -41,13 +41,13 @@ char	*ft_substr(char const	*s, size_t start, size_t len)
 		len = ft_strlen(s) - start;
 	if (ft_strlen(s) - start < len)
 		len = ft_strlen(s) - start;
-	substring = (char *) MALLOC (len + 1); //MALLOC!
+	substring = (char *)MALLOC(len + 1); // MALLOC!
 	if (substring == 0)
 		return (0);
 	while (i < len && s[i + start] != 0)
 	{
-		substring [i] = s[start + i];
-		i ++;
+		substring[i] = s[start + i];
+		i++;
 	}
 	substring[i] = 0;
 	return (substring);
@@ -58,5 +58,5 @@ char	*ft_substr(char const	*s, size_t start, size_t len)
 //    char	str[] = "tripouille";
 // 	char * s = strdup("4");
 // 	printf("%s",ft_substr(str, 0, 10));
-//     return 0;
+//     return (0);
 // }
