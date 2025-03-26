@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:34:04 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/26 21:57:35 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 	t_xyzvektor	sphere_to_ray;
 
 	discriminant_values = MALLOC(3 * sizeof(double));
-	sphere_to_ray = substraction(ray.origin, sphere.origin);
+	sphere_to_ray = ray.origin;
 	discriminant_values[0] = dot_product(ray.direction, ray.direction);
 	discriminant_values[1] = 2 * dot_product(ray.direction, sphere_to_ray);
 	discriminant_values[2] = dot_product(sphere_to_ray, sphere_to_ray)
@@ -74,8 +74,6 @@ t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 	return (result);
 }
 
-
-
 t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 {
 	if (shape->type == 0)
@@ -90,7 +88,7 @@ t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 	{
 		return (cylinder_intersect(result, ray, *shape));
 	}
-	else if(shape->type == 3)
+	else if (shape->type == 3)
 	{
 		return (cone_intersect(result, ray, *shape));
 	}

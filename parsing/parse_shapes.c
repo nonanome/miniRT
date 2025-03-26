@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 18:33:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/26 21:25:43 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	parse_sphere(t_world *world, char *line)
 	if (radius < 0)
 		return (ft_free_split(split), 1);
 	shape = new_shape(0);
-	shape->origin = set_vector(xyz[0], xyz[1], xyz[2], 1);
+	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));

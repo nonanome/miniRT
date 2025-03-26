@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 18:46:29 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/26 22:06:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ t_xyzvektor	sphere_normal(t_shape shape, t_xyzvektor point)
 
 	inverse_transform = invert_matrix(shape.default_transformation, 4);
 	local_point = multiply_vector_and_matrix(point, inverse_transform);
-	local_normal = substraction(local_point, shape.origin);
+	local_normal = local_point;
 	transpose_inverse_transform = transpose_matrix(inverse_transform, 4);
-	world_normal = multiply_vector_and_matrix(local_normal,
+    world_normal = multiply_vector_and_matrix(local_normal,
 			transpose_inverse_transform);
-	world_normal.w = 0;
+    world_normal.w = 0;
 	free_double_ptr(transpose_inverse_transform, 4);
 	free_double_ptr(inverse_transform, 4);
 	return (normalize(world_normal));
@@ -81,6 +81,23 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 		return (calc_cone_normal(shape, point));
 }
 
+static double get_shadow_factor(bool *in_shadow, t_c canvas)
+{
+	int i;
+	double shadow_factor;
+
+	shadow_factor = 0.1;
+	i = -1;
+	while (++i < canvas.num_lights)
+	{
+		if (in_shadow[i])
+			shadow_factor += 0.5;
+	}
+	if (shadow_factor > 1)
+		shadow_factor = 1;
+	return (shadow_factor);
+}
+
 t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 		bool *in_shadow)
 {
@@ -94,28 +111,27 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 	store.diffuse = set_black();
 	store.specular = set_black();
 	store.ambient = set_black();
+	result = set_black();
 	if (shape.material.checker.enable)
 		store.materialcolor = pattern_at(shape, point);
 	else
 		store.materialcolor = get_color_from_uint(shape.material.color);
+	shadow_factor = get_shadow_factor(in_shadow, canvas);
+	if (shape.type == 0)
+		printf("sf:%f\n",shadow_factor);
+	store.ambient = scalar_multiplication(store.materialcolor, shape.material.ambient);
 	while (++i < canvas.num_lights)
 	{
-		shadow_factor = in_shadow[i] ? 0.1 : 1.0;
 		store.lightsourcecolor = canvas.lightsource[i].color;
 		store.effective_color = hadamard_product(store.materialcolor,
 				store.lightsourcecolor);
 		store.light_vector = normalize(substraction
 				(canvas.lightsource[i].position, point));
-		store.ambient = addition(store.ambient,
-				scalar_multiplication(store.effective_color, shape.material.ambient));
 		light_dot_normale = dot_product(store.light_vector, canvas.normale);
 		if (light_dot_normale >= 0)
 		{
-			store.diffuse = addition(store.diffuse,
-					scalar_multiplication(scalar_multiplication
-						(store.effective_color,
-							shape.material.diffuse), light_dot_normale
-						* shadow_factor));
+			store.diffuse = scalar_multiplication(get_color_from_uint(shape.material.color), shape.material.diffuse * light_dot_normale);
+			result = addition(result, scalar_multiplication(store.diffuse, 1.0 - shadow_factor));
 			store.reflectv = calculate_reflection(store.light_vector,
 					canvas.normale);
 			store.reflect_dot_eye = dot_product(store.reflectv,
@@ -126,17 +142,12 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 				store.specular = addition(store.specular,
 						scalar_multiplication(scalar_multiplication
 							(store.lightsourcecolor,
-								shape.material.specular), store.factor
-							* shadow_factor));
+								shape.material.specular), store.factor));
 			}
 		}
 	}
 	FREE(in_shadow);
-	return (addition(addition(store.ambient, store.diffuse), store.specular));
-	result.x = 1;
-	result.y = 0;
-	result.z = 0;
-	return (result);
+	return (addition(store.ambient, result));
 }
 
 // t_xyzvektor lightning(t_material material, t_xyzvektor point, t_c canvas, bool *in_shadow)
