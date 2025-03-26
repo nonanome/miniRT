@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 16:39:34 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/26 16:16:01 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ mlx_image_t	*render_image(t_camera *cam, t_world *world)
 		}
 		y++;
 	}
+	printf("image done cooking\n");
 	return (image);
 }

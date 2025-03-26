@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 18:42:07 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/26 22:29:22 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 		v = substraction(world->canvas->lightsource[i].position, point);
 		distance = magnitude(v);
 		ray.direction = normalize(v);
-		create_rotation_matrix(shape.normal, rotation);
-		transform_ray(&ray, rotation);
+		if (shape.type != 0)
+		{
+			create_rotation_matrix(shape.normal, rotation);
+			transform_ray(&ray, rotation);
+		}
 		empty_intersections(world->canvas);
 		intersect_world(world, ray);
 		if (world->canvas->all_intersections.intersections != NULL)
