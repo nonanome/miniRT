@@ -6,13 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:19:40 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/27 19:55:25 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void create_rotation_matrix(t_xyzvektor normal, double rotation[3][3])
+void create_rotation_matrix(t_xyzvektor normal, double **rotation)
 {
     double axis[3] = {0.0, 1.0, 0.0};
     double dot = normal.x * axis[0] + normal.y * axis[1] + normal.z * axis[2];
@@ -33,7 +33,7 @@ void create_rotation_matrix(t_xyzvektor normal, double rotation[3][3])
     rotation[2][2] = cos_theta + cross[2] * cross[2] * (1 - cos_theta);
 }
 
-void transform_ray(t_ray *ray, double rotation[3][3])
+void transform_ray(t_ray *ray, double **rotation)
 {
     double origin[3] = {ray->origin.x, ray->origin.y, ray->origin.z};
     double direction[3] = {ray->direction.x, ray->direction.y, ray->direction.z};
@@ -150,8 +150,12 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 {
 	double	*discriminant_values;
 	double	discriminant;
-	double rotation[3][3];
+	double **rotation;
 
+	rotation = MALLOC(sizeof(double *) * 3);
+	rotation[0] = MALLOC(sizeof(double) * 3);
+	rotation[1] = MALLOC(sizeof(double) * 3);
+	rotation[2] = MALLOC(sizeof(double) * 3);
 	create_rotation_matrix(cylinder.normal, rotation);
 	transform_ray(&ray, rotation);
 	discriminant_values = MALLOC(3 * sizeof(double));
@@ -188,9 +192,13 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 {
 	double	*discriminant_values;
 	double	discriminant;
-	double rotation[3][3];
+	double **rotation;
     double tan_theta;
 
+	rotation = MALLOC(sizeof(double *) * 3);
+	rotation[0] = MALLOC(sizeof(double) * 3);
+	rotation[1] = MALLOC(sizeof(double) * 3);
+	rotation[2] = MALLOC(sizeof(double) * 3);
     tan_theta = cone.radius / (cone.maximum - cone.minimum);
 	create_rotation_matrix(cone.normal, rotation);
     // ray.origin.y -= cone.maximum;
