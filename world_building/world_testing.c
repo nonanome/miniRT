@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 16:27:51 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/27 20:45:59 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	main(void)
 	}
 	if (!world->camera->transform)
 		return (1);
-	mlx_delete_image(world->canvas->mlx_ptr, image);
 	image = render_image(world->camera, world);
 	if (!image)
 	{
@@ -60,5 +59,6 @@ int	main(void)
 	mlx_image_to_window(world->canvas->mlx_ptr, image, 0, 0);
 	mlx_loop(world->canvas->mlx_ptr);
 	free_world(world);
+	mlx_delete_image(world->canvas->mlx_ptr, image);
 	return (0);
 }

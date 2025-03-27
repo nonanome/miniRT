@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 19:17:57 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/27 21:35:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,15 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 	double		shadow_factor;
 	int			i;
 	t_xyzvektor	result;
+	t_xyzvektor	scaled_spec;
+	t_xyzvektor	final;
 
 	i = -1;
 	store.diffuse = set_black();
 	store.specular = set_black();
 	store.ambient = set_black();
 	result = set_black();
-	if (shape.material.checker.enable)
+	if (shape.material.checker_enable)
 		store.materialcolor = pattern_at(shape, point);
 	else
 		store.materialcolor = get_color_from_uint(shape.material.color);
@@ -144,7 +146,7 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 		light_dot_normale = dot_product(store.light_vector, canvas.normale);
 		if (light_dot_normale >= 0)
 		{
-			store.diffuse = scalar_multiplication(get_color_from_uint(shape.material.color),
+			store.diffuse = scalar_multiplication(store.materialcolor,
 					shape.material.diffuse * light_dot_normale);
 			result = addition(result, scalar_multiplication(store.diffuse, 1.0
 						- shadow_factor));
@@ -156,14 +158,19 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 			{
 				store.factor = pow(store.reflect_dot_eye,
 						shape.material.shininess);
-				store.specular = addition(store.specular,
-						scalar_multiplication(scalar_multiplication(store.lightsourcecolor,
-								shape.material.specular), store.factor));
+				scaled_spec = scalar_multiplication(store.lightsourcecolor,
+						shape.material.specular * store.factor * (1.0
+							- shadow_factor));
+				store.specular = addition(store.specular, scaled_spec);
 			}
 		}
 	}
+	final = addition(store.ambient, addition(result, store.specular));
+	final.x = fmax(0.0, fmin(1.0, final.x));
+	final.y = fmax(0.0, fmin(1.0, final.y));
+	final.z = fmax(0.0, fmin(1.0, final.z));
 	FREE(in_shadow);
-	return (addition(store.ambient, result));
+	return (final);
 }
 
 // reflection_test

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/26 16:20:26 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/27 20:34:09 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,6 @@ typedef struct ray
 
 }					t_ray;
 
-typedef struct s_checker
-{
-	bool			enable;
-	t_xyzvektor		color1;
-	t_xyzvektor		color2;
-	t_xyzvektor		origin;
-	double			**default_transformation;
-
-}					t_checker;
-
 typedef struct material
 {
 	uint32_t		color;
@@ -68,7 +58,8 @@ typedef struct material
 	double			diffuse;
 	double			specular;
 	double			shininess;
-	t_checker		checker;
+	bool			checker_enable;
+	t_xyzvektor		color2;
 }					t_material;
 
 typedef struct s_shape
