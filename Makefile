@@ -2,6 +2,7 @@ NAME = miniRT
 CFLAGS = -Iinclude -ldl -lglfw -pthread -lm -g
 PATH_MLX = -L./MLX42 -lmlx42 -O3
 MLX = MLX42/build/libmlx42.a
+CLEAN_DIRS = libft vector_stuff Matrix_stuff Intersections Transformation world_building parsing
 OBJECTS = libft/ft_toupper.o \
        libft/ft_tolower.o \
        libft/ft_substr.o \
@@ -76,13 +77,16 @@ ${OBJECTS}:	${OBJ}
 	make bonus -C ./libft
 
 clean:
-	rm -f ${OBJECTS} *.o
-	rm -rf MLX42
+	for dir in $(CLEAN_DIRS); do rm -f $$dir/*.o; done
+	rm -f *.o
+	rm -rf $(MLX_DIR)
 
 fclean:
 	make clean
 	make -C ./libft fclean
 	rm -f ${OBJECTS} ${NAME}
-	rm -rf ${MLX_DIR}
+	rm -rf MLX42
 
 re: fclean all
+
+.PHONY: all clean fclean re

@@ -6,11 +6,11 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:55:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/27 20:31:09 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../miniRT.h"
+#include "parsing.h"
 
 void	check_spere_or_light_line(char *line)
 {
@@ -19,7 +19,7 @@ void	check_spere_or_light_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 4 && split_count != 7)
+	if (split_count != 4 && split_count != 5)
 	{
 		write(2, "sphere or light line in wrong form", 34);
 		exit(1);
@@ -30,9 +30,8 @@ void	check_spere_or_light_line(char *line)
 		write(2, "sphere or light line in wrong form", 34);
 		exit(1);
 	}
-	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3
-			|| count_split(ft_split(split_on_space[5], ',')) != 3
-			|| count_split(ft_split(split_on_space[6], ',')) != 3))
+	if (split_count == 5 && (count_split(ft_split(split_on_space[4],
+					',')) != 3))
 	{
 		write(2, "sphere or light line in wrong form", 34);
 		exit(1);
@@ -66,7 +65,7 @@ int	check_plane_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 4 && split_count != 7)
+	if (split_count != 4 && split_count != 5)
 	{
 		write(2, "plane line in wrong form",
 			ft_strlen("plane line in wrong form"));
@@ -79,9 +78,8 @@ int	check_plane_line(char *line)
 		write(2, "plane line in wrong form", 24);
 		exit(0);
 	}
-	if (split_count == 7 && (count_split(ft_split(split_on_space[4], ',')) != 3
-			|| count_split(ft_split(split_on_space[5], ',')) != 3
-			|| count_split(ft_split(split_on_space[6], ',')) != 3))
+	if (split_count == 5 && (count_split(ft_split(split_on_space[4],
+					',')) != 3))
 		return (write(2, "plane line in wrong form", 24), 1);
 	return (0);
 }
@@ -112,7 +110,7 @@ void	check_cylinder_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 6 && split_count != 9)
+	if (split_count != 6 && split_count != 7)
 	{
 		write(2, "cylinder line in wrong form",
 			ft_strlen("cylinder line in wrong form"));
@@ -125,9 +123,8 @@ void	check_cylinder_line(char *line)
 		write(2, "cylinder line in wrong form", 27);
 		exit(1);
 	}
-	if (split_count == 9 && (count_split(ft_split(split_on_space[6], ',')) != 3
-			|| count_split(ft_split(split_on_space[7], ',')) != 3
-			|| count_split(ft_split(split_on_space[8], ',')) != 3))
+	if (split_count == 7 && (count_split(ft_split(split_on_space[6],
+					',')) != 3))
 	{
 		write(2, "cylinder line in wrong form", 27);
 		exit(1);

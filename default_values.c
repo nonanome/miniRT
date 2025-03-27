@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:26:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 18:04:12 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/03/27 20:35:56 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ t_material	default_material(void)
 	dm.diffuse = 0.9;
 	dm.specular = 0.9;
 	dm.shininess = 200.0;
-	dm.checker.enable = false;
+	dm.checker_enable = false;
+	dm.color2 = color;
 	return (dm);
 }
 
