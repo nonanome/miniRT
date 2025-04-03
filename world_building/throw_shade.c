@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 19:50:52 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:36:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 	double		**inverse_transform;
 
 	i = -1;
-	shadows = malloc(world->canvas->num_lights * sizeof(bool));
+	shadows = MALLOC(world->canvas->num_lights * sizeof(bool));
 	ray = init_ray();
 	ray.origin = point;
 	while (++i < world->canvas->num_lights)
@@ -90,7 +90,6 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 		if (shape.type != 0)
 		{
 			inverse_transform = invert_matrix(shape.default_transformation, 4);
-			// Transform the ray into the object's local space
 			transform_ray(&ray, inverse_transform);
 		}
 		empty_intersections(world->canvas);
@@ -119,6 +118,7 @@ t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 	local_canvas.eyevector = comp.eyev;
 	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	return (lightning(*(comp.object), comp.over_point, local_canvas,
-			in_shadow));
+	retvalue = lightning(*(comp.object), comp.over_point, local_canvas,
+			in_shadow);
+	return (retvalue);
 }

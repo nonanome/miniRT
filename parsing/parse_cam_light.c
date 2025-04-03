@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 18:02:06 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:18:20 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	realloc_light(t_c *canvas, t_light new_light)
 	int		i;
 
 	i = 0;
-	lights = malloc((canvas->num_lights + 1) * sizeof(t_light));
+	lights = MALLOC((canvas->num_lights + 1) * sizeof(t_light));
 	while (i < canvas->num_lights)
 	{
 		printf("test");

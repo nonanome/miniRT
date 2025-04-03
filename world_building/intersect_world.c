@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_world.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:43:28 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:55:37 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	find_nearest_intersection(t_intersec *intersections,
 	}
 }
 
-xyzvektor	color_at(t_world *world, t_ray ray, t_shape shape)
+t_xyzvektor	color_at(t_world *world, t_ray ray)
 {
 	t_comp		comp;
 	t_intersec	*intersec_to_use;
@@ -60,9 +60,9 @@ xyzvektor	color_at(t_world *world, t_ray ray, t_shape shape)
 	if (!intersec_to_use)
 		return (set_black());
 	comp = prepare_computations(intersec_to_use, ray,
-	 		(world->shapes[shape_to_use]));
+			(world->shapes[shape_to_use]));
 	empty_intersections(world->canvas);
-	return (shade_hit(world, comp, *world->shapes[shape_to_use]));
+	return (shade_hit(world, comp, *(world->shapes[shape_to_use])));
 }
 
 static void	save_intersections(t_c *canvas, t_intersec *new_intersection,
@@ -80,7 +80,7 @@ static void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	}
 	else
 	{
-		canvas->all_intersections.intersections = realloc(canvas->all_intersections.intersections,
+		canvas->all_intersections.intersections = rt_realloc(canvas->all_intersections.intersections,
 				sizeof(t_intersec)
 				* (canvas->all_intersections.nr_intersection_entries + 1));
 		if (!canvas->all_intersections.intersections)
@@ -145,15 +145,15 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.t = intersection->times[0];
 	comps.object = shape;
 	comps.point = point_of_intersection(intersection, ray);
-	comps.eyev = negateTuple(ray.direction);
+	comps.eyev = negate_tuple(ray.direction);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
 			comps.point.y + comps.normalv.y * EPSILON, comps.point.z
 			+ comps.normalv.z * EPSILON, 1);
-	if (dotProduct(comps.normalv, comps.eyev) < 0)
+	if (dot_product(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = true;
-		comps.normalv = negateTuple(comps.normalv);
+		comps.normalv = negate_tuple(comps.normalv);
 	}
 	else
 		comps.inside = false;
@@ -172,12 +172,7 @@ int	intersect_world(t_world *world, t_ray ray)
 	{
 		new_intersection = intersect(world->shapes[i], ray);
 		if (new_intersection)
-		{
-			// printf("World debug - id: %d, times: %p, t0: %f, t1: %f\n",
-			// 	new_intersection->object_id, new_intersection->times,
-			// 	new_intersection->times[0], new_intersection->times[1]);
 			save_intersections(world->canvas, new_intersection, world);
-		}
 		i++;
 	}
 	sort_intersections(world->all_sorted);

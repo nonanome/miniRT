@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:29:16 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 20:15:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:57:28 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	init_canvas(t_c *canvas)
 	canvas->all_intersections.nr_intersections = 0;
 	canvas->all_intersections.intersections = NULL;
 	canvas->num_lights = 0;
-	// canvas->lightsource = default_light();
 }
 
 t_ray	init_ray(void)

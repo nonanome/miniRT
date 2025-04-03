@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:45:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 17:53:04 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:18:09 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	resize_intersections_array(t_c *canvas)
 	else
 	{
 		new_size = canvas->all_intersections.nr_intersection_entries + 1;
-		temp = realloc(canvas->all_intersections.intersections,
+		temp = rt_realloc(canvas->all_intersections.intersections,
 				sizeof(t_intersec) * new_size);
 	}
 	if (!temp)
@@ -55,7 +55,7 @@ static void	update_sorted_storage(t_world *world, t_c *canvas, double *times)
 	{
 		if (canvas->all_intersections.nr_intersections % 100 >= 90)
 		{
-			new_sorted = realloc(world->all_sorted, sizeof(double)
+			new_sorted = rt_realloc(world->all_sorted, sizeof(double)
 					* (canvas->all_intersections.nr_intersections + 110));
 			if (!new_sorted)
 				exit(1);
