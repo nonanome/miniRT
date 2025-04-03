@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:40:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 17:51:46 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 21:12:03 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ void	*get_adress_of_list(void)
 	return (&list);
 }
 
-void	delete_lst_data(t_list **lst, void *data)
+void	FREE(void *data)
 {
+	t_list	*list;
 	t_list	*current;
 	t_list	*prev;
 
-	current = (*lst)->next;
-	prev = *lst;
+	list = get_adress_of_list();
+	current = (list)->next;
+	prev = list;
 	while (current)
 	{
 		if (current->content == data)
@@ -40,14 +42,6 @@ void	delete_lst_data(t_list **lst, void *data)
 		prev = current;
 		current = current->next;
 	}
-}
-
-void	FREE(void *data)
-{
-	t_list	*list;
-
-	list = get_adress_of_list();
-	delete_lst_data(&list, data);
 }
 
 void	*MALLOC(int size)
@@ -97,7 +91,7 @@ void	*rt_realloc(void *ptr, int new_size)
 	return (realloc(ptr, new_size));
 }
 
-void	__attribute__((destructor)) free_list(void)
+void	__attribute__((destructor))	free_list(void)
 {
 	t_list	*list;
 	t_list	*current;

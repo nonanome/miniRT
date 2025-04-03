@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:20:12 by kkuhn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/03 21:13:58 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	*ft_calloc(int count, int size)
 {
 	char	*allocated_memory;
 
-	allocated_memory = (void *) MALLOC (count * size); //MALLOC!
+	allocated_memory = (void *)MALLOC(count * size);
 	if (allocated_memory == 0)
 		return (NULL);
 	ft_memset(allocated_memory, 0, count * size);
@@ -26,24 +26,24 @@ void	*ft_calloc(int count, int size)
 // int main() {
 //     int *intArray;
 //     char *str;
-// 	 char *str2;
+// 		char *str2;
 //     // Testfall 1: Allokieren und Initialisieren eines Integer-Arrays
 //     intArray = (int *)ft_calloc(5, sizeof(int));
 //     printf("Integer-Array nach calloc:\n");
 //     for (int i = 0; i < 5; ++i) {
-//         printf("%d ", intArray[i]);  // 
+//         printf("%d ", intArray[i]);  //
 //     }
 //     printf("\n");
 //     free(intArray);  // Speicher freigeben
 //     // Testfall 2: Allokieren und Initialisieren einer Zeichenkette
-//     str = (char *)ft_calloc(10, sizeof(char)); 
+//     str = (char *)ft_calloc(10, sizeof(char));
 //     printf("Zeichenkette nach calloc: %s\n", str);  // Sollte "Hello" sein
 //     free(str);  // Speicher freigeben
 
-// 	    intArray = (int *)ft_calloc(5, sizeof(int));
+// 		 intArray = (int *)ft_calloc(5, sizeof(int));
 //     printf("Integer-Array nach calloc:\n");
 //     for (int i = 0; i < 5; ++i) {
-// printf("%d ", intArray[i]);  // 
+// printf("%d ", intArray[i]);  //
 //     }
 //     printf("\n");
 //     free(intArray);  // Speicher freigeben
@@ -51,5 +51,5 @@ void	*ft_calloc(int count, int size)
 //     str2 = (char *)calloc(10, sizeof(char));
 //     printf("Zeichenkette nach calloc: %s\n", str);  // Sollte "Hello" sein
 //     free(str);  // Speicher freigeben
-//     return 0;
+//     return (0);
 // }

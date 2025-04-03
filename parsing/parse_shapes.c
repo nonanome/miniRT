@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 19:31:49 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 21:11:27 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	parse_common_shape(char **split, double pos[3], double rgb[3])
 	rgb[0] /= 255;
 	rgb[1] /= 255;
 	rgb[2] /= 255;
+	printf("%f %f %f\n", rgb[0], rgb[1], rgb[2]);
 	if (rgb[0] < 0 || rgb[0] > 1 || rgb[1] < 0 || rgb[1] > 1 || rgb[2] < 0
 		|| rgb[2] > 1)
 		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
@@ -117,8 +118,8 @@ static int	parse_normal_vector(char **split, double normal[3])
 	if (!normal_split)
 		return (1);
 	result = parse_xyz(normal_split, normal, 1) && normal[0] >= -1
-		&& normal[0] <= 1 && normal[1] >= -1 && normal[1] <= 1
-		&& normal[2] >= -1 && normal[2] <= 1;
+		&& normal[0] <= 1 && normal[1] >= -1 && normal[1] <= 1 && normal[2] >=
+		-1 && normal[2] <= 1;
 	ft_free_split(normal_split);
 	return (!result);
 }
@@ -150,12 +151,28 @@ int	parse_plane(t_world *world, char *line)
 	return (ft_free_split(split), 0);
 }
 
+void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
+		double rgb[3])
+{
+	shape->material.ambient = world->ambient_intensity;
+	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
+				rgb[2], 0));
+	free_double_ptr(shape->default_transformation, 4);
+	shape->radius = budget_ft_atof(split[3]) / 2;
+	shape->maximum = budget_ft_atof(split[4]) / 2;
+	shape->minimum = -budget_ft_atof(split[4]) / 2;
+	if (split[5])
+		shape->closed = budget_ft_atof(split[5]);
+	world->shapes[world->nr_shapes] = shape;
+	world->nr_shapes++;
+	add_checker(world, split, 2);
+}
+
 int	parse_cylinder(t_world *world, char *line)
 {
 	char	**split;
 	char	**normal_split;
-	double	xyz[3];
-	double	rgb[3];
+	double	xyz[6];
 	double	normal[3];
 	t_shape	*shape;
 
@@ -163,7 +180,7 @@ int	parse_cylinder(t_world *world, char *line)
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	if (parse_common_shape(split, xyz, rgb))
+	if (parse_common_shape(split, xyz, &(xyz[3])))
 		return (ft_free_split(split), 1);
 	normal_split = ft_split(split[2], ',');
 	if (!normal_split)
@@ -173,20 +190,9 @@ int	parse_cylinder(t_world *world, char *line)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(2);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
-	shape->material.ambient = world->ambient_intensity;
-	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
-				rgb[2], 0));
-	free_double_ptr(shape->default_transformation, 4);
-	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
-	shape->radius = budget_ft_atof(split[3]) / 2;
-	shape->maximum = budget_ft_atof(split[4]) / 2;
-	shape->minimum = -budget_ft_atof(split[4]) / 2;
-	if (split[5])
-		shape->closed = budget_ft_atof(split[5]);
-	world->shapes[world->nr_shapes] = shape;
-	world->nr_shapes++;
 	ft_free_split(normal_split);
-	add_checker(world, split, 2);
+	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
+	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	return (ft_free_split(split), 0);
 }
 
@@ -194,8 +200,7 @@ int	parse_cone(t_world *world, char *line)
 {
 	char	**split;
 	char	**normal_split;
-	double	xyz[3];
-	double	rgb[3];
+	double	xyz[6];
 	double	normal[3];
 	t_shape	*shape;
 
@@ -203,7 +208,7 @@ int	parse_cone(t_world *world, char *line)
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	if (parse_common_shape(split, xyz, rgb))
+	if (parse_common_shape(split, xyz, &(xyz[3])))
 		return (ft_free_split(split), 1);
 	normal_split = ft_split(split[2], ',');
 	if (!normal_split)
@@ -214,8 +219,8 @@ int	parse_cone(t_world *world, char *line)
 	shape = new_shape(3);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
 	shape->material.ambient = world->ambient_intensity;
-	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
-				rgb[2], 0));
+	shape->material.color = get_color_from_tuple(set_vector(xyz[3], xyz[4],
+				xyz[5], 0));
 	free_double_ptr(shape->default_transformation, 4);
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	shape->radius = budget_ft_atof(split[3]);
