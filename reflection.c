@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 21:35:49 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 19:54:24 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 		return (calc_cylinder_normal(shape, point));
 	else if (shape.type == 3)
 		return (calc_cone_normal(shape, point));
+	return (set_vector(0, 0, 0, 0));
 }
 
 static double	get_shadow_factor(bool *in_shadow, t_c canvas)
@@ -132,8 +133,6 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 	else
 		store.materialcolor = get_color_from_uint(shape.material.color);
 	shadow_factor = get_shadow_factor(in_shadow, canvas);
-	if (shape.type == 0)
-		printf("sf:%f\n", shadow_factor);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
 	while (++i < canvas.num_lights)

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 17:55:37 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 19:40:56 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,19 @@ static void	sort_intersections(double *all_sorted)
 	}
 }
 
+void	uv_of_sphere(t_intersec *intersect, t_comp comps, t_shape *shape)
+{
+	t_xyzvektor	relative_point;
+	double		theta;
+	double		phi;
+
+	relative_point = substraction(comps.point, shape->origin);
+	theta = atan2(relative_point.z, relative_point.x);
+	phi = asin(relative_point.y / shape->radius);
+	intersect->u = 0.5 + theta / (2 * M_PI);
+	intersect->v = 0.5 + phi / M_PI;
+}
+
 t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 		t_shape *shape)
 {
@@ -146,6 +159,7 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.object = shape;
 	comps.point = point_of_intersection(intersection, ray);
 	comps.eyev = negate_tuple(ray.direction);
+	//uv_of_sphere(intersection, comps, shape);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
 			comps.point.y + comps.normalv.y * EPSILON, comps.point.z
