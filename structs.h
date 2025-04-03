@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 20:34:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 19:21:53 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct intersect
 {
 	t_ray			ray;
 	double			*times;
+	float			u;
+	float			v;
 	int				object_id;
 }					t_intersec;
 

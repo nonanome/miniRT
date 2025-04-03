@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 20:35:17 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 19:31:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ static int	parse_normal_vector(char **split, double normal[3])
 	if (!normal_split)
 		return (1);
 	result = parse_xyz(normal_split, normal, 1) && normal[0] >= -1
-		&& normal[0] <= 1 && normal[1] >= -1 && normal[1] <= 1 && normal[2] >=
-		-1 && normal[2] <= 1;
+		&& normal[0] <= 1 && normal[1] >= -1 && normal[1] <= 1
+		&& normal[2] >= -1 && normal[2] <= 1;
 	ft_free_split(normal_split);
 	return (!result);
 }

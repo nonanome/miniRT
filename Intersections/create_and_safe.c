@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 19:37:12 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 19:26:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 	{
 		return (cone_intersect(result, ray, *shape));
 	}
+	return (NULL);
 }
 
 t_intersec	*intersect(t_shape *shape, t_ray ray)
