@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 19:54:24 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 21:05:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,12 @@ static double	get_shadow_factor(bool *in_shadow, t_c canvas)
 	return (shadow_factor);
 }
 
+static t_xyzvektor	clamp_color(t_xyzvektor color)
+{
+	return ((t_xyzvektor){fmax(0, fmin(1, color.x)), fmax(0, fmin(1, color.y)),
+		fmax(0, fmin(1, color.z))});
+}
+
 t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 		bool *in_shadow)
 {
@@ -169,7 +175,7 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 	final.y = fmax(0.0, fmin(1.0, final.y));
 	final.z = fmax(0.0, fmin(1.0, final.z));
 	FREE(in_shadow);
-	return (final);
+	return (clamp_color(final));
 }
 
 // reflection_test

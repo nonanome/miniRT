@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 20:48:05 by kkuhn             #+#    #+#             */
-/*   Updated: 2025/03/18 20:06:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/03 21:13:03 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strdup(char *s1)
 
 	i = 0;
 	size = ft_strlen(s1) + 1;
-	stringcopy = (char *) MALLOC (size); //MALLOC!
+	stringcopy = (char *) MALLOC (size);
 	if (stringcopy == 0)
 		return (0);
 	while (s1[i] != 0)
