@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 17:33:06 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:55:37 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	}
 	else
 	{
-		canvas->all_intersections.intersections = realloc(canvas->all_intersections.intersections,
+		canvas->all_intersections.intersections = rt_realloc(canvas->all_intersections.intersections,
 				sizeof(t_intersec)
 				* (canvas->all_intersections.nr_intersection_entries + 1));
 		if (!canvas->all_intersections.intersections)

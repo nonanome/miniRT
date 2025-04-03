@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/24 18:04:12 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:52:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,27 @@ t_world	*get_world(int shapes)
 	return (world);
 }
 
+void	collect_garbage(void)
+{
+	t_list	*lst;
+	void	*next;
+	void	*to_free;
+
+	lst = get_adress_of_list();
+	while (lst)
+	{
+		next = lst->next;
+		if (lst->content)
+		{
+			free(lst->content);
+			lst->content = NULL;
+		}
+		to_free = lst;
+		free(to_free);
+		lst = next;
+	}
+}
+
 void	free_world(t_world *world)
 {
 	if (!world)
@@ -88,4 +109,5 @@ void	free_world(t_world *world)
 	FREE(world->canvas);
 	FREE(world->all_sorted);
 	FREE(world);
+	free_list();
 }

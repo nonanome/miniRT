@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 20:45:59 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/03 16:26:48 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	main(void)
 	}
 	mlx_image_to_window(world->canvas->mlx_ptr, image, 0, 0);
 	mlx_loop(world->canvas->mlx_ptr);
-	free_world(world);
 	mlx_delete_image(world->canvas->mlx_ptr, image);
+	mlx_terminate(world->canvas->mlx_ptr);
+	free_world(world);
 	return (0);
 }
