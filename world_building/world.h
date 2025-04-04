@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 16:21:50 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:05:35 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		empty_intersections(t_c *canvas);
 double		**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
 				t_xyzvektor t);
 t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point);
-t_xyzvektor	hit(t_all_intersec all_intersections, t_shape *shade);
+t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape);
 void		empty_intersections(t_c *canvas);
 // test
 bool		*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape);
