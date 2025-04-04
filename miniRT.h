@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 19:54:18 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 14:17:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ double		get_smallest_positive_value(t_intersec *intersection1);
 t_xyzvektor	identify_hit(t_all_intersec all_intersections);
 t_ray		transform(t_ray ray, double **transformation);
 t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cylinder);
-
+void		cap_bottom(t_intersec *result, t_ray ray, t_shape shape);
+void		cap_top(t_intersec *result, t_ray ray, t_shape shape);
 // trasnformation
 double		**translation(double x, double y, double z);
 double		**scaling(double x, double y, double z);
