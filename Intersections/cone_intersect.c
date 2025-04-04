@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:15:01 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 15:28:56 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:23:29 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,7 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 	rotation[1] = MALLOC(sizeof(double) * 3);
 	rotation[2] = MALLOC(sizeof(double) * 3);
 	create_rotation_matrix(cone.normal, rotation);
-	// ray.origin.y -= cone.maximum;
 	transform_ray(&ray, rotation);
-	// ray.origin.y -= cone.maximum;
 	discriminant_values = MALLOC(3 * sizeof(double));
 	result->times = MALLOC(2 * sizeof(double));
 	if (cone_discrimination(discriminant_values, ray, cone, result))

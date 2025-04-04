@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:04:52 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:22:35 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 
 # define PI 3.14159265358979323846
 # define EPSILON 0.00001
-
-static int			g_globalid = 0;
 
 typedef struct s_koord
 {
@@ -137,7 +135,7 @@ typedef struct canvas
 	t_light			*lightsource;
 	t_xyzvektor		normale;
 	t_xyzvektor		eyevector;
-	mlx_texture_t 	*bumpmap;
+	mlx_texture_t	*bumpmap;
 	mlx_image_t		*bumpmapcolor;
 }					t_c;
 

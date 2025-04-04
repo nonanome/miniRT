@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 17:08:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:32:31 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,9 @@ t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape)
 	int			i;
 
 	i = -1;
-	hit_intersection = set_vector(0, 0, 0, 0);
 	while (++i <= all_intersections.nr_intersections / 2 - 1)
 	{
-		if(all_intersections.intersections[i].object_id == shape.id)
+		if (all_intersections.intersections[i].object_id == shape.id)
 			continue ;
 		t0 = all_intersections.intersections[i].times[0];
 		t1 = all_intersections.intersections[i].times[1];
