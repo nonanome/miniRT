@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:15:01 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 14:43:07 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 15:28:56 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ int	cone_discrimination(double *discriminant_values, t_ray ray, t_shape cone,
 		t_intersec *result)
 {
 	double	discriminant;
+	double	tan_theta;
 
+	tan_theta = cone.radius / (cone.maximum - cone.minimum);
 	discriminant_values[0] = ray.direction.x * ray.direction.x + ray.direction.z
 		* ray.direction.z - ray.direction.y * ray.direction.y * tan_theta
 		* tan_theta;
@@ -109,13 +111,11 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 	double	*discriminant_values;
 	double	discriminant;
 	double	**rotation;
-	double	tan_theta;
 
 	rotation = MALLOC(sizeof(double *) * 3);
 	rotation[0] = MALLOC(sizeof(double) * 3);
 	rotation[1] = MALLOC(sizeof(double) * 3);
 	rotation[2] = MALLOC(sizeof(double) * 3);
-	tan_theta = cone.radius / (cone.maximum - cone.minimum);
 	create_rotation_matrix(cone.normal, rotation);
 	// ray.origin.y -= cone.maximum;
 	transform_ray(&ray, rotation);
