@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 17:38:29 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:38:27 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,13 @@ static void	sort_intersections(double *all_sorted)
 	}
 }
 
-void	uv_of_sphere(t_intersec *intersect, t_comp comps, t_shape *shape)
+void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape)
 {
 	t_xyzvektor	relative_point;
 	double		theta;
 	double		phi;
 
-	relative_point = substraction(comps.point, shape->origin);
+	relative_point = substraction(comps->point, shape->origin);
 	theta = atan2(relative_point.z, relative_point.x);
 	phi = asin(relative_point.y / shape->radius);
 	intersect->u = 0.5 + theta / (2 * M_PI);
@@ -153,6 +153,8 @@ void	uv_of_sphere(t_intersec *intersect, t_comp comps, t_shape *shape)
 	// Clamping auf [0, 1] (falls Rundungsfehler auftreten)
 	intersect->u = fmax(0.0, fmin(1.0, intersect->u));
 	intersect->v = fmax(0.0, fmin(1.0, intersect->v));
+	comps->u = fmax(0.0, fmin(1.0, intersect->u));
+	comps->v =  fmax(0.0, fmin(1.0, intersect->v));
 }
 
 void orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z) {
@@ -245,7 +247,7 @@ comps.object = shape;
 comps.point = point_of_intersection(intersection, ray);
 
 comps.eyev = negate_tuple(ray.direction);
-uv_of_sphere(intersection, comps, shape);
+uv_of_sphere(intersection, &comps, shape);
 // uv_of_plane(intersection, comps, shape);
 comps.normalv = calculate_normale(*shape, comps.point);
 
