@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 17:56:06 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/04 16:36:44 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct reflection_data_store
 	t_xyzvektor		specular;
 	double			reflect_dot_eye;
 	double			factor;
+	double			shadow_factor;
+	double			light_dot_normale;
 	t_xyzvektor		reflectv;
 }					t_store;
 
@@ -135,8 +137,6 @@ typedef struct canvas
 	t_light			*lightsource;
 	t_xyzvektor		normale;
 	t_xyzvektor		eyevector;
-	mlx_texture_t 	*bumpmap;
-	mlx_image_t		*bumpmapcolor;
 }					t_c;
 
 typedef struct s_camera
@@ -160,7 +160,6 @@ typedef struct s_world
 	t_xyzvektor		*ambient;
 	double			ambient_intensity;
 	t_camera		*camera;
-
 }					t_world;
 
 typedef struct s_comp
