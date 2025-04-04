@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:31:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 19:37:58 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_shape	*new_shape(int type)
 	shape->origin = set_vector(0, 0, 0, 1);
 	shape->default_transformation = get_identity_matrix();
 	shape->material = default_material();
-	shape->id = globalid++;
+	shape->id = global_id;
+	global_id++;
 	shape->minimum = -INFINITY;
 	shape->maximum = INFINITY;
 	shape->closed = false;
