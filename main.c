@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   world_testing.c                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 19:48:33 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 13:37:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "world.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "world_building/world.h"
 
 #define PI 3.14159265358979323846
+
+t_xyzvektor	ray_position(t_ray ray, double time)
+{
+	t_xyzvektor	result;
+
+	result = addition(ray.origin, scalar_multiplication(ray.direction, time));
+	return (result);
+}
 
 int	main(void)
 {
