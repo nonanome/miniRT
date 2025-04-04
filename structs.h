@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 15:31:21 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 16:36:44 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct reflection_data_store
 	t_xyzvektor		specular;
 	double			reflect_dot_eye;
 	double			factor;
+	double			shadow_factor;
+	double			light_dot_normale;
 	t_xyzvektor		reflectv;
 }					t_store;
 

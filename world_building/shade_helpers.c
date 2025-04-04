@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 15:43:36 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 16:10:33 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,16 @@ t_xyzvektor	hit(t_all_intersec all_intersections)
 		t1 = all_intersections.intersections[i].times[1];
 		if (t0 > 0 && t0 < t1)
 		{
-			hit_intersection = calculate_hit_point(all_intersections.intersections[i],
-					t0);
+			hit_intersection = calculate_hit_point
+				(all_intersections.intersections[i], t0);
 			if (t0 < 0 || t0 > t1)
 			{
-				hit_intersection = calculate_hit_point(all_intersections.intersections[i],
-						t1);
+				hit_intersection = calculate_hit_point
+					(all_intersections.intersections[i], t1);
 			}
 			return (hit_intersection);
 		}
 		i++;
 	}
 	return (hit_intersection);
-}
-
-void	sphere_ray_transform(t_shape shape, t_ray ray)
-{
-	double	**inverse_transform;
-
-	if (shape.type != 0)
-	{
-		inverse_transform = invert_matrix(shape.default_transformation, 4);
-		transform_ray(&ray, inverse_transform);
-	}
 }
