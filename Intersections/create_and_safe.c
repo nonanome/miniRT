@@ -6,13 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 19:26:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 14:36:43 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-double	get_discriminant(double *discriminant_values)
+static double	get_discriminant_smol(double *discriminant_values)
 {
 	return (discriminant_values[1] * discriminant_values[1] - 4
 		* discriminant_values[0] * discriminant_values[2]);
@@ -30,7 +30,7 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 	discriminant_values[1] = 2 * dot_product(ray.direction, sphere_to_ray);
 	discriminant_values[2] = dot_product(sphere_to_ray, sphere_to_ray)
 		- sphere.radius * sphere.radius;
-	discriminant = get_discriminant(discriminant_values);
+	discriminant = get_discriminant_smol(discriminant_values);
 	if (discriminant < 0)
 	{
 		FREE(discriminant_values);
