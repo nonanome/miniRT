@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 15:31:21 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 17:56:06 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ typedef struct canvas
 	t_light			*lightsource;
 	t_xyzvektor		normale;
 	t_xyzvektor		eyevector;
+	mlx_texture_t 	*bumpmap;
+	mlx_image_t		*bumpmapcolor;
 }					t_c;
 
 typedef struct s_camera
@@ -158,6 +160,7 @@ typedef struct s_world
 	t_xyzvektor		*ambient;
 	double			ambient_intensity;
 	t_camera		*camera;
+
 }					t_world;
 
 typedef struct s_comp
