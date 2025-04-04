@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 16:10:47 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/04 16:21:50 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_world		*get_world(int shapes);
 void		free_world(t_world *world);
 int			intersect_world(t_world *world, t_ray ray);
 t_intersec	*intersect(t_shape *shape, t_ray ray);
-t_comp		prepare_computations(t_intersec *intersection, t_ray ray,
-				t_shape *shape);
+t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
+	t_shape *shape, t_world *world);
 t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape);
 t_xyzvektor	color_at(t_world *world, t_ray ray);
 double		**view_transform(t_xyzvektor from, t_xyzvektor to, t_xyzvektor up);
@@ -71,5 +71,7 @@ void		empty_intersections(t_c *canvas);
 // test
 bool		*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape);
 void	sphere_ray_transform(t_shape shape, t_ray ray);
+int get_bumpmap_grayscale(mlx_texture_t *texture, int x, int y);
+void load_bumpmap(char *path, t_world *world);
 
 #endif
