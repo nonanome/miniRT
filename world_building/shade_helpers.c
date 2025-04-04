@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shade_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 15:43:36 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 16:13:55 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,19 @@ static t_xyzvektor	calculate_hit_point(t_intersec intersection, double time)
 	return (result);
 }
 
-t_xyzvektor	hit(t_all_intersec all_intersections)
+t_xyzvektor	hit(t_all_intersec all_intersections, t_shape *shape)
 {
 	t_xyzvektor	hit_intersection;
 	double		t0;
 	double		t1;
 	int			i;
 
-	i = 0;
+	i = -1;
 	hit_intersection = set_vector(0, 0, 0, 0);
-	while (i <= all_intersections.nr_intersections / 2 - 1)
+	while (++ i <= all_intersections.nr_intersections / 2 - 1)
 	{
+		if(all_intersections.intersections[i].object_id == shape->id)
+			continue;
 		t0 = all_intersections.intersections[i].times[0];
 		t1 = all_intersections.intersections[i].times[1];
 		if (t0 > 0 && t0 < t1)
@@ -62,7 +64,6 @@ t_xyzvektor	hit(t_all_intersec all_intersections)
 			}
 			return (hit_intersection);
 		}
-		i++;
 	}
 	return (hit_intersection);
 }
