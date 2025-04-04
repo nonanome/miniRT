@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:22:35 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:48:51 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,8 @@ typedef struct s_comp
 	t_xyzvektor		normalv;
 	t_xyzvektor		reflectv;
 	bool			inside;
+	double u;
+	double v;
 }					t_comp;
 
 #endif

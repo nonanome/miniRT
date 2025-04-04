@@ -6,11 +6,22 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:32:31 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/04 18:50:40 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "world.h"
+
+void	sphere_ray_transform(t_shape shape, t_ray ray)
+{
+	double	**inverse_transform;
+
+	if (shape.type != 0)
+	{
+		inverse_transform = invert_matrix(shape.default_transformation, 4);
+		transform_ray(&ray, inverse_transform);
+	}
+}
 
 void	empty_intersections(t_c *canvas)
 {
