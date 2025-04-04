@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   throw_shade.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:41:37 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/04 20:36:28 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "world.h"
 
-void	check_shade_hit(t_world *world, bool *shadows, double distance, int i, t_shape *shape)
+void	check_shade_hit(t_world *world, bool *shadows, double distance, int i,
+		t_shape shape)
 {
 	t_xyzvektor	hit_intersection;
 
+	hit_intersection = set_vector(0, 0, 0, 0);
 	if (world->canvas->all_intersections.intersections != NULL)
-		hit_intersection = hit(world->canvas->all_intersections, *shape);
+		hit_intersection = hit(world->canvas->all_intersections, shape);
 	else
 		hit_intersection.w = INFINITY;
 	if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
@@ -46,7 +48,7 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 		sphere_ray_transform(shape, ray);
 		empty_intersections(world->canvas);
 		intersect_world(world, ray);
-		check_shade_hit(world, shadows, distance, i, &shape);
+		check_shade_hit(world, shadows, distance, i, shape);
 	}
 	empty_intersections(world->canvas);
 	return (shadows);
@@ -63,8 +65,6 @@ t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 	local_canvas.eyevector = comp.eyev;
 	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	
-	retvalue = lightning(comp, local_canvas,
-			in_shadow);
+	retvalue = lightning(comp, local_canvas, in_shadow);
 	return (retvalue);
 }
