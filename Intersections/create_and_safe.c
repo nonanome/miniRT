@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 14:36:43 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/05 14:49:30 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_intersec	*intersect(t_shape *shape, t_ray ray)
 	t_intersec	*result;
 	double		**inverted;
 
-	result = MALLOC(sizeof(t_intersec));
+	result = ft_calloc(sizeof(t_intersec), 1);
 	inverted = invert_matrix(shape->default_transformation, 4);
 	ray = transform(ray, inverted);
 	free_double_ptr(inverted, 4);

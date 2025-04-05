@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/26 16:16:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/05 14:41:26 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_camera	*camera(int hsize, int vsize, double field_of_view)
 	double		half_view;
 	double		aspect;
 
-	cam = MALLOC(sizeof(t_camera));
+	cam = ft_calloc(sizeof(t_camera), 1);
 	if (!cam)
 		return (NULL);
 	cam->hsize = hsize;
