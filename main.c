@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/05 14:47:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/05 19:33:45 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char *argv[])
 		free_world(world);
 		return (1);
 	}
-	if (parse_input("test.rt", world))
+	if (parse_input("test/2_lights.rt", world))
 	{
 		free_world(world);
 		return (1);
