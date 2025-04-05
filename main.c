@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 17:55:51 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/05 14:47:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char *argv[])
 	init_canvas(world->canvas);
 	if(argc >= 2)
 		load_bumpmap(argv[1], world);
-	world->all_sorted = calloc(sizeof(double *), 100);
+	world->all_sorted = ft_calloc(sizeof(double *), 100);
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;

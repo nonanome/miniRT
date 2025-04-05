@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 19:37:58 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/05 14:48:16 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_shape	*new_shape(int type)
 	t_shape		*shape;
 	static int	global_id = 0;
 
-	shape = (t_shape *)MALLOC(sizeof(t_shape));
+	shape = (t_shape *)ft_calloc(sizeof(t_shape), 1);
 	if (!shape)
 		return (NULL);
 	shape->type = type;
@@ -45,7 +45,7 @@ t_world	*get_world(int shapes)
 	world = (t_world *)MALLOC(sizeof(t_world));
 	if (!world)
 		return (NULL);
-	world->canvas = (t_c *)calloc(sizeof(t_c), 1);
+	world->canvas = (t_c *)ft_calloc(sizeof(t_c), 1);
 	if (!world->canvas)
 		return (FREE(world), NULL);
 	world->env = (t_env *)MALLOC(sizeof(t_env));
