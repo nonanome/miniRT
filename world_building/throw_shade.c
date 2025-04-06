@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 16:11:59 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 12:30:47 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 	local_canvas.eyevector = comp.eyev;
 	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	retvalue = lightning(*(comp.object), comp.over_point, local_canvas,
+	retvalue = lightning(comp, local_canvas,
 			in_shadow);
 	return (retvalue);
 }

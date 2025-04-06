@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   reflection.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 13:31:45 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 14:15:04 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <inttypes.h>
 
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 {
@@ -45,7 +46,38 @@ static t_xyzvektor	clamp_color(t_xyzvektor color)
 		fmax(0, fmin(1, color.z))});
 }
 
-t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
+t_xyzvektor get_color(t_c canvas, t_shape shape, int x, int y)
+{
+    t_xyzvektor color;
+    
+    // Clamp x and y coordinates to texture bounds
+    x = (x < 0) ? 0 : ((x >= canvas.bumpmapcolor->width) ? canvas.bumpmapcolor->width - 1 : x);
+    y = (y < 0) ? 0 : ((y >= canvas.bumpmapcolor->height) ? canvas.bumpmapcolor->height - 1 : y);
+    
+    if(canvas.bumpmapcolor && shape.type == 0)
+    {
+        // Calculate pixel offset (assuming pixels are stored as uint32_t in ARGB format)
+        int pixel_offset = y * (canvas.bumpmapcolor->width * 4 / sizeof(uint32_t)) + x;
+        uint32_t pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
+        color = set_black();
+		// color.x = ((pixel >> 16) & 0xFF) / 255.0;
+		// color.y = ((pixel >> 8) & 0xFF) / 255.0;  // Grün (Bits 16-23)
+		// color.z = (pixel & 0xFF) / 255.0;           // Blau (Bits 24-31)
+		// color.w = ((pixel >> 24) & 0xFF)  / 255.0;  
+		color.w = ((pixel >> 24) & 0xFF) / 255.0;  // Alpha (Bits 24-31)
+		color.z = ((pixel >> 16) & 0xFF) / 255.0;  // Blau (jetzt aus Bits 16-23)
+		color.y = ((pixel >> 8)  & 0xFF) / 255.0; // Grün (Bits 8-15)
+		color.x = (pixel & 0xFF) / 255.0;          // Rot (jetzt aus Bits 0-7)        // Blau (Bits 0-7)     // Alpha (Bits 0-7)  // Alpha (if needed)
+        return color;
+    }
+    else
+    {
+        // Fallback to shape's material color
+        return get_color_from_uint(shape.material.color);
+    }
+}
+
+t_xyzvektor	lightning(t_comp comp, t_c canvas,
 		bool *in_shadow)
 {
 	t_store		store;
@@ -55,6 +87,9 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 	t_xyzvektor	result;
 	t_xyzvektor	scaled_spec;
 	t_xyzvektor	final;
+	t_shape shape = *(comp.object);
+	t_xyzvektor point = comp.over_point;
+	
 
 	i = -1;
 	store.diffuse = set_black();
@@ -64,7 +99,7 @@ t_xyzvektor	lightning(t_shape shape, t_xyzvektor point, t_c canvas,
 	if (shape.material.checker_enable)
 		store.materialcolor = pattern_at(shape, point);
 	else
-		store.materialcolor = get_color_from_uint(shape.material.color);
+		store.materialcolor = get_color(canvas, shape, (int)comp.u, (int)comp.v);
 	shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);

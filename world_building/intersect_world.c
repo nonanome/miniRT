@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 17:38:29 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 13:08:19 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,8 @@ comps.object = shape;
 comps.point = point_of_intersection(intersection, ray);
 
 comps.eyev = negate_tuple(ray.direction);
-uv_of_sphere(intersection, comps, shape);
+if(world->canvas->bumpmapcolor)
+	uv_of_sphere(intersection, comps, shape);
 // uv_of_plane(intersection, comps, shape);
 comps.normalv = calculate_normale(*shape, comps.point);
 
