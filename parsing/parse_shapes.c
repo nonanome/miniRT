@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 17:15:48 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 18:17:27 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 double **get_sphere_matrix(double radius, double xyz[3])
 {
-	double	**identity;
-	double	**scale;
 	double	**trans;
 
-	identity = get_identity_matrix();
-	scale = scaling(radius, radius, radius);
 	trans = translation(xyz[0], xyz[1], xyz[2]);
-	return (multiply_matrix(multiply_matrix(identity, trans), scale));
+	return (trans);
 }
 
 int	parse_sphere(t_world *world, char *line)
@@ -86,7 +82,6 @@ void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
-	free_double_ptr(shape->default_transformation, 4);
 	shape->radius = budget_ft_atof(split[3]) / 2;
 	shape->maximum = budget_ft_atof(split[4]) / 2;
 	shape->minimum = -budget_ft_atof(split[4]) / 2;
@@ -147,6 +142,7 @@ int	parse_cone(t_world *world, char *line)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(3);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
+	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
 	ft_free_split(normal_split);
 	return (ft_free_split(split), 0);

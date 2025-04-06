@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cam_light.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 15:22:33 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 18:39:50 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ int	parse_ambient_light(t_world *world, char *line)
 
 int	parse_camera(t_world *world, char *line)
 {
-	char	**split;
-	int		error;
-	double	xyz[3];
-	double	fov;
-	double	normal[3];
+	char		**split;
+	int			error;
+	double		xyz[3];
+	double		fov;
+	double		normal[3];
+	t_xyzvektor	target;
 
 	check_camera_line(line);
 	split = ft_split(line, ' ');
@@ -52,9 +53,10 @@ int	parse_camera(t_world *world, char *line)
 	if (parse_xyz_cam_light(split[2], normal, 1))
 		return (ft_free_split(split), 1);
 	world->camera->field_of_view = budget_ft_atof(split[3]);
+	target = addition(set_vector(xyz[0], xyz[1], xyz[2], 1),
+			set_vector(normal[0], normal[1], normal[2], 0));
 	world->camera->transform = view_transform(set_vector(xyz[0], xyz[1], xyz[2],
-				1), set_vector(normal[0], normal[1], normal[2], 0),
-			set_vector(0, 1, 0, 0));
+				1), target, set_vector(0, 1, 0, 0));
 	return (ft_free_split(split), 0);
 }
 

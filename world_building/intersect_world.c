@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_world.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 17:12:58 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 18:29:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape, t_world 
     theta = atan2(relative_point.z, relative_point.x);  // Azimutalwinkel (von x und z)
     phi = asin(relative_point.y / shape->radius);  
     // Normalisiere den Azimutalwinkel auf [0, 1]
-    intersect->u = (theta + M_PI) / (2 * M_PI);  // Normalisiere theta von [-π, π] auf [0, 1]
-    intersect->v = 0.5 - phi / M_PI;             // Normalisiere phi von [-π/2, π/2] auf [0, 1]
+    intersect->u = (theta + PI) / (2 * PI);  // Normalisiere theta von [-π, π] auf [0, 1]
+    intersect->v = 0.5 - phi / PI;             // Normalisiere phi von [-π/2, π/2] auf [0, 1]
 
     intersect->u = (int)(intersect->u * 4096) % 4096;
     intersect->v = (int)(intersect->v * 4096) % 4096;
