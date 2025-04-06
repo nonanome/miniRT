@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_world.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:38:27 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 17:46:57 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape)
 	relative_point = substraction(comps->point, shape->origin);
 	theta = atan2(relative_point.z, relative_point.x);
 	phi = asin(relative_point.y / shape->radius);
-	intersect->u = 0.5 + theta / (2 * M_PI);
-	intersect->v = 0.5 - phi / M_PI;
+	intersect->u = 0.5 + theta / (2 * PI);
+	intersect->v = 0.5 - phi / PI;
 
 	// Clamping auf [0, 1] (falls Rundungsfehler auftreten)
 	intersect->u = fmax(0.0, fmin(1.0, intersect->u));
