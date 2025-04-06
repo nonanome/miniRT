@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cam_light.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 13:56:16 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 15:22:33 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	parse_camera(t_world *world, char *line)
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	if (budget_ft_atof(split[2]) < 0 || budget_ft_atof(split[2]) > 180)
-		return (ft_free_split(split), 1);
+	if (budget_ft_atof(split[3]) < 0 || budget_ft_atof(split[3]) > 180)
+		exit(1);
 	if (parse_xyz_cam_light(split[1], xyz, 0))
 		return (ft_free_split(split), 1);
 	if (parse_xyz_cam_light(split[2], normal, 1))

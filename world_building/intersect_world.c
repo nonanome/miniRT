@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 13:08:19 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 17:12:58 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,21 +138,25 @@ static void	sort_intersections(double *all_sorted)
 	}
 }
 
-void	uv_of_sphere(t_intersec *intersect, t_comp comps, t_shape *shape)
+void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape, t_world world)
 {
 	t_xyzvektor	relative_point;
 	double		theta;
 	double		phi;
+	int width = world.canvas->bumpmapcolor->width;
+	int height = world.canvas->bumpmapcolor->height;
 
-	relative_point = substraction(comps.point, shape->origin);
-	theta = atan2(relative_point.z, relative_point.x);
-	phi = asin(relative_point.y / shape->radius);
-	intersect->u = 0.5 + theta / (2 * M_PI);
-	intersect->v = 0.5 - phi / M_PI;
+	relative_point = substraction(comps->point, shape->origin);
+    theta = atan2(relative_point.z, relative_point.x);  // Azimutalwinkel (von x und z)
+    phi = asin(relative_point.y / shape->radius);  
+    // Normalisiere den Azimutalwinkel auf [0, 1]
+    intersect->u = (theta + M_PI) / (2 * M_PI);  // Normalisiere theta von [-π, π] auf [0, 1]
+    intersect->v = 0.5 - phi / M_PI;             // Normalisiere phi von [-π/2, π/2] auf [0, 1]
 
-	// Clamping auf [0, 1] (falls Rundungsfehler auftreten)
-	intersect->u = fmax(0.0, fmin(1.0, intersect->u));
-	intersect->v = fmax(0.0, fmin(1.0, intersect->v));
+    intersect->u = (int)(intersect->u * 4096) % 4096;
+    intersect->v = (int)(intersect->v * 4096) % 4096;
+	comps->u = intersect->u;
+	comps->v = intersect->v;
 }
 
 void orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z) {
@@ -196,7 +200,7 @@ void change_normal_for_bump(t_comp *comp, t_intersec *intersection, t_ray ray, t
     float top = get_bumpmap_grayscale(world->canvas->bumpmap, x, (y-1+world->canvas->bumpmap->height) % world->canvas->bumpmap->height) / 255.0f;
     float bottom = get_bumpmap_grayscale(world->canvas->bumpmap, x, (y+1) % world->canvas->bumpmap->height) / 255.0f;
 	
-	float strength = 0.5f;
+	float strength = 1;
     float dx = (right - left) * strength;
     float dy = (bottom - top) * strength;
     t_xyzvektor tangent_x = cross_product(a, comp->normalv);
@@ -246,7 +250,7 @@ comps.point = point_of_intersection(intersection, ray);
 
 comps.eyev = negate_tuple(ray.direction);
 if(world->canvas->bumpmapcolor)
-	uv_of_sphere(intersection, comps, shape);
+	uv_of_sphere(intersection, &comps, shape, *world);
 // uv_of_plane(intersection, comps, shape);
 comps.normalv = calculate_normale(*shape, comps.point);
 
