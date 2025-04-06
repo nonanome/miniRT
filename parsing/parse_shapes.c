@@ -6,11 +6,23 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 14:07:45 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 17:15:48 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+double **get_sphere_matrix(double radius, double xyz[3])
+{
+	double	**identity;
+	double	**scale;
+	double	**trans;
+
+	identity = get_identity_matrix();
+	scale = scaling(radius, radius, radius);
+	trans = translation(xyz[0], xyz[1], xyz[2]);
+	return (multiply_matrix(multiply_matrix(identity, trans), scale));
+}
 
 int	parse_sphere(t_world *world, char *line)
 {
@@ -30,7 +42,7 @@ int	parse_sphere(t_world *world, char *line)
 	if (radius < 0)
 		return (ft_free_split(split), 1);
 	shape = new_shape(0);
-	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
+	shape->default_transformation = get_sphere_matrix(radius, xyz);
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
