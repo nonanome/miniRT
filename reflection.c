@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 17:56:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 18:42:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas,
 		store.materialcolor = pattern_at(shape, point);
 	else
 		store.materialcolor = get_color(canvas, shape, comp.u, comp.v);
-	shadow_factor = get_shadow_factor(in_shadow, canvas);
+	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
 	result = each_light(&store, shape, canvas, point);
