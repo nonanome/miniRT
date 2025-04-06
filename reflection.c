@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   reflection.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:41:44 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 17:56:01 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <inttypes.h>
 
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 {
@@ -88,29 +89,32 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 	return (result);
 }
 
-t_xyzvektor get_color(t_c canvas, t_shape shape, int x, int y)
+t_xyzvektor	get_color(t_c canvas, t_shape shape, long double x, long double y)
 {
-	t_xyzvektor color;
-	
-	// if(canvas.bumpmapcolor)
-	// {
-	// 	x = (x < 0) ? 0 : ((x >= canvas.bumpmapcolor->width) ? canvas.bumpmapcolor->width - 1 : x);
-	// 	y = (y < 0) ? 0 : ((y >= canvas.bumpmapcolor->height) ? canvas.bumpmapcolor->height - 1 : y);
-		
-	// 	// Pixeladresse berechnen (MLX speichert Pixel als uint32_t)
-	// 	int pixel_offset = y * (canvas.bumpmapcolor->width * 4 / sizeof(uint32_t)) + x;
-	// 	uint32_t pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
-		
-	// 	// Farbe aus ARGB extrahieren (MLX-Format ist normalerweise 0xAARRGGBB)
-	// 	color.x = (pixel >> 24) & 0xFF;  // Alpha (falls benötigt)
-	// 	color.y = (pixel >> 16) & 0xFF;  // Rot
-	// 	color.z = (pixel >> 8)  & 0xFF;  // Grün
-	// 	color.w = pixel         & 0xFF;  // Blau
-		
-	// 	return color;
-	// }
-	// else
-		return get_color_from_uint(shape.material.color);
+    t_xyzvektor	color;
+	int ix = (int)x;
+	int iy = (int)y;
+
+	// if (x < 0)
+	// 	x = 0;
+	// else if (x >= canvas.bumpmapcolor->width)
+	// 	x = canvas.bumpmapcolor->width - 1;
+	// if (y < 0)
+	// 	y = 0;
+	// else if (y >= canvas.bumpmapcolor->height)
+	// 	y = canvas.bumpmapcolor->height - 1;
+    if(canvas.bumpmapcolor && shape.type == 0)
+    {
+        int pixel_offset = iy * (canvas.bumpmapcolor->width * 4 / sizeof(int)) + ix;
+        uint32_t pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
+		color.w = ((pixel >> 24) & 0xFF) / 255.0;
+		color.z = ((pixel >> 16) & 0xFF) / 255.0;
+		color.y = ((pixel >> 8)  & 0xFF) / 255.0;
+		color.x = (pixel & 0xFF) / 255.0;
+        return color;
+    }
+    else
+        return get_color_from_uint(shape.material.color);
 }
 
 t_xyzvektor	lightning(t_comp comp, t_c canvas,
@@ -119,8 +123,9 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas,
 	t_store		store;
 	t_xyzvektor	result;
 	t_xyzvektor	final;
-	t_shape shape;
-	t_xyzvektor point;
+	t_shape shape = *(comp.object);
+	t_xyzvektor point = comp.over_point;
+	
 
 	shape = *(comp.object);
 	point = comp.over_point;
@@ -130,8 +135,8 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas,
 	if (shape.material.checker_enable)
 		store.materialcolor = pattern_at(shape, point);
 	else
-		store.materialcolor = get_color(canvas, shape, (int)comp.u, (int)comp.v);
-	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
+		store.materialcolor = get_color(canvas, shape, comp.u, comp.v);
+	shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
 	result = each_light(&store, shape, canvas, point);
