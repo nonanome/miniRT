@@ -6,11 +6,12 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 18:41:44 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/06 14:15:04 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <inttypes.h>
 
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 {
@@ -39,108 +40,104 @@ static double	get_shadow_factor(bool *in_shadow, t_c canvas)
 	return (shadow_factor);
 }
 
-t_xyzvektor	add_light(t_store *store, t_shape shape, t_xyzvektor *result,
-		t_c canvas)
+static t_xyzvektor	clamp_color(t_xyzvektor color)
 {
-	t_xyzvektor	scaled_spec;
-
-	store->diffuse = scalar_multiplication(store->materialcolor,
-			shape.material.diffuse * store->light_dot_normale);
-	*result = addition(*result, scalar_multiplication(store->diffuse, 1.0
-				- store->shadow_factor));
-	store->reflectv = calculate_reflection(store->light_vector, canvas.normale);
-	store->reflect_dot_eye = dot_product(store->reflectv,
-			negate_tuple(canvas.eyevector));
-	if (store->reflect_dot_eye > 0)
-	{
-		store->factor = pow(store->reflect_dot_eye, shape.material.shininess);
-		scaled_spec = scalar_multiplication(store->lightsourcecolor,
-				shape.material.specular * store->factor * (1.0
-					- store->shadow_factor));
-		store->specular = addition(store->specular, scaled_spec);
-	}
-	return (*result);
-}
-
-t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
-		t_xyzvektor point)
-{
-	t_xyzvektor	result;
-	t_xyzvektor	scaled_spec;
-	int			i;
-
-	i = -1;
-	result = set_black();
-	while (++i < canvas.num_lights)
-	{
-		store->lightsourcecolor = canvas.lightsource[i].color;
-		store->effective_color = hadamard_product(store->materialcolor,
-				store->lightsourcecolor);
-		store->light_vector = normalize(substraction
-				(canvas.lightsource[i].position, point));
-		store->light_dot_normale = dot_product(store->light_vector,
-				canvas.normale);
-		if (store->light_dot_normale >= 0)
-		{
-			result = add_light(store, shape, &result, canvas);
-		}
-	}
-	return (result);
+	return ((t_xyzvektor){fmax(0, fmin(1, color.x)), fmax(0, fmin(1, color.y)),
+		fmax(0, fmin(1, color.z))});
 }
 
 t_xyzvektor get_color(t_c canvas, t_shape shape, int x, int y)
 {
-	t_xyzvektor color;
-	
-	// if(canvas.bumpmapcolor)
-	// {
-	// 	x = (x < 0) ? 0 : ((x >= canvas.bumpmapcolor->width) ? canvas.bumpmapcolor->width - 1 : x);
-	// 	y = (y < 0) ? 0 : ((y >= canvas.bumpmapcolor->height) ? canvas.bumpmapcolor->height - 1 : y);
-		
-	// 	// Pixeladresse berechnen (MLX speichert Pixel als uint32_t)
-	// 	int pixel_offset = y * (canvas.bumpmapcolor->width * 4 / sizeof(uint32_t)) + x;
-	// 	uint32_t pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
-		
-	// 	// Farbe aus ARGB extrahieren (MLX-Format ist normalerweise 0xAARRGGBB)
-	// 	color.x = (pixel >> 24) & 0xFF;  // Alpha (falls benötigt)
-	// 	color.y = (pixel >> 16) & 0xFF;  // Rot
-	// 	color.z = (pixel >> 8)  & 0xFF;  // Grün
-	// 	color.w = pixel         & 0xFF;  // Blau
-		
-	// 	return color;
-	// }
-	// else
-		return get_color_from_uint(shape.material.color);
+    t_xyzvektor color;
+    
+    // Clamp x and y coordinates to texture bounds
+    x = (x < 0) ? 0 : ((x >= canvas.bumpmapcolor->width) ? canvas.bumpmapcolor->width - 1 : x);
+    y = (y < 0) ? 0 : ((y >= canvas.bumpmapcolor->height) ? canvas.bumpmapcolor->height - 1 : y);
+    
+    if(canvas.bumpmapcolor && shape.type == 0)
+    {
+        // Calculate pixel offset (assuming pixels are stored as uint32_t in ARGB format)
+        int pixel_offset = y * (canvas.bumpmapcolor->width * 4 / sizeof(uint32_t)) + x;
+        uint32_t pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
+        color = set_black();
+		// color.x = ((pixel >> 16) & 0xFF) / 255.0;
+		// color.y = ((pixel >> 8) & 0xFF) / 255.0;  // Grün (Bits 16-23)
+		// color.z = (pixel & 0xFF) / 255.0;           // Blau (Bits 24-31)
+		// color.w = ((pixel >> 24) & 0xFF)  / 255.0;  
+		color.w = ((pixel >> 24) & 0xFF) / 255.0;  // Alpha (Bits 24-31)
+		color.z = ((pixel >> 16) & 0xFF) / 255.0;  // Blau (jetzt aus Bits 16-23)
+		color.y = ((pixel >> 8)  & 0xFF) / 255.0; // Grün (Bits 8-15)
+		color.x = (pixel & 0xFF) / 255.0;          // Rot (jetzt aus Bits 0-7)        // Blau (Bits 0-7)     // Alpha (Bits 0-7)  // Alpha (if needed)
+        return color;
+    }
+    else
+    {
+        // Fallback to shape's material color
+        return get_color_from_uint(shape.material.color);
+    }
 }
 
 t_xyzvektor	lightning(t_comp comp, t_c canvas,
 		bool *in_shadow)
 {
 	t_store		store;
+	double		light_dot_normale;
+	double		shadow_factor;
+	int			i;
 	t_xyzvektor	result;
+	t_xyzvektor	scaled_spec;
 	t_xyzvektor	final;
-	t_shape shape;
-	t_xyzvektor point;
+	t_shape shape = *(comp.object);
+	t_xyzvektor point = comp.over_point;
+	
 
-	shape = *(comp.object);
-	point = comp.over_point;
+	i = -1;
 	store.diffuse = set_black();
 	store.specular = set_black();
 	store.ambient = set_black();
+	result = set_black();
 	if (shape.material.checker_enable)
 		store.materialcolor = pattern_at(shape, point);
 	else
 		store.materialcolor = get_color(canvas, shape, (int)comp.u, (int)comp.v);
-	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
+	shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
-	result = each_light(&store, shape, canvas, point);
+	while (++i < canvas.num_lights)
+	{
+		store.lightsourcecolor = canvas.lightsource[i].color;
+		store.effective_color = hadamard_product(store.materialcolor,
+				store.lightsourcecolor);
+		store.light_vector = normalize(substraction(canvas.lightsource[i].position,
+					point));
+		light_dot_normale = dot_product(store.light_vector, canvas.normale);
+		if (light_dot_normale >= 0)
+		{
+			store.diffuse = scalar_multiplication(store.materialcolor,
+					shape.material.diffuse * light_dot_normale);
+			result = addition(result, scalar_multiplication(store.diffuse, 1.0
+						- shadow_factor));
+			store.reflectv = calculate_reflection(store.light_vector,
+					canvas.normale);
+			store.reflect_dot_eye = dot_product(store.reflectv,
+					negate_tuple(canvas.eyevector));
+			if (store.reflect_dot_eye > 0)
+			{
+				store.factor = pow(store.reflect_dot_eye,
+						shape.material.shininess);
+				scaled_spec = scalar_multiplication(store.lightsourcecolor,
+						shape.material.specular * store.factor * (1.0
+							- shadow_factor));
+				store.specular = addition(store.specular, scaled_spec);
+			}
+		}
+	}
 	final = addition(store.ambient, addition(result, store.specular));
-	FREE(in_shadow);
 	final.x = fmax(0.0, fmin(1.0, final.x));
 	final.y = fmax(0.0, fmin(1.0, final.y));
 	final.z = fmax(0.0, fmin(1.0, final.z));
-	return (final);
+	FREE(in_shadow);
+	return (clamp_color(final));
 }
 
 // reflection_test

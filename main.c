@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 17:46:13 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 12:59:42 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char *argv[])
 	init_canvas(world->canvas);
 	if(argc >= 2)
 		load_bumpmap(argv[1], world);
-	world->all_sorted = ft_calloc(sizeof(double *), 100);
+	world->all_sorted = calloc(sizeof(double *), 100);
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
@@ -51,7 +51,7 @@ int	main(int argc, char *argv[])
 		free_world(world);
 		return (1);
 	}
-	if (parse_input("test/2_lights.rt", world))
+	if (parse_input("test.rt", world))
 	{
 		free_world(world);
 		return (1);
