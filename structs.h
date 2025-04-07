@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 15:29:56 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:18:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 
 # define PI 3.14159265358979323846
 # define EPSILON 0.00001
-
-static int			g_globalid = 0;
 
 typedef struct s_koord
 {
@@ -76,15 +74,6 @@ typedef struct s_shape
 	bool			closed;
 }					t_shape;
 
-typedef struct sphere
-{
-	int				id;
-	t_xyzvektor		origin;
-	double			radius;
-	double			**default_transformation;
-	t_material		material;
-}					t_sphere;
-
 typedef struct intersect
 {
 	t_ray			ray;
@@ -118,6 +107,8 @@ typedef struct reflection_data_store
 	t_xyzvektor		specular;
 	double			reflect_dot_eye;
 	double			factor;
+	double			shadow_factor;
+	double			light_dot_normale;
 	t_xyzvektor		reflectv;
 }					t_store;
 
@@ -135,7 +126,7 @@ typedef struct canvas
 	t_light			*lightsource;
 	t_xyzvektor		normale;
 	t_xyzvektor		eyevector;
-	mlx_texture_t 	*bumpmap;
+	mlx_texture_t	*bumpmap;
 	mlx_image_t		*bumpmapcolor;
 }					t_c;
 

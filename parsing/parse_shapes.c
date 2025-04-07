@@ -6,18 +6,20 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 18:17:27 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:24:26 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-double **get_sphere_matrix(double radius, double xyz[3])
+double	**get_sphere_matrix(double radius, double xyz[3])
 {
 	double	**trans;
+	double	**rad;
 
 	trans = translation(xyz[0], xyz[1], xyz[2]);
-	return (trans);
+	rad = scaling(radius, radius, radius);
+	return (multiply_matrix(rad, trans));
 }
 
 int	parse_sphere(t_world *world, char *line)
@@ -85,11 +87,33 @@ void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 	shape->radius = budget_ft_atof(split[3]) / 2;
 	shape->maximum = budget_ft_atof(split[4]) / 2;
 	shape->minimum = -budget_ft_atof(split[4]) / 2;
-	if (split[5])
-		shape->closed = budget_ft_atof(split[5]);
+	if (split[7] && (*split)[7])
+		shape->closed = budget_ft_atof(split[7]);
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
 	add_checker(world, split, 2);
+}
+
+double	**get_cylinder_matrix(double xyz[3], double normal[3], double radius,
+		double height)
+{
+	double	**rotation;
+	double	**translation_matrix;
+	double	**scale;
+	double	**full_transform;
+
+	rotation = MALLOC(sizeof(double *) * 4);
+	rotation[0] = MALLOC(sizeof(double) * 4);
+	rotation[1] = MALLOC(sizeof(double) * 4);
+	rotation[2] = MALLOC(sizeof(double) * 4);
+	rotation[3] = MALLOC(sizeof(double) * 4);
+	create_rotation_matrix(set_vector(normal[0], normal[1], normal[2], 0),
+		rotation);
+	translation_matrix = translation(xyz[0], xyz[1], xyz[2]);
+	scale = scaling(radius, height, radius);
+	full_transform = multiply_matrix(multiply_matrix(translation_matrix,
+				rotation), scale);
+	return (full_transform);
 }
 
 int	parse_cylinder(t_world *world, char *line)
@@ -116,7 +140,8 @@ int	parse_cylinder(t_world *world, char *line)
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
 	ft_free_split(normal_split);
 	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
-	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
+	shape->default_transformation = get_cylinder_matrix(xyz, normal,
+			shape->radius, shape->maximum);
 	return (ft_free_split(split), 0);
 }
 
@@ -142,8 +167,9 @@ int	parse_cone(t_world *world, char *line)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(3);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
-	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
+	shape->default_transformation = get_cylinder_matrix(xyz, normal,
+			shape->radius, shape->maximum);
 	ft_free_split(normal_split);
 	return (ft_free_split(split), 0);
 }
