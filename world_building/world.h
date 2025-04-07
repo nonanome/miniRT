@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 17:54:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:17:46 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void		free_double_ptr(double **a, int size);
 void		empty_intersections(t_c *canvas);
 double		**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
 				t_xyzvektor t);
-t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point);
 t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape);
 void		empty_intersections(t_c *canvas);
 // test

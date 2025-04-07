@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 18:48:11 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:21:13 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char *argv[])
 		free_world(world);
 		return (1);
 	}
-	if (parse_input("test/cylinder.rt", world))
+	if (parse_input("test/camera.rt", world))
 	{
 		free_world(world);
 		return (1);

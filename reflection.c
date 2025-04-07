@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 18:42:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:18:35 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas,
 	t_shape shape = *(comp.object);
 	t_xyzvektor point = comp.over_point;
 	
-
 	shape = *(comp.object);
 	point = comp.over_point;
 	store.diffuse = set_black();
@@ -141,7 +140,6 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas,
 			shape.material.ambient);
 	result = each_light(&store, shape, canvas, point);
 	final = addition(store.ambient, addition(result, store.specular));
-	FREE(in_shadow);
 	final.x = fmax(0.0, fmin(1.0, final.x));
 	final.y = fmax(0.0, fmin(1.0, final.y));
 	final.z = fmax(0.0, fmin(1.0, final.z));

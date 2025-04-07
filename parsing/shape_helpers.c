@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 14:04:11 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:25:28 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ char	***checker_parsing(char **split, int type)
 		return (NULL);
 	while (split[i++])
 		;
-	if ((i != 6 && (type == 0 || type == 1)) || (i != 8 && type == 2))
+	if ((i != 6 && (type == 0 || type == 1)) || (i != 7 && i != 8 && i != 9
+			&& type == 2))
 		return (NULL);
 	if (type == 0 || type == 1)
 		i = 4;
@@ -70,7 +71,7 @@ void	add_checker(t_world *world, char **split, int type)
 	char	***split_split;
 
 	split_split = checker_parsing(split, type);
-	if (!split_split)
+	if (!split_split || !(*split_split))
 		return ;
 	world->shapes[world->nr_shapes
 		- 1]->material.color2 = set_vector(budget_ft_atof(split_split[0][0])

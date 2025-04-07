@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 17:54:47 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:18:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,6 @@ typedef struct s_shape
 	double			maximum;
 	bool			closed;
 }					t_shape;
-
-typedef struct sphere
-{
-	int				id;
-	t_xyzvektor		origin;
-	double			radius;
-	double			**default_transformation;
-	t_material		material;
-}					t_sphere;
 
 typedef struct intersect
 {

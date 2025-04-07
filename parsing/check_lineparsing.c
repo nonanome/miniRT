@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/27 20:31:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/06 22:21:39 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	check_cylinder_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 6 && split_count != 7)
+	if (split_count != 6 && split_count != 7 && split_count != 8)
 	{
 		write(2, "cylinder line in wrong form",
 			ft_strlen("cylinder line in wrong form"));

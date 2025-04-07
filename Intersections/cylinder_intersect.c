@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 14:35:16 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:11:08 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	create_rotation_matrix(t_xyzvektor normal, double **rotation)
 	double	c[3];
 	double	sin_theta;
 	double	cos_theta;
+	double	u[3];
 
 	axis[0] = 0.0;
 	axis[1] = 1.0;
@@ -28,41 +29,87 @@ void	create_rotation_matrix(t_xyzvektor normal, double **rotation)
 	c[1] = normal.z * axis[0] - normal.x * axis[2];
 	c[2] = normal.x * axis[1] - normal.y * axis[0];
 	sin_theta = sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
+	if (sin_theta > EPSILON)
+	{
+		u[0] = c[0] / sin_theta;
+		u[1] = c[1] / sin_theta;
+		u[2] = c[2] / sin_theta;
+	}
+	else
+	{
+		u[0] = u[1] = u[2] = 0.0;
+	}
 	cos_theta = dot;
-	rotation[0][0] = cos_theta + c[0] * c[0] * (1 - cos_theta);
-	rotation[0][1] = c[0] * c[1] * (1 - cos_theta) - c[2] * sin_theta;
-	rotation[0][2] = c[0] * c[2] * (1 - cos_theta) + c[1] * sin_theta;
-	rotation[1][0] = c[1] * c[0] * (1 - cos_theta) + c[2] * sin_theta;
-	rotation[1][1] = cos_theta + c[1] * c[1] * (1 - cos_theta);
-	rotation[1][2] = c[1] * c[2] * (1 - cos_theta) - c[0] * sin_theta;
-	rotation[2][0] = c[2] * c[0] * (1 - cos_theta) - c[1] * sin_theta;
-	rotation[2][1] = c[2] * c[1] * (1 - cos_theta) + c[0] * sin_theta;
-	rotation[2][2] = cos_theta + c[2] * c[2] * (1 - cos_theta);
+	rotation[0][0] = cos_theta + u[0] * u[0] * (1 - cos_theta);
+	rotation[0][1] = u[0] * u[1] * (1 - cos_theta) - u[2] * sin_theta;
+	rotation[0][2] = u[0] * u[2] * (1 - cos_theta) + u[1] * sin_theta;
+	rotation[1][0] = u[1] * u[0] * (1 - cos_theta) + u[2] * sin_theta;
+	rotation[1][1] = cos_theta + u[1] * u[1] * (1 - cos_theta);
+	rotation[1][2] = u[1] * u[2] * (1 - cos_theta) - u[0] * sin_theta;
+	rotation[2][0] = u[2] * u[0] * (1 - cos_theta) - u[1] * sin_theta;
+	rotation[2][1] = u[2] * u[1] * (1 - cos_theta) + u[0] * sin_theta;
+	rotation[2][2] = cos_theta + u[2] * u[2] * (1 - cos_theta);
+	rotation[0][3] = 0.0;
+	rotation[1][3] = 0.0;
+	rotation[2][3] = 0.0;
+	rotation[3][0] = 0.0;
+	rotation[3][1] = 0.0;
+	rotation[3][2] = 0.0;
+	rotation[3][3] = 1.0;
 }
 
-void	transform_ray(t_ray *ray, double **rotation)
+void	transform_ray(t_ray *ray, double **matrix)
 {
-	double	origin[3];
-	double	direction[3];
+	double	ox;
+	double	oy;
+	double	oz;
+	double	ow;
+	double	nx;
+	double	ny;
+	double	nz;
+	double	nw;
+	double	dx;
+	double	dy;
+	double	dz;
+	double	dw;
 
-	origin[0] = ray->origin.x;
-	origin[1] = ray->origin.y;
-	origin[2] = ray->origin.z;
-	direction[0] = ray->direction.x;
-	direction[1] = ray->direction.y;
-	direction[2] = ray->direction.z;
-	ray->origin.x = rotation[0][0] * origin[0] + rotation[0][1] * origin[1]
-		+ rotation[0][2] * origin[2];
-	ray->origin.y = rotation[1][0] * origin[0] + rotation[1][1] * origin[1]
-		+ rotation[1][2] * origin[2];
-	ray->origin.z = rotation[2][0] * origin[0] + rotation[2][1] * origin[1]
-		+ rotation[2][2] * origin[2];
-	ray->direction.x = rotation[0][0] * direction[0] + rotation[0][1]
-		* direction[1] + rotation[0][2] * direction[2];
-	ray->direction.y = rotation[1][0] * direction[0] + rotation[1][1]
-		* direction[1] + rotation[1][2] * direction[2];
-	ray->direction.z = rotation[2][0] * direction[0] + rotation[2][1]
-		* direction[1] + rotation[2][2] * direction[2];
+	// origin is a point: w=1
+	ox = ray->origin.x;
+	oy = ray->origin.y;
+	oz = ray->origin.z;
+	ow = 1.0;
+	nx = matrix[0][0] * ox + matrix[0][1] * oy + matrix[0][2] * oz
+		+ matrix[0][3] * ow;
+	ny = matrix[1][0] * ox + matrix[1][1] * oy + matrix[1][2] * oz
+		+ matrix[1][3] * ow;
+	nz = matrix[2][0] * ox + matrix[2][1] * oy + matrix[2][2] * oz
+		+ matrix[2][3] * ow;
+	nw = matrix[3][0] * ox + matrix[3][1] * oy + matrix[3][2] * oz
+		+ matrix[3][3] * ow;
+	if (nw != 0.0)
+	{
+		nx /= nw;
+		ny /= nw;
+		nz /= nw;
+	}
+	ray->origin.x = nx;
+	ray->origin.y = ny;
+	ray->origin.z = nz;
+	dx = ray->direction.x;
+	dy = ray->direction.y;
+	dz = ray->direction.z;
+	dw = 0.0;
+	nx = matrix[0][0] * dx + matrix[0][1] * dy + matrix[0][2] * dz
+		+ matrix[0][3] * dw;
+	ny = matrix[1][0] * dx + matrix[1][1] * dy + matrix[1][2] * dz
+		+ matrix[1][3] * dw;
+	nz = matrix[2][0] * dx + matrix[2][1] * dy + matrix[2][2] * dz
+		+ matrix[2][3] * dw;
+	nw = matrix[3][0] * dx + matrix[3][1] * dy + matrix[3][2] * dz
+		+ matrix[3][3] * dw;
+	ray->direction.x = nx;
+	ray->direction.y = ny;
+	ray->direction.z = nz;
 }
 
 void	cut_cylinder(t_intersec *result, t_ray ray, t_shape shape)
@@ -115,12 +162,6 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 	double	discriminant;
 	double	**rotation;
 
-	rotation = MALLOC(sizeof(double *) * 3);
-	rotation[0] = MALLOC(sizeof(double) * 3);
-	rotation[1] = MALLOC(sizeof(double) * 3);
-	rotation[2] = MALLOC(sizeof(double) * 3);
-	create_rotation_matrix(cylinder.normal, rotation);
-	transform_ray(&ray, rotation);
 	discriminant_values = MALLOC(3 * sizeof(double));
 	result->times = MALLOC(2 * sizeof(double));
 	discriminant = get_discriminant(discriminant_values, ray, cylinder, result);

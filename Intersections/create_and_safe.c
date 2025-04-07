@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/05 14:49:30 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/07 19:10:36 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,11 @@ t_intersec	*local_intersect(t_intersec *result, t_ray ray, t_shape *shape)
 t_intersec	*intersect(t_shape *shape, t_ray ray)
 {
 	t_intersec	*result;
-	double		**inverted;
+	double		**inverse;
 
 	result = ft_calloc(sizeof(t_intersec), 1);
-	inverted = invert_matrix(shape->default_transformation, 4);
-	ray = transform(ray, inverted);
-	free_double_ptr(inverted, 4);
+	inverse = invert_matrix(shape->default_transformation, 4);
+	ray = transform(ray, inverse);
 	result->ray = ray;
 	return (local_intersect(result, ray, shape));
 }
