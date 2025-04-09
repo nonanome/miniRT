@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 19:25:28 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 23:50:33 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ char	***checker_parsing(char **split, int type)
 		return (NULL);
 	if (type == 0 || type == 1)
 		i = 4;
-	else
+	else if (i == 8)
 		i = 6;
+	else
+		i = 5;
 	while (split[i])
 		split_split[j++] = ft_split(split[i++], ',');
 	return (split_split);
@@ -76,7 +78,7 @@ void	add_checker(t_world *world, char **split, int type)
 	world->shapes[world->nr_shapes
 		- 1]->material.color2 = set_vector(budget_ft_atof(split_split[0][0])
 			/ 255, budget_ft_atof(split_split[0][1]) / 255,
-			budget_ft_atof(split_split[0][2]) / 255, 1);
+			budget_ft_atof(split_split[0][2]) / 255, 0);
 	world->shapes[world->nr_shapes - 1]->material.checker_enable = true;
 }
 

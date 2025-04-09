@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:45:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/03 17:18:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:04:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	resize_intersections_array(t_c *canvas)
 	if (canvas->all_intersections.nr_intersections == 0)
 	{
 		new_size = 1;
-		temp = MALLOC(sizeof(t_intersec));
+		temp = ft_calloc(sizeof(t_intersec), 1);
 	}
 	else
 	{
@@ -37,7 +37,7 @@ static double	*clone_times(double *src_times)
 {
 	double	*new_times;
 
-	new_times = MALLOC(2 * sizeof(double));
+	new_times = ft_calloc(2, sizeof(double));
 	if (!new_times)
 		exit(1);
 	new_times[0] = src_times[0];

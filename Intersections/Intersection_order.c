@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:19:49 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:05:32 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	setup_new_intersect(t_c *canvas, t_intersec *new_intersection,
 		int nr_intersec, t_intersec *intersections_sorted)
 {
 	canvas->all_intersections.nr_intersections = nr_intersec;
-	intersections_sorted = MALLOC(nr_intersec * sizeof(t_intersec));
+	intersections_sorted = ft_calloc(nr_intersec, sizeof(t_intersec));
 	if (!intersections_sorted)
 		return (-1);
 	if (nr_intersec == 1)

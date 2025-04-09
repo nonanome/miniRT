@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:25:10 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 18:21:12 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 19:41:40 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_double_ptr(double **a, int size)
 	i = 0;
 	if (a)
 	{
-		while (a[i] && i < size)
+		while (a && i < size && a[i])
 		{
 			FREE(a[i]);
 			i++;
