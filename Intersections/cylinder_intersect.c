@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 20:03:54 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/10 00:54:29 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 {
 	double	*discriminant_values;
 	double	discriminant;
-	double	**rotation;
 
 	discriminant_values = ft_calloc(3, sizeof(double));
 	result->times = ft_calloc(2, sizeof(double));
@@ -146,9 +145,9 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 	if (discriminant == -1)
 		return (NULL);
 	cut_cylinder(result, ray, cylinder);
-	if (result->times[0] == -1)
+	if (cylinder.closed)
 		cap_top(result, ray, cylinder);
-	if (result->times[1] == -1)
+	if (cylinder.closed)
 		cap_bottom(result, ray, cylinder);
 	FREE(discriminant_values);
 	return (result);
