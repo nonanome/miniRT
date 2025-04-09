@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 17:27:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:03:54 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ void	create_rotation_matrix(t_xyzvektor normal, double **rotation)
 	double	sin_theta;
 	double	cos_theta;
 	double	u[3];
+	double	length;
 
+	length = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z
+			* normal.z);
+	normal.x /= length;
+	normal.y /= length;
+	normal.z /= length;
 	axis[0] = 0.0;
 	axis[1] = 1.0;
 	axis[2] = 0.0;
@@ -36,9 +42,7 @@ void	create_rotation_matrix(t_xyzvektor normal, double **rotation)
 		u[2] = c[2] / sin_theta;
 	}
 	else
-	{
 		u[0] = u[1] = u[2] = 0.0;
-	}
 	cos_theta = dot;
 	rotation[0][0] = cos_theta + u[0] * u[0] * (1 - cos_theta);
 	rotation[0][1] = u[0] * u[1] * (1 - cos_theta) - u[2] * sin_theta;
@@ -49,67 +53,41 @@ void	create_rotation_matrix(t_xyzvektor normal, double **rotation)
 	rotation[2][0] = u[2] * u[0] * (1 - cos_theta) - u[1] * sin_theta;
 	rotation[2][1] = u[2] * u[1] * (1 - cos_theta) + u[0] * sin_theta;
 	rotation[2][2] = cos_theta + u[2] * u[2] * (1 - cos_theta);
-	rotation[0][3] = 0.0;
-	rotation[1][3] = 0.0;
-	rotation[2][3] = 0.0;
-	rotation[3][0] = 0.0;
-	rotation[3][1] = 0.0;
-	rotation[3][2] = 0.0;
 	rotation[3][3] = 1.0;
 }
 
 void	transform_ray(t_ray *ray, double **matrix)
 {
-	double	ox;
-	double	oy;
-	double	oz;
-	double	ow;
-	double	nx;
-	double	ny;
-	double	nz;
-	double	nw;
-	double	dx;
-	double	dy;
-	double	dz;
-	double	dw;
+	t_xyzvektor	orig;
+	t_xyzvektor	dir;
+	t_xyzvektor	new_orig;
+	t_xyzvektor	new_dir;
+	double		nw;
 
-	// origin is a point: w=1
-	ox = ray->origin.x;
-	oy = ray->origin.y;
-	oz = ray->origin.z;
-	ow = 1.0;
-	nx = matrix[0][0] * ox + matrix[0][1] * oy + matrix[0][2] * oz
-		+ matrix[0][3] * ow;
-	ny = matrix[1][0] * ox + matrix[1][1] * oy + matrix[1][2] * oz
-		+ matrix[1][3] * ow;
-	nz = matrix[2][0] * ox + matrix[2][1] * oy + matrix[2][2] * oz
-		+ matrix[2][3] * ow;
-	nw = matrix[3][0] * ox + matrix[3][1] * oy + matrix[3][2] * oz
-		+ matrix[3][3] * ow;
+	orig = ray->origin;
+	new_orig.x = matrix[0][0] * orig.x + matrix[0][1] * orig.y + matrix[0][2]
+		* orig.z + matrix[0][3] * 1.0;
+	new_orig.y = matrix[1][0] * orig.x + matrix[1][1] * orig.y + matrix[1][2]
+		* orig.z + matrix[1][3] * 1.0;
+	new_orig.z = matrix[2][0] * orig.x + matrix[2][1] * orig.y + matrix[2][2]
+		* orig.z + matrix[2][3] * 1.0;
+	nw = matrix[3][0] * orig.x + matrix[3][1] * orig.y + matrix[3][2] * orig.z
+		+ matrix[3][3] * 1.0;
 	if (nw != 0.0)
 	{
-		nx /= nw;
-		ny /= nw;
-		nz /= nw;
+		new_orig.x /= nw;
+		new_orig.y /= nw;
+		new_orig.z /= nw;
 	}
-	ray->origin.x = nx;
-	ray->origin.y = ny;
-	ray->origin.z = nz;
-	dx = ray->direction.x;
-	dy = ray->direction.y;
-	dz = ray->direction.z;
-	dw = 0.0;
-	nx = matrix[0][0] * dx + matrix[0][1] * dy + matrix[0][2] * dz
-		+ matrix[0][3] * dw;
-	ny = matrix[1][0] * dx + matrix[1][1] * dy + matrix[1][2] * dz
-		+ matrix[1][3] * dw;
-	nz = matrix[2][0] * dx + matrix[2][1] * dy + matrix[2][2] * dz
-		+ matrix[2][3] * dw;
-	nw = matrix[3][0] * dx + matrix[3][1] * dy + matrix[3][2] * dz
-		+ matrix[3][3] * dw;
-	ray->direction.x = nx;
-	ray->direction.y = ny;
-	ray->direction.z = nz;
+	ray->origin = new_orig;
+	dir = ray->direction;
+	new_dir.x = matrix[0][0] * dir.x + matrix[0][1] * dir.y + matrix[0][2]
+		* dir.z;
+	new_dir.y = matrix[1][0] * dir.x + matrix[1][1] * dir.y + matrix[1][2]
+		* dir.z;
+	new_dir.z = matrix[2][0] * dir.x + matrix[2][1] * dir.y + matrix[2][2]
+		* dir.z;
+	ray->direction = new_dir;
 }
 
 void	cut_cylinder(t_intersec *result, t_ray ray, t_shape shape)
@@ -162,8 +140,8 @@ t_intersec	*cylinder_intersect(t_intersec *result, t_ray ray, t_shape cylinder)
 	double	discriminant;
 	double	**rotation;
 
-	discriminant_values = MALLOC(3 * sizeof(double));
-	result->times = MALLOC(2 * sizeof(double));
+	discriminant_values = ft_calloc(3, sizeof(double));
+	result->times = ft_calloc(2, sizeof(double));
 	discriminant = get_discriminant(discriminant_values, ray, cylinder, result);
 	if (discriminant == -1)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 17:10:22 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 23:14:40 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct intersections
 typedef struct pointlight
 {
 	t_xyzvektor		color;
+	double			brightness;
 	t_xyzvektor		position;
 }					t_light;
 
@@ -167,5 +168,24 @@ typedef struct s_comp
 	long double		u;
 	long double		v;
 }					t_comp;
+
+typedef struct s_bump_map_normal
+{
+	t_xyzvektor	a;
+	t_xyzvektor	b;
+	int			x;
+	int			y;
+	float		center;
+	float		left;
+	float		right;
+	float		top;
+	float		bottom;
+	float		strength;
+	float		dx;
+	float		dy;
+	t_xyzvektor	tangent_x;
+	t_xyzvektor	tangent_y;
+	t_xyzvektor	bump_normal;
+}	t_bump_norm;
 
 #endif

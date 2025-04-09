@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 19:17:23 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 22:58:50 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,8 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 	{
 		inverse_transform = invert_matrix(shape.default_transformation, 4);
 		local_point = multiply_vector_and_matrix(point, inverse_transform);
-		free_double_ptr(inverse_transform, 4);
 		local_normal = calc_cylinder_normal(shape, local_point);
-		transpose_inverse = transpose_matrix(shape.default_transformation, 4);
+		transpose_inverse = transpose_matrix(inverse_transform, 4);
 		world_normal = multiply_vector_and_matrix(local_normal,
 				transpose_inverse);
 		free_double_ptr(transpose_inverse, 4);

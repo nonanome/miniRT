@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 19:13:27 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:05:20 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,19 @@ t_world	*get_world(int shapes)
 {
 	t_world	*world;
 
-	world = (t_world *)MALLOC(sizeof(t_world));
+	world = (t_world *)ft_calloc(1, sizeof(t_world));
 	if (!world)
 		return (NULL);
-	world->canvas = (t_c *)ft_calloc(sizeof(t_c), 1);
+	world->canvas = (t_c *)ft_calloc(1, sizeof(t_c));
 	if (!world->canvas)
 		return (FREE(world), NULL);
-	world->env = (t_env *)MALLOC(sizeof(t_env));
+	world->env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!world->env)
 		return (FREE(world->canvas), FREE(world), NULL);
-	world->shapes = (t_shape **)MALLOC(sizeof(t_shape *) * shapes);
+	world->shapes = (t_shape **)ft_calloc(shapes, sizeof(t_shape *));
 	if (!world->shapes)
 		return (FREE(world->env), FREE(world->canvas), FREE(world), NULL);
-	world->ambient = MALLOC(sizeof(t_xyzvektor));
+	world->ambient = ft_calloc(1, sizeof(t_xyzvektor));
 	if (!world->ambient)
 		return (FREE(world->shapes), FREE(world->env), FREE(world->canvas),
 			FREE(world), NULL);

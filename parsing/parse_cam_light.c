@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 17:18:19 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 23:16:01 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,10 @@ void	realloc_light(t_c *canvas, t_light new_light)
 	lights = MALLOC((canvas->num_lights + 1) * sizeof(t_light));
 	while (i < canvas->num_lights)
 	{
-		printf("test");
 		lights[i] = canvas->lightsource[i];
 		i++;
 	}
 	lights[i] = new_light;
-	printf("newlight");
 	FREE(canvas->lightsource);
 	canvas->lightsource = lights;
 	canvas->num_lights++;
@@ -97,7 +95,8 @@ int	parse_light(t_world *world, char *line)
 		return (ft_free_split(split), 1);
 	if (xyz_rgb_brightness(split, rgb_split, rgb, xyz))
 		return (write(2, "problem parsing light\n", 22), 1);
-	new_light.color = set_vector(rgb[0], rgb[1], rgb[2], rgb[3]);
+	new_light.color = set_vector(rgb[0], rgb[1], rgb[2], 0);
+	new_light.brightness = budget_ft_atof(split[1]);
 	new_light.position = set_vector(xyz[0], xyz[1], xyz[2], 0);
 	realloc_light(world->canvas, new_light);
 	return (ft_free_split(split), ft_free_split(rgb_split), 0);

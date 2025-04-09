@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:15:01 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 21:37:25 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:03:30 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,8 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 	double	*discriminant_values;
 	double	discriminant;
 
-	discriminant_values = MALLOC(3 * sizeof(double));
-	result->times = MALLOC(2 * sizeof(double));
+	discriminant_values = ft_calloc(3, sizeof(double));
+	result->times = ft_calloc(2, sizeof(double));
 	if (cone_discrimination(discriminant_values, ray, cone, result))
 		return (NULL);
 	cut_cone(result, ray, cone);

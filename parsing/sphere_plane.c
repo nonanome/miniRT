@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_shapes.c                                     :+:      :+:    :+:   */
+/*   sphere_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 17:15:53 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 19:45:37 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	parse_plane(t_world *world, char *line)
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
-	free_double_ptr(shape->default_transformation, 4);
 	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;

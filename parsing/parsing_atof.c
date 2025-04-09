@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:03:14 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 16:41:31 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 22:47:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,36 @@ double	budget_ft_atof(char *str)
 {
 	double	result;
 	double	fraction;
-	int		sign[1];
+	int		sign;
 	int		i;
+	int		frac_digits;
 
 	i = 0;
 	result = 0;
 	fraction = 0;
-	sign[0] = 1;
+	sign = 1;
 	if (str[i] == '-')
-		sign[i++] = -1;
+	{
+		sign = -1;
+		i++;
+	}
 	while (ft_isdigit(str[i]))
-		result = result * 10 + str[i++] - '0';
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
 	if (str[i] && str[i] == '.')
 	{
 		i++;
-		while (str[i])
+		frac_digits = 0;
+		while (ft_isdigit(str[i]))
 		{
-			fraction = fraction * 10 + str[i] - '0';
+			fraction = fraction * 10 + (str[i] - '0');
+			frac_digits++;
 			i++;
 		}
+		while (frac_digits-- > 0)
+			fraction /= 10;
 	}
-	return ((result + fraction / 10) * sign[0]);
+	return ((result + fraction) * sign);
 }

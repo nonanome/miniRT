@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 20:49:38 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:01:05 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 	shadows = MALLOC(world->canvas->num_lights * sizeof(bool));
 	ray = init_ray();
 	ray.origin = point;
+	v = set_vector(0, 0, 0, 0);
 	while (++i < world->canvas->num_lights)
 	{
 		v = substraction(world->canvas->lightsource[i].position, point);
