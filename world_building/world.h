@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 19:17:46 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 17:22:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ t_shape		*new_shape(int type);
 double		dotProduct(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	addition(t_xyzvektor a, t_xyzvektor b);
 t_xyzvektor	scalarMultiplication(t_xyzvektor a, double b);
-t_xyzvektor	lightning(t_comp comp, t_c canvas,
-	bool *in_shadow);
+t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow);
 t_ray		init_ray(void);
 double		magnitude(t_xyzvektor a);
 int			parse_input(char *file_name, t_world *world);

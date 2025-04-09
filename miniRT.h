@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 19:17:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 17:10:56 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ t_xyzvektor	set_black(void);
 t_light		default_light(void);
 t_material	default_material(void);
 
-t_xyzvektor	lightning(t_comp comp, t_c canvas,
-	bool *in_shadow);
+t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow);
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);
 t_shape		*new_shape(int type);
 t_xyzvektor	calculate_wall_coordinate(int x, int y, double pixel_size,
