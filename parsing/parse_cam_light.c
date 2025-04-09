@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/06 18:39:50 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/09 17:18:19 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ int	parse_ambient_light(t_world *world, char *line)
 int	parse_camera(t_world *world, char *line)
 {
 	char		**split;
-	int			error;
 	double		xyz[3];
-	double		fov;
 	double		normal[3];
 	t_xyzvektor	target;
 
@@ -97,9 +95,8 @@ int	parse_light(t_world *world, char *line)
 	rgb_split = ft_split(split[3], ',');
 	if (!rgb_split)
 		return (ft_free_split(split), 1);
-	rgb[3] = xyz_rgb_brightness(split, rgb_split, rgb, xyz);
-	if (!rgb[3])
-		return (1);
+	if (xyz_rgb_brightness(split, rgb_split, rgb, xyz))
+		return (write(2, "problem parsing light\n", 22), 1);
 	new_light.color = set_vector(rgb[0], rgb[1], rgb[2], rgb[3]);
 	new_light.position = set_vector(xyz[0], xyz[1], xyz[2], 0);
 	realloc_light(world->canvas, new_light);
