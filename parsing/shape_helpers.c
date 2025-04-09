@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 23:50:33 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/10 00:45:27 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,44 @@ int	parse_common_shape(char **split, double pos[3], double rgb[3])
 	return (ft_free_split(pos_split), ft_free_split(rgb_split), 0);
 }
 
-char	***checker_parsing(char **split, int type)
+char	**checker_parsing(char **split, int type)
 {
 	int		i;
-	int		j;
-	char	***split_split;
+	char	**split_split;
 
 	i = 0;
-	j = 0;
-	split_split = ft_calloc(4, sizeof(char **));
-	if (!split_split)
-		return (NULL);
 	while (split[i++])
 		;
-	if ((i != 6 && (type == 0 || type == 1)) || (i != 7 && i != 8 && i != 9
+	split_split = ft_calloc(3, sizeof(char *));
+	if (!split_split)
+		return (NULL);
+	if ((i != 6 && (type == 0 || type == 1)) || (i != 8 && i != 9
 			&& type == 2))
 		return (NULL);
 	if (type == 0 || type == 1)
 		i = 4;
-	else if (i == 8)
-		i = 6;
 	else
-		i = 5;
-	while (split[i])
-		split_split[j++] = ft_split(split[i++], ',');
+		i = 6;
+	split_split = ft_split(split[i], ',');
+	i = 0;
+	while (split_split[i++])
+		;
+	if (i != 4)
+		return (NULL);
 	return (split_split);
 }
 
 void	add_checker(t_world *world, char **split, int type)
 {
-	char	***split_split;
+	char	**split_split;
 
 	split_split = checker_parsing(split, type);
 	if (!split_split || !(*split_split))
 		return ;
 	world->shapes[world->nr_shapes
-		- 1]->material.color2 = set_vector(budget_ft_atof(split_split[0][0])
-			/ 255, budget_ft_atof(split_split[0][1]) / 255,
-			budget_ft_atof(split_split[0][2]) / 255, 0);
+		- 1]->material.color2 = set_vector(budget_ft_atof(split_split[0])
+			/ 255, budget_ft_atof(split_split[1]) / 255,
+			budget_ft_atof(split_split[2]) / 255, 0);
 	world->shapes[world->nr_shapes - 1]->material.checker_enable = true;
 }
 

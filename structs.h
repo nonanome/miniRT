@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 23:14:40 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/10 01:45:43 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_shape
 	int				id;
 	t_xyzvektor		origin;
 	double			**default_transformation;
+	double			**inverse;
 	t_material		material;
 	int				type;
 	double			radius;

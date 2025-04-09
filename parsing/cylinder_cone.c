@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:15:38 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 23:40:18 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/10 01:48:22 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 		double rgb[3])
 {
-	int i;
+	int	i;
 
 	i = 0;
 	shape->material.ambient = world->ambient_intensity;
@@ -26,8 +26,8 @@ void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 	shape->minimum = -budget_ft_atof(split[4]) / 2;
 	while (split[i++])
 		;
-	if (i > 8)
-		shape->closed = budget_ft_atof(split[7]);
+	if (i == 8 || i == 9)
+		shape->closed = budget_ft_atof(split[i - 2]);
 	else
 		shape->closed = 0;
 	world->shapes[world->nr_shapes] = shape;
@@ -35,25 +35,53 @@ void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 	add_checker(world, split, 2);
 }
 
-double	**get_cylinder_matrix(double xyz[3], double normal[3], double radius,
-		double height)
+double	**get_cylinder_matrix(double xyz[3], t_xyzvektor target_axis,
+		double radius)
 {
 	double	**rotation;
 	double	**translation_matrix;
 	double	**scale;
 	double	**full_transform;
+	double	**temp_transform;
 
-	rotation = ft_calloc(sizeof(double *), 4);
-	rotation[0] = ft_calloc(sizeof(double), 4);
-	rotation[1] = ft_calloc(sizeof(double), 4);
-	rotation[2] = ft_calloc(sizeof(double), 4);
-	rotation[3] = ft_calloc(sizeof(double), 4);
-	create_rotation_matrix(set_vector(normal[0], normal[1], normal[2], 0),
-		rotation);
+	rotation = get_identity_matrix();
+	if (!rotation)
+		return (NULL);
+	create_rotation_matrix(target_axis, rotation);
 	translation_matrix = translation(xyz[0], xyz[1], xyz[2]);
-	scale = scaling(radius, height, radius);
-	full_transform = multiply_matrix(multiply_matrix(translation_matrix, rotation),
-			scale);
+	if (!translation_matrix)
+	{
+		free_double_ptr(rotation, 4);
+		return (NULL);
+	}
+	scale = scaling(radius, 1.0, radius);
+	if (!scale)
+	{
+		free_double_ptr(rotation, 4);
+		free_double_ptr(translation_matrix, 4);
+		return (NULL);
+	}
+	temp_transform = multiply_matrix(translation_matrix, rotation);
+	if (!temp_transform)
+	{
+		free_double_ptr(rotation, 4);
+		free_double_ptr(translation_matrix, 4);
+		free_double_ptr(scale, 4);
+		return (NULL);
+	}
+	full_transform = multiply_matrix(temp_transform, scale);
+	if (!full_transform)
+	{
+		free_double_ptr(rotation, 4);
+		free_double_ptr(translation_matrix, 4);
+		free_double_ptr(scale, 4);
+		free_double_ptr(temp_transform, 4);
+		return (NULL);
+	}
+	free_double_ptr(rotation, 4);
+	free_double_ptr(translation_matrix, 4);
+	free_double_ptr(scale, 4);
+	free_double_ptr(temp_transform, 4);
 	return (full_transform);
 }
 
@@ -62,8 +90,8 @@ int	parse_cylinder(t_world *world, char *line)
 	char	**split;
 	char	**normal_split;
 	double	xyz[6];
-	double	normal[3];
 	t_shape	*shape;
+	double	normal[3];
 
 	check_cylinder_line(line);
 	split = ft_split(line, ' ');
@@ -81,8 +109,22 @@ int	parse_cylinder(t_world *world, char *line)
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
 	ft_free_split(normal_split);
 	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
-	shape->default_transformation = get_cylinder_matrix(xyz, normal,
-			shape->radius, shape->maximum);
+	shape->default_transformation = get_cylinder_matrix(xyz, shape->normal,
+			shape->radius);
+	if (!shape->default_transformation)
+	{
+		ft_free_split(split);
+		free(shape);
+		return (1);
+	}
+	shape->inverse = invert_matrix(shape->default_transformation, 4);
+	if (!shape->inverse)
+	{
+		free_double_ptr(shape->default_transformation, 4);
+		ft_free_split(split);
+		free(shape);
+		return (1);
+	}
 	return (ft_free_split(split), 0);
 }
 
@@ -108,9 +150,23 @@ int	parse_cone(t_world *world, char *line)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(3);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
-	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
-	shape->default_transformation = get_cylinder_matrix(xyz, normal,
-			shape->radius, shape->maximum);
 	ft_free_split(normal_split);
+	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
+	shape->default_transformation = get_cylinder_matrix(xyz, shape->normal,
+			shape->radius);
+	if (!shape->default_transformation)
+	{
+		ft_free_split(split);
+		free(shape);
+		return (1);
+	}
+	shape->inverse = invert_matrix(shape->default_transformation, 4);
+	if (!shape->inverse)
+	{
+		free_double_ptr(shape->default_transformation, 4);
+		ft_free_split(split);
+		free(shape);
+		return (1);
+	}
 	return (ft_free_split(split), 0);
 }
