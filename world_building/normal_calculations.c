@@ -12,42 +12,48 @@
 
 #include "world.h"
 
-t_xyzvektor	sphere_normal(t_shape shape, t_xyzvektor point)
+t_xyzvektor sphere_normal(t_shape shape, t_xyzvektor point)
 {
-	t_xyzvektor	local_point;
-	t_xyzvektor	local_normal;
-	t_xyzvektor	world_normal;
-	double		**inverse_transform;
-	double		**transpose_inverse_transform;
+	t_xyzvektor local_point;
+	t_xyzvektor local_normal;
+	t_xyzvektor world_normal;
+	double **inverse_transform;
+	double **transpose_inverse_transform;
 
 	inverse_transform = invert_matrix(shape.default_transformation, 4);
 	local_point = multiply_vector_and_matrix(point, inverse_transform);
 	local_normal = local_point;
 	transpose_inverse_transform = transpose_matrix(inverse_transform, 4);
 	world_normal = multiply_vector_and_matrix(local_normal,
-			transpose_inverse_transform);
+											  transpose_inverse_transform);
 	world_normal.w = 0;
 	free_double_ptr(transpose_inverse_transform, 4);
 	free_double_ptr(inverse_transform, 4);
 	return (normalize(world_normal));
 }
 
-t_xyzvektor	calc_cone_normal(t_shape cone, t_xyzvektor point)
+t_xyzvektor calc_cone_normal(t_shape cone, t_xyzvektor point)
 {
-	t_xyzvektor	normal;
-	double		tangens_theta;
+	t_xyzvektor normal;
+	double tangens_theta;
+	double **inverse;
 
-	tangens_theta = cone.radius / (cone.maximum - cone.minimum);
-	normal.x = -point.x * tangens_theta * tangens_theta;
-	normal.y = point.y;
+	double height = cone.maximum - cone.minimum;
+	double radius = cone.radius;
+	double ratio = radius / height;
+	inverse = invert_matrix(cone.default_transformation, 4);
+	point = multiply_vector_and_matrix(point, inverse);
+	// Für einen Kegel entlang der y-Achse (angenommen)
+	normal.x = point.x;
 	normal.z = point.z;
+	normal.y = sqrt(point.x * point.x + point.z * point.z) / ratio;
 	normal = normalize(normal);
 	return (normal);
 }
 
-t_xyzvektor	calc_cylinder_normal(t_shape shape, t_xyzvektor point)
+t_xyzvektor calc_cylinder_normal(t_shape shape, t_xyzvektor point)
 {
-	double	dist;
+	double dist;
 
 	dist = point.x * point.x + point.z * point.z;
 	if (dist < 1.0 + EPSILON)
@@ -60,15 +66,15 @@ t_xyzvektor	calc_cylinder_normal(t_shape shape, t_xyzvektor point)
 	return (set_vector(point.x, 0, point.z, 0));
 }
 
-t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
+t_xyzvektor calculate_normale(t_shape shape, t_xyzvektor point)
 {
-	t_xyzvektor	ret;
-	double		**inverse_transform;
-	double		**transpose_inverse_transform;
-	t_xyzvektor	world_normal;
-	t_xyzvektor	local_point;
-	t_xyzvektor	local_normal;
-	double		**transpose_inverse;
+	t_xyzvektor ret;
+	double **inverse_transform;
+	double **transpose_inverse_transform;
+	t_xyzvektor world_normal;
+	t_xyzvektor local_point;
+	t_xyzvektor local_normal;
+	double **transpose_inverse;
 
 	if (shape.type == 0)
 		return (sphere_normal(shape, point));
@@ -79,7 +85,7 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 		transpose_inverse_transform = transpose_matrix(inverse_transform, 4);
 		free_double_ptr(inverse_transform, 4);
 		ret = multiply_vector_and_matrix(local_normal,
-				transpose_inverse_transform);
+										 transpose_inverse_transform);
 		free_double_ptr(transpose_inverse_transform, 4);
 		return (ret);
 	}
@@ -90,7 +96,7 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 		local_normal = calc_cylinder_normal(shape, local_point);
 		transpose_inverse = transpose_matrix(inverse_transform, 4);
 		world_normal = multiply_vector_and_matrix(local_normal,
-				transpose_inverse);
+												  transpose_inverse);
 		free_double_ptr(transpose_inverse, 4);
 		return (normalize(world_normal));
 	}

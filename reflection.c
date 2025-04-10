@@ -13,20 +13,20 @@
 #include "miniRT.h"
 #include <inttypes.h>
 
-t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
+t_xyzvektor calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 {
-	double		dot;
-	t_xyzvektor	n;
+	double dot;
+	t_xyzvektor n;
 
 	dot = 2 * dot_product(in, normale);
 	n = scalar_multiplication(normale, dot);
 	return (normalize(substraction(in, n)));
 }
 
-static double	get_shadow_factor(bool *in_shadow, t_c canvas)
+static double get_shadow_factor(bool *in_shadow, t_c canvas)
 {
-	int		i;
-	double	shadow_factor;
+	int i;
+	double shadow_factor;
 
 	shadow_factor = 0.2;
 	i = -1;
@@ -40,35 +40,34 @@ static double	get_shadow_factor(bool *in_shadow, t_c canvas)
 	return (shadow_factor);
 }
 
-t_xyzvektor	add_light(t_store *store, t_shape shape, t_xyzvektor *result,
-		t_c canvas)
+t_xyzvektor add_light(t_store *store, t_shape shape, t_xyzvektor *result,
+					  t_c canvas)
 {
-	t_xyzvektor	scaled_spec;
+	t_xyzvektor scaled_spec;
 
 	store->diffuse = scalar_multiplication(store->materialcolor,
-			shape.material.diffuse * store->light_dot_normale);
-	*result = addition(*result, scalar_multiplication(store->diffuse, 1.0
-				- store->shadow_factor));
+										   shape.material.diffuse * store->light_dot_normale);
+	*result = addition(*result, scalar_multiplication(store->diffuse, 1.0 - store->shadow_factor));
 	store->reflectv = calculate_reflection(store->light_vector, canvas.normale);
 	store->reflect_dot_eye = dot_product(store->reflectv,
-			negate_tuple(canvas.eyevector));
+										 negate_tuple(canvas.eyevector));
 	if (store->reflect_dot_eye > 0)
 	{
+		printf("specular");
 		store->factor = pow(store->reflect_dot_eye, shape.material.shininess);
 		scaled_spec = scalar_multiplication(store->lightsourcecolor,
-				shape.material.specular * store->factor * (1.0
-					- store->shadow_factor));
+											shape.material.specular * store->factor * (1.0 - store->shadow_factor));
 		store->specular = addition(store->specular, scaled_spec);
 	}
 	return (*result);
 }
 
-t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
-		t_xyzvektor point)
+t_xyzvektor each_light(t_store *store, t_shape shape, t_c canvas,
+					   t_xyzvektor point)
 {
-	t_xyzvektor	result;
-	t_xyzvektor	scaled_spec;
-	int			i;
+	t_xyzvektor result;
+	t_xyzvektor scaled_spec;
+	int i;
 
 	i = -1;
 	result = set_black();
@@ -76,11 +75,11 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 	{
 		store->lightsourcecolor = canvas.lightsource[i].color;
 		store->effective_color = hadamard_product(store->materialcolor,
-				store->lightsourcecolor);
+												  store->lightsourcecolor);
 		store->light_vector = normalize(substraction(canvas.lightsource[i].position,
-					point));
+													 point));
 		store->light_dot_normale = dot_product(store->light_vector,
-				canvas.normale);
+											   canvas.normale);
 		if (store->light_dot_normale >= 0)
 		{
 			result = add_light(store, shape, &result, canvas);
@@ -89,13 +88,13 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 	return (result);
 }
 
-t_xyzvektor	get_color(t_c canvas, t_shape shape, long double x, long double y)
+t_xyzvektor get_color(t_c canvas, t_shape shape, long double x, long double y)
 {
-	t_xyzvektor	color;
-	int			ix;
-	int			iy;
-	int			pixel_offset;
-	uint32_t	pixel;
+	t_xyzvektor color;
+	int ix;
+	int iy;
+	int pixel_offset;
+	uint32_t pixel;
 
 	ix = (int)x;
 	iy = (int)y;
@@ -121,13 +120,13 @@ t_xyzvektor	get_color(t_c canvas, t_shape shape, long double x, long double y)
 		return (get_color_from_uint(shape.material.color));
 }
 
-t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow)
+t_xyzvektor lightning(t_comp comp, t_c canvas, bool *in_shadow)
 {
-	t_store		store;
-	t_xyzvektor	result;
-	t_xyzvektor	final;
-	t_shape		shape;
-	t_xyzvektor	point;
+	t_store store;
+	t_xyzvektor result;
+	t_xyzvektor final;
+	t_shape shape;
+	t_xyzvektor point;
 
 	shape = *(comp.object);
 	point = comp.over_point;
@@ -142,7 +141,7 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow)
 		store.materialcolor = get_color(canvas, shape, comp.u, comp.v);
 	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
-			shape.material.ambient);
+										  shape.material.ambient);
 	result = each_light(&store, shape, canvas, point);
 	final = addition(store.ambient, addition(result, store.specular));
 	final.x = fmax(0.0, fmin(1.0, final.x));

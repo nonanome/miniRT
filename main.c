@@ -14,32 +14,32 @@
 
 #define PI 3.14159265358979323846
 
-t_xyzvektor	ray_position(t_ray ray, double time)
+t_xyzvektor ray_position(t_ray ray, double time)
 {
-	t_xyzvektor	result;
+	t_xyzvektor result;
 
 	result = addition(ray.origin, scalar_multiplication(ray.direction, time));
 	return (result);
 }
 
-int	main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-	t_world			*world;
-	t_ray			ray;
-	t_comp			comp;
-	t_xyzvektor		shadestuff;
-	double			**retmatrix;
-	double			**rot;
-	double			**trans;
-	mlx_image_t		*image;
-	unsigned int	color;
-	t_xyzvektor		color2;
+	t_world *world;
+	t_ray ray;
+	t_comp comp;
+	t_xyzvektor shadestuff;
+	double **retmatrix;
+	double **rot;
+	double **trans;
+	mlx_image_t *image;
+	unsigned int color;
+	t_xyzvektor color2;
 
 	world = get_world(30);
 	if (!world)
 		return (1);
 	init_canvas(world->canvas);
-	if(argc >= 2)
+	if (argc >= 2)
 		load_bumpmap(argv[1], world);
 	world->all_sorted = ft_calloc(sizeof(double *), 100);
 	if (!world->all_sorted)
@@ -51,7 +51,7 @@ int	main(int argc, char *argv[])
 		free_world(world);
 		return (1);
 	}
-	if (parse_input("test/cylinder.rt", world))
+	if (parse_input("test/cone.rt", world))
 	{
 		free_world(world);
 		return (1);

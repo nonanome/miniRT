@@ -12,11 +12,11 @@
 
 #include "miniRT.h"
 
-void	init_canvas(t_c *canvas)
+void init_canvas(t_c *canvas)
 {
 	canvas->worldheight = 8;
-	canvas->height = 200;
-	canvas->width = 200;
+	canvas->height = 400;
+	canvas->width = 400;
 	canvas->mlx_ptr = mlx_init(canvas->width, canvas->height, "miniRT", false);
 	canvas->pixel_size = canvas->height / canvas->worldheight;
 	canvas->half_size = canvas->worldheight / 2;
@@ -25,11 +25,11 @@ void	init_canvas(t_c *canvas)
 	canvas->num_lights = 0;
 }
 
-t_ray	init_ray(void)
+t_ray init_ray(void)
 {
-	t_ray		ray;
-	t_xyzvektor	origin;
-	t_xyzvektor	direction;
+	t_ray ray;
+	t_xyzvektor origin;
+	t_xyzvektor direction;
 
 	origin.x = 0;
 	origin.y = 0;
