@@ -43,6 +43,16 @@ t_xyzvektor calc_cone_normal(t_shape cone, t_xyzvektor point)
 	double ratio = radius / height;
 	inverse = invert_matrix(cone.default_transformation, 4);
 	point = multiply_vector_and_matrix(point, inverse);
+	double dist;
+
+	dist = point.x * point.x + point.z * point.z;
+	if (dist < 1.0 + EPSILON)
+	{
+		if (point.y >= cone.maximum - EPSILON)
+			return (set_vector(0, 1, 0, 0));
+		if (point.y <= cone.minimum + EPSILON)
+			return (set_vector(0, -1, 0, 0));
+	}
 	// Für einen Kegel entlang der y-Achse (angenommen)
 	normal.x = point.x;
 	normal.z = point.z;
