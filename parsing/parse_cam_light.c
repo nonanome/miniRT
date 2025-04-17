@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 17:44:29 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 18:42:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int	parse_camera(t_world *world, char *line)
 		return (ft_free_split(split), 1);
 	if (parse_xyz_cam_light(split[2], normal, 1))
 		return (ft_free_split(split), 1);
-	world->camera->field_of_view = budget_ft_atof(split[3]);
+	world->camera = camera(world->canvas->width, world->canvas->height,
+			budget_ft_atof(split[3]));
+	if (!world->camera)
+		return (1);
 	target = addition(set_vector(xyz[0], xyz[1], xyz[2], 1),
 			set_vector(normal[0], normal[1], normal[2], 0));
 	world->camera->transform = view_transform(set_vector(xyz[0], xyz[1], xyz[2],

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 18:06:30 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 18:39:35 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,6 @@ int	main(int argc, char *argv[])
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
-	world->camera = camera(world->canvas->width, world->canvas->height, PI / 3);
-	if (!world->camera)
-	{
-		free_world(world);
-		return (1);
-	}
 	if (parse_input(argv[1], world))
 	{
 		free_world(world);
