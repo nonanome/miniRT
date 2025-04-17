@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 16:47:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:04:54 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void		free_double_ptr(double **a, int size);
 void		show_matrix(double **a, int size);
 void		*MALLOC(int size);
 void		FREE(void *data);
-void		bail(char *str, int code, t_world *world);
+void		bail(char *str, int code);
 
 // sphere
 void		set_transform(t_shape *shape, double **translation);

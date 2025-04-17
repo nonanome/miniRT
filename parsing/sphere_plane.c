@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 19:45:37 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:51:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	parse_sphere(t_world *world, char *line)
 	double	radius;
 	t_shape	*shape;
 
-	check_spere_or_light_line(line);
+	check_sphere_line(line, world);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);

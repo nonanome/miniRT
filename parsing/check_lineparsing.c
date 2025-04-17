@@ -6,34 +6,27 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 15:36:52 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:31:25 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	check_spere_or_light_line(char *line)
+void	check_light_line(char *line)
 {
 	char	**split_on_space;
 	int		split_count;
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 4 && split_count != 5)
+	if (split_count != 4)
 	{
-		write(2, "sphere or light line in wrong form", 34);
-		exit(1);
+		bail("light line in wrong form", 1);
 	}
 	if (count_split(ft_split(split_on_space[1], ',')) != 3
 		|| count_split(ft_split(split_on_space[3], ',')) != 3)
 	{
-		write(2, "sphere or light line in wrong form", 34);
-		exit(1);
-	}
-	if (split_count == 5 && (count_split(ft_split(split_on_space[4],
-					',')) != 3))
-	{
-		write(2, "sphere or light line in wrong form", 34);
+		write(2, "light line in wrong form\n", 25);
 		exit(1);
 	}
 }

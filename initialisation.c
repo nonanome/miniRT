@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:29:16 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 16:46:27 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:04:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ t_ray	init_ray(void)
 	return (ray);
 }
 
-void	bail(char *str, int code, t_world *world)
+void	bail(char *str, int code)
 {
-	printf("Error\n%s\n", str);
-	mlx_terminate(world->canvas->mlx_ptr);
+	write(2, "Error\n", 6);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
 	exit(code);
 }

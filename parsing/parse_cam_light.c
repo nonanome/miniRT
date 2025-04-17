@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 23:16:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:44:29 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	parse_light(t_world *world, char *line)
 	t_light	new_light;
 	char	**rgb_split;
 
-	check_spere_or_light_line(line);
+	check_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);

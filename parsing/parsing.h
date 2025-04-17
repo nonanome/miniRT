@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:03:30 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 16:00:00 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:51:25 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int		parse_fov(char *str, double *fov);
 int		parse_xyz_cam_light(char *str, double xyz[3], int is_normal);
 void	add_checker(t_world *world, char **split, int type);
 void	check_camera_line(char *line);
-void	check_spere_or_light_line(char *line);
+void	check_light_line(char *line);
+void	check_sphere_line(char *line, t_world *world);
 int		check_plane_line(char *line);
 void	check_cylinder_line(char *line);
 void	check_ambient_light_line(char *line);

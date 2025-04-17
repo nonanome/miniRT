@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 16:55:07 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 18:06:30 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ int	main(int argc, char *argv[])
 	t_xyzvektor		color2;
 
 	world = get_world(100);
-	if (!world)
+	if (!world || argc != 2)
 		return (1);
 	init_canvas(world->canvas);
-	if(argc >= 2)
-		load_bumpmap(argv[1], world);
 	world->all_sorted = ft_calloc(sizeof(double *), 100);
 	if (!world->all_sorted)
 		return (1);
@@ -51,7 +49,7 @@ int	main(int argc, char *argv[])
 		free_world(world);
 		return (1);
 	}
-	if (parse_input("test/cylinder.rt", world))
+	if (parse_input(argv[1], world))
 	{
 		free_world(world);
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 15:43:22 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:55:44 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ char	**checker_parsing(char **split, int type)
 	i = 0;
 	while (split[i++])
 		;
-	split_split = ft_calloc(3, sizeof(char *));
-	if (!split_split)
-		return (NULL);
 	if ((i != 6 && (type == 0 || type == 1)) || (i != 8
 			&& (type == 2 || type == 3)))
 		return (NULL);
@@ -95,4 +92,23 @@ int	parse_normal_vector(char **split, double normal[3])
 		&& normal[2] >= -1 && normal[2] <= 1;
 	ft_free_split(normal_split);
 	return (!result);
+}
+
+void	check_sphere_line(char *line, t_world *world)
+{
+	char	**split_on_space;
+	int		split_count;
+
+	split_on_space = ft_split(line, ' ');
+	split_count = count_split(split_on_space);
+	if (split_count != 4 && split_count != 5)
+		bail("light line in wrong form", 1);
+	if (count_split(ft_split(split_on_space[1], ',')) != 3
+		|| count_split(ft_split(split_on_space[3], ',')) != 3)
+	{
+		write(2, "light line in wrong form\n", 25);
+		exit(1);
+	}
+	if (split_count == 5 && count_split(ft_split(split_on_space[4], ',')) == 1)
+		load_bumpmap(split_on_space[4], world);
 }
