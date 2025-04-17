@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 21:36:14 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 21:41:26 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,8 @@ t_xyzvektor calc_cone_normal(t_shape cone, t_xyzvektor point)
 	normal.x = point.x;
 	normal.z = point.z;
 	normal.y = sqrt(point.x * point.x + point.z * point.z) / ratio;
-	//normal = multiply_vector_and_matrix(normal,
-	//	cone.default_transformation);
-	
-	//normal = multiply_vector_and_matrix(normal,
-	//		transpose_inverse);
+	normal = multiply_vector_and_matrix(normal,
+			transpose_inverse);
 	normal = normalize(normal);
 	return (normal);
 }
