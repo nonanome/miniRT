@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 19:32:31 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 01:01:00 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 	pixel = multiply_vector_and_matrix(pixel, inv);
 	origin = multiply_vector_and_matrix(origin, inv);
 	ray.origin = origin;
-	if (inv)
-		free_double_ptr(inv, 4);
 	ray.direction = normalize(substraction(pixel, origin));
 	return (ray);
 }
@@ -101,6 +99,7 @@ mlx_image_t	*render_image(t_camera *cam, t_world *world)
 
 	image = mlx_new_image(world->canvas->mlx_ptr, cam->hsize, cam->vsize);
 	y = 0;
+	ray = init_ray();
 	while (y < cam->vsize)
 	{
 		x = 0;

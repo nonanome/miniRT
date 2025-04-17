@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 18:42:06 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 00:20:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	parse_camera(t_world *world, char *line)
 	if (!split)
 		return (1);
 	if (budget_ft_atof(split[3]) < 0 || budget_ft_atof(split[3]) > 180)
-		exit(1);
+		bail("fov between 70 and 180", 1);
 	if (parse_xyz_cam_light(split[1], xyz, 0))
 		return (ft_free_split(split), 1);
 	if (parse_xyz_cam_light(split[2], normal, 1))

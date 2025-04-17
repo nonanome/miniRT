@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 17:58:01 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 01:07:20 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	look_for_double_uppercase(char **input, int A, int C, int L)
 			C++;
 		if (*input[0] == 'L')
 			L++;
+		else if (*input[0] >= '0' && *input[0] <= '9')
+		{
+			bail("first characters needs to be char", 1);
+		}
 		input++;
 	}
 	if (A > 1 || C > 1)
@@ -41,6 +45,8 @@ char	**process_file(char *file_name)
 
 	i = 0;
 	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+		bail("file not found", 1);
 	input = MALLOC(1000 * sizeof(char *));
 	if (!input)
 		return (NULL);

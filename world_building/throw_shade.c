@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   throw_shade.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 21:39:22 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/18 01:08:56 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	check_shade_hit(t_world *world, bool *shadows, double distance, int i,
 		shadows[i] = true;
 	else
 		shadows[i] = false;
-	if (shape.id == 0)
-		printf("%d\n", shadows[i]);
 }
 
 bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
