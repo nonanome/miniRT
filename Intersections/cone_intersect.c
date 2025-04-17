@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:15:01 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 20:03:30 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 20:46:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	cut_cone(t_intersec *result, t_ray ray, t_shape shape)
 	}
 	tmp = ray.origin.y + result->times[0] * ray.direction.y;
 	if (0 > tmp || (shape.maximum) < tmp)
+	{
 		result->times[0] = -1;
+		result->times[1] = -1;
+	}
 	return ;
 }
 

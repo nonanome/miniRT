@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/10 01:01:55 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 21:36:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,37 @@ t_xyzvektor	sphere_normal(t_shape shape, t_xyzvektor point)
 	return (normalize(world_normal));
 }
 
-t_xyzvektor	calc_cone_normal(t_shape cone, t_xyzvektor point)
-{
-	t_xyzvektor	normal;
-	double		tangens_theta;
 
-	tangens_theta = cone.radius / (cone.maximum - cone.minimum);
-	normal.x = -point.x * tangens_theta * tangens_theta;
-	normal.y = point.y;
+
+t_xyzvektor calc_cone_normal(t_shape cone, t_xyzvektor point)
+{
+	t_xyzvektor normal;
+	double tangens_theta;
+	double **inverse;
+	double		**transpose_inverse;
+
+	double height = cone.maximum - cone.minimum;
+	double radius = cone.radius;
+	double ratio = radius / height;
+	inverse = invert_matrix(cone.default_transformation, 4);
+	point = multiply_vector_and_matrix(point, inverse);
+	double dist;
+	transpose_inverse = transpose_matrix(inverse, 4);
+	dist = point.x * point.x + point.z * point.z;
+	if (dist < 1.0 + EPSILON)
+	{
+		if (point.y >= cone.maximum - EPSILON)
+			return (multiply_vector_and_matrix(set_vector(0, 1, 0, 0),
+				transpose_inverse));
+	}
+	normal.x = point.x;
 	normal.z = point.z;
+	normal.y = sqrt(point.x * point.x + point.z * point.z) / ratio;
+	//normal = multiply_vector_and_matrix(normal,
+	//	cone.default_transformation);
+	
+	//normal = multiply_vector_and_matrix(normal,
+	//		transpose_inverse);
 	normal = normalize(normal);
 	return (normal);
 }

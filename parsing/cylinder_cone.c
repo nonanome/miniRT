@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:15:38 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 17:50:53 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 20:57:53 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,29 @@ int	parse_cylinder(t_world *world, char *line)
 	return (ft_free_split(split), 0);
 }
 
+void prepare_cone_vars(t_shape *shape, t_world *world, char **split,
+	double rgb[3])
+{
+int i;
+
+i = 0;
+shape->material.ambient = world->ambient_intensity;
+shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
+										 rgb[2], 0));
+shape->radius = budget_ft_atof(split[3]) / 2;
+shape->maximum = budget_ft_atof(split[4]);
+shape->minimum = 0;
+while (split[i++])
+;
+if (i == 8 || i == 9)
+shape->closed = budget_ft_atof(split[i - 2]);
+else
+shape->closed = 0;
+world->shapes[world->nr_shapes] = shape;
+world->nr_shapes++;
+add_checker(world, split, 2);
+}
+
 int	parse_cone(t_world *world, char *line)
 {
 	char	**split;
@@ -146,7 +169,7 @@ int	parse_cone(t_world *world, char *line)
 	shape = new_shape(3);
 	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
 	ft_free_split(normal_split);
-	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
+	prepare_cone_vars(shape, world, split, &(xyz[3]));
 	shape->default_transformation = get_cylinder_matrix(xyz, shape->normal,
 			shape->radius);
 	if (!shape->default_transformation)
