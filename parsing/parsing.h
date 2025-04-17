@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:03:30 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/04 13:59:38 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 16:00:00 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,4 @@ int		parse_ratio(char *str, double *ratio);
 int		count_split(char **split_string);
 int		parse_common_shape(char **split, double pos[3], double rgb[3]);
 int		parse_normal_vector(char **split, double normal[3]);
+char	*clean_input_line(char *line);

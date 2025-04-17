@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:15:38 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/10 01:48:22 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 15:44:55 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,8 @@ void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 				rgb[2], 0));
 	shape->radius = budget_ft_atof(split[3]) / 2;
 	shape->maximum = budget_ft_atof(split[4]) / 2;
+	shape->closed = true;
 	shape->minimum = -budget_ft_atof(split[4]) / 2;
-	while (split[i++])
-		;
-	if (i == 8 || i == 9)
-		shape->closed = budget_ft_atof(split[i - 2]);
-	else
-		shape->closed = 0;
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
 	add_checker(world, split, 2);

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/10 00:45:27 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 15:43:22 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ char	**checker_parsing(char **split, int type)
 	split_split = ft_calloc(3, sizeof(char *));
 	if (!split_split)
 		return (NULL);
-	if ((i != 6 && (type == 0 || type == 1)) || (i != 8 && i != 9
-			&& type == 2))
+	if ((i != 6 && (type == 0 || type == 1)) || (i != 8
+			&& (type == 2 || type == 3)))
 		return (NULL);
 	if (type == 0 || type == 1)
 		i = 4;

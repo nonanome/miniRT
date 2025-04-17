@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:29:16 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/07 21:37:40 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 16:46:27 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,11 @@ t_ray	init_ray(void)
 	ray.origin = origin;
 	ray.direction = direction;
 	return (ray);
+}
+
+void	bail(char *str, int code, t_world *world)
+{
+	printf("Error\n%s\n", str);
+	mlx_terminate(world->canvas->mlx_ptr);
+	exit(code);
 }

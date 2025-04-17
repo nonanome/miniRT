@@ -1,9 +1,9 @@
 A 0.2 255,255,255
 C -7,0,12 0.9,0,-0.4 120
-L -17,5,8 0.8 255,255,255
-pl 0,0,0 0,0,-1 0,0,255
-cy 3,-2,2 0,0,1 2 5 255,0,0 0,0,255 1
-cy 4,3,2 0,1,0 2 5 255,0,0 0,255,0 1
-cy 4,3,4 1,0,0 2 5 255,0,0 0,255,0 1
+L -17,5,8 0.8     255,255,255
+        pl 0,0,0 0,0,-1 0,0,255
+cy 3,-2,2     0,0,1 2 5 255,0,0 0,0,255       
+cy 4,3,2 0,1,0    2 5 255,0,0 0,255,0
+cy 4,3,4 1,0,0 2 5 255,0,0 0,255,0
 # shadow of cylinder doesn't seem to respect one side of the cylinder. shadow looks like half a cylinder
 # inside of open cylinder seems invisible

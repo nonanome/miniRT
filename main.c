@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 23:11:12 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/17 16:55:07 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char *argv[])
 	unsigned int	color;
 	t_xyzvektor		color2;
 
-	world = get_world(30);
+	world = get_world(100);
 	if (!world)
 		return (1);
 	init_canvas(world->canvas);
