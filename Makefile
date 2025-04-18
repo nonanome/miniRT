@@ -52,7 +52,7 @@ Matrix_stuff/matrix_conversion2.o Matrix_stuff/matrix_operations.o Matrix_stuff/
 Intersections/identify_hits.o Intersections/cylinder_intersect.o Intersections/save_intersections.o Transformation/transformation.o default_values.o color_transform.o reflection.o initialisation.o world_building/base_world.o\
 world_building/intersect_world.o world_building/throw_shade.o world_building/view_world.o parsing/parsing.o parsing/parsing_atof.o parsing/budget_get_next_line.o parsing/parse_cam_light.o parsing/sphere_plane.o parsing/parsing_tools.o\
 parsing/check_lineparsing.o checker.o Matrix_stuff/transformation2.o world_building/normal_calculations.o parsing/shape_helpers.o parsing/cam_light_helpers.o Intersections/cone_intersect.o world_building/shade_helpers.o \
-world_building/bump_map.o parsing/cylinder_cone.o parsing/space_reduction.o rt_realloc.o
+world_building/bump_map.o parsing/parse_cylinder.o parsing/space_reduction.o rt_realloc.o parsing/parse_cone.o parsing/rotation_matrix.o
 
 OBJ = $(OBJECTS:.o=.c)
 MLX_DIR = MLX42
