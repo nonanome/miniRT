@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:29:16 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 13:30:00 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 18:23:59 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	init_canvas(t_c *canvas)
 {
 	canvas->worldheight = 8;
-	canvas->height = 50;
-	canvas->width = 50;
+	canvas->height = 200;
+	canvas->width = 200;
 	canvas->mlx_ptr = mlx_init(canvas->width, canvas->height, "miniRT", false);
 	canvas->pixel_size = canvas->height / canvas->worldheight;
 	canvas->half_size = canvas->worldheight / 2;
