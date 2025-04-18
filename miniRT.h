@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 18:40:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 20:49:30 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ void		bail(char *str, int code);
 // sphere
 void		set_transform(t_shape *shape, double **translation);
 t_material	default_material(void);
+void		uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
+				t_world world);
+void		change_normal_for_bump(t_comp *comp, t_intersec *intersection,
+				t_ray ray, t_world *world);
+int			get_bumpmap_grayscale(mlx_texture_t *texture, int x, int y);
+void		orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z);
 
 // ray
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);

@@ -6,26 +6,26 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 01:08:56 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 20:58:04 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "world.h"
 
-void	check_shade_hit(t_world *world, bool *shadows, double distance, int i,
-		t_shape shape)
+static void	check_shade_hit(t_all_intersec intersections, bool *shadow_flag,
+		double distance, t_shape shape)
 {
 	t_xyzvektor	hit_intersection;
 
 	hit_intersection = set_vector(0, 0, 0, 0);
-	if (world->canvas->all_intersections.intersections != NULL)
-		hit_intersection = hit(world->canvas->all_intersections, shape);
+	if (intersections.intersections != NULL)
+		hit_intersection = hit(intersections, shape);
 	else
 		hit_intersection.w = INFINITY;
 	if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
-		shadows[i] = true;
+		*shadow_flag = true;
 	else
-		shadows[i] = false;
+		*shadow_flag = false;
 }
 
 bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
@@ -48,7 +48,8 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 		ray.direction = normalize(v);
 		empty_intersections(world->canvas);
 		intersect_world(world, ray);
-		check_shade_hit(world, shadows, distance, i, shape);
+		check_shade_hit(world->canvas->all_intersections, &shadows[i],
+			distance, shape);
 	}
 	empty_intersections(world->canvas);
 	return (shadows);
@@ -65,7 +66,6 @@ t_xyzvektor	shade_hit(t_world *world, t_comp comp, t_shape shape)
 	local_canvas.eyevector = comp.eyev;
 	in_shadow = is_shadowed(world, comp.over_point, shape);
 	empty_intersections(world->canvas);
-	retvalue = lightning(comp, local_canvas,
-			in_shadow);
+	retvalue = lightning(comp, local_canvas, in_shadow);
 	return (retvalue);
 }
