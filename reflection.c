@@ -6,12 +6,11 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 11:45:49 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 18:45:48 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-#include <inttypes.h>
 
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 {
@@ -77,8 +76,8 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 		store->lightsourcecolor = canvas.lightsource[i].color;
 		store->effective_color = hadamard_product(store->materialcolor,
 				store->lightsourcecolor);
-		store->light_vector = normalize(substraction(canvas.lightsource[i].position,
-					point));
+		store->light_vector = normalize(substraction
+				(canvas.lightsource[i].position, point));
 		store->light_dot_normale = dot_product(store->light_vector,
 				canvas.normale);
 		if (store->light_dot_normale >= 0)
@@ -89,61 +88,26 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 	return (result);
 }
 
-t_xyzvektor	get_color(t_c canvas, t_shape shape, long double x, long double y)
-{
-	t_xyzvektor	color;
-	int			ix;
-	int			iy;
-	int			pixel_offset;
-	uint32_t	pixel;
-
-	ix = (int)x;
-	iy = (int)y;
-	// if (x < 0)
-	// 	x = 0;
-	// else if (x >= canvas.bumpmapcolor->width)
-	// 	x = canvas.bumpmapcolor->width - 1;
-	// if (y < 0)
-	// 	y = 0;
-	// else if (y >= canvas.bumpmapcolor->height)
-	// 	y = canvas.bumpmapcolor->height - 1;
-	if (canvas.bumpmapcolor && shape.type == 0)
-	{
-		pixel_offset = iy * (canvas.bumpmapcolor->width * 4 / sizeof(int)) + ix;
-		pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
-		color.w = ((pixel >> 24) & 0xFF) / 255.0;
-		color.z = ((pixel >> 16) & 0xFF) / 255.0;
-		color.y = ((pixel >> 8) & 0xFF) / 255.0;
-		color.x = (pixel & 0xFF) / 255.0;
-		return (color);
-	}
-	else
-		return (get_color_from_uint(shape.material.color));
-}
-
 t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow)
 {
 	t_store		store;
 	t_xyzvektor	result;
 	t_xyzvektor	final;
 	t_shape		shape;
-	t_xyzvektor	point;
 
 	shape = *(comp.object);
-	point = comp.over_point;
 	shape = *(comp.object);
-	point = comp.over_point;
 	store.diffuse = set_black();
 	store.specular = set_black();
 	store.ambient = set_black();
 	if (shape.material.checker_enable)
-		store.materialcolor = pattern_at(shape, point);
+		store.materialcolor = pattern_at(shape, comp.over_point);
 	else
 		store.materialcolor = get_color(canvas, shape, comp.u, comp.v);
 	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
-	result = each_light(&store, shape, canvas, point);
+	result = each_light(&store, shape, canvas, comp.over_point);
 	final = addition(store.ambient, addition(result, store.specular));
 	final.x = fmax(0.0, fmin(1.0, final.x));
 	final.y = fmax(0.0, fmin(1.0, final.y));

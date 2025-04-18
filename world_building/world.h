@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 21:20:56 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/18 20:20:42 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ double		**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
 t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape);
 void		empty_intersections(t_c *canvas);
 void		save_intersections(t_c *canvas, t_intersec *new_intersection,
-	t_world *world);
+				t_world *world);
 // test
 bool		*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape);
 void		sphere_ray_transform(t_shape shape, t_ray ray);

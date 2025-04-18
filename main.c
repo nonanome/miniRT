@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 18:37:07 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/18 18:45:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	esc_handler(mlx_key_data_t keydata, void *param)
 		world = (t_world *)param;
 		mlx_delete_image(world->canvas->mlx_ptr, world->canvas->image_to_free);
 		if (world->canvas->bumpmapcolor)
-			mlx_delete_image(world->canvas->mlx_ptr, world->canvas->bumpmapcolor);
+			mlx_delete_image(world->canvas->mlx_ptr,
+				world->canvas->bumpmapcolor);
 		if (world->canvas->img)
 			mlx_delete_image(world->canvas->mlx_ptr, world->canvas->img);
 		if (world->canvas->bumpmap)

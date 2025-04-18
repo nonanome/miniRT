@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:38:43 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 20:20:17 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,10 @@ t_xyzvektor	calc_cone_normal(t_shape cone, t_xyzvektor point)
 	t_xyzvektor	normal;
 	double		**inverse;
 	double		**transpose_inverse;
-	double		height;
-	double		radius;
 	double		ratio;
 	double		dist;
 
-	height = cone.maximum - cone.minimum;
-	radius = cone.radius;
-	ratio = radius / height;
+	ratio = cone.radius / (cone.maximum - cone.minimum);
 	inverse = invert_matrix(cone.default_transformation, 4);
 	point = multiply_vector_and_matrix(point, inverse);
 	transpose_inverse = transpose_matrix(inverse, 4);
@@ -79,13 +75,28 @@ t_xyzvektor	calc_cylinder_normal(t_shape shape, t_xyzvektor point)
 	return (set_vector(point.x, 0, point.z, 0));
 }
 
+t_xyzvektor	cylinder_normal(t_shape shape, t_xyzvektor point)
+{
+	double		**inverse_transform;
+	t_xyzvektor	world_normal;
+	t_xyzvektor	local_normal;
+	t_xyzvektor	local_point;
+	double		**transpose_inverse;
+
+	inverse_transform = invert_matrix(shape.default_transformation, 4);
+	local_point = multiply_vector_and_matrix(point, inverse_transform);
+	local_normal = calc_cylinder_normal(shape, local_point);
+	transpose_inverse = transpose_matrix(inverse_transform, 4);
+	world_normal = multiply_vector_and_matrix(local_normal, transpose_inverse);
+	free_double_ptr(transpose_inverse, 4);
+	return (normalize(world_normal));
+}
+
 t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 {
 	t_xyzvektor	ret;
 	double		**inverse_transform;
-	double		**transpose_inverse_transform;
 	t_xyzvektor	world_normal;
-	t_xyzvektor	local_point;
 	t_xyzvektor	local_normal;
 	double		**transpose_inverse;
 
@@ -95,24 +106,12 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 	{
 		inverse_transform = invert_matrix(shape.default_transformation, 4);
 		local_normal = shape.normal;
-		transpose_inverse_transform = transpose_matrix(inverse_transform, 4);
-		free_double_ptr(inverse_transform, 4);
-		ret = multiply_vector_and_matrix(local_normal,
-				transpose_inverse_transform);
-		free_double_ptr(transpose_inverse_transform, 4);
+		transpose_inverse = transpose_matrix(inverse_transform, 4);
+		ret = multiply_vector_and_matrix(local_normal, transpose_inverse);
 		return (ret);
 	}
 	else if (shape.type == 2)
-	{
-		inverse_transform = invert_matrix(shape.default_transformation, 4);
-		local_point = multiply_vector_and_matrix(point, inverse_transform);
-		local_normal = calc_cylinder_normal(shape, local_point);
-		transpose_inverse = transpose_matrix(inverse_transform, 4);
-		world_normal = multiply_vector_and_matrix(local_normal,
-				transpose_inverse);
-		free_double_ptr(transpose_inverse, 4);
-		return (normalize(world_normal));
-	}
+		return (cylinder_normal(shape, point));
 	else if (shape.type == 3)
 		return (calc_cone_normal(shape, point));
 	return (set_vector(0, 0, 0, 0));

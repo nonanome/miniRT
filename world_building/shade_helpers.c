@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 11:02:12 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 19:31:25 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape)
 		t1 = all_intersections.intersections[i].times[1];
 		if (t0 > 0 && t0 < t1)
 		{
-			hit_intersection = calculate_hit_point(all_intersections.intersections[i],
-					t0);
+			hit_intersection = calculate_hit_point
+				(all_intersections.intersections[i], t0);
 			if (t0 < 0 || t0 > t1)
-				hit_intersection = calculate_hit_point(all_intersections.intersections[i],
-						t1);
+				hit_intersection = calculate_hit_point
+					(all_intersections.intersections[i], t1);
 			return (hit_intersection);
 		}
 	}

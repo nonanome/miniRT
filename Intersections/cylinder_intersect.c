@@ -6,54 +6,20 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:12:29 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/10 00:54:29 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 19:32:37 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	create_rotation_matrix(t_xyzvektor normal, double **rotation)
+void	handle_no_nw(double nw, t_xyzvektor *new_orig)
 {
-	double	axis[3];
-	double	dot;
-	double	c[3];
-	double	sin_theta;
-	double	cos_theta;
-	double	u[3];
-	double	length;
-
-	length = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z
-			* normal.z);
-	normal.x /= length;
-	normal.y /= length;
-	normal.z /= length;
-	axis[0] = 0.0;
-	axis[1] = 1.0;
-	axis[2] = 0.0;
-	dot = normal.x * axis[0] + normal.y * axis[1] + normal.z * axis[2];
-	c[0] = normal.y * axis[2] - normal.z * axis[1];
-	c[1] = normal.z * axis[0] - normal.x * axis[2];
-	c[2] = normal.x * axis[1] - normal.y * axis[0];
-	sin_theta = sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
-	if (sin_theta > EPSILON)
+	if (nw != 0.0)
 	{
-		u[0] = c[0] / sin_theta;
-		u[1] = c[1] / sin_theta;
-		u[2] = c[2] / sin_theta;
+		(*new_orig).x /= nw;
+		(*new_orig).y /= nw;
+		(*new_orig).z /= nw;
 	}
-	else
-		u[0] = u[1] = u[2] = 0.0;
-	cos_theta = dot;
-	rotation[0][0] = cos_theta + u[0] * u[0] * (1 - cos_theta);
-	rotation[0][1] = u[0] * u[1] * (1 - cos_theta) - u[2] * sin_theta;
-	rotation[0][2] = u[0] * u[2] * (1 - cos_theta) + u[1] * sin_theta;
-	rotation[1][0] = u[1] * u[0] * (1 - cos_theta) + u[2] * sin_theta;
-	rotation[1][1] = cos_theta + u[1] * u[1] * (1 - cos_theta);
-	rotation[1][2] = u[1] * u[2] * (1 - cos_theta) - u[0] * sin_theta;
-	rotation[2][0] = u[2] * u[0] * (1 - cos_theta) - u[1] * sin_theta;
-	rotation[2][1] = u[2] * u[1] * (1 - cos_theta) + u[0] * sin_theta;
-	rotation[2][2] = cos_theta + u[2] * u[2] * (1 - cos_theta);
-	rotation[3][3] = 1.0;
 }
 
 void	transform_ray(t_ray *ray, double **matrix)
@@ -73,12 +39,7 @@ void	transform_ray(t_ray *ray, double **matrix)
 		* orig.z + matrix[2][3] * 1.0;
 	nw = matrix[3][0] * orig.x + matrix[3][1] * orig.y + matrix[3][2] * orig.z
 		+ matrix[3][3] * 1.0;
-	if (nw != 0.0)
-	{
-		new_orig.x /= nw;
-		new_orig.y /= nw;
-		new_orig.z /= nw;
-	}
+	handle_no_nw(nw, &new_orig);
 	ray->origin = new_orig;
 	dir = ray->direction;
 	new_dir.x = matrix[0][0] * dir.x + matrix[0][1] * dir.y + matrix[0][2]
