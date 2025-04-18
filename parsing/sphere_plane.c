@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 17:51:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 18:27:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	parse_plane(t_world *world, char *line)
 		|| parse_normal_vector(split, normal) || check_plane_line(line))
 		return (1);
 	shape = new_shape(1);
-	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
+	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
