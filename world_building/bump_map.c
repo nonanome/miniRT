@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:16:03 by kkuhn             #+#    #+#             */
-/*   Updated: 2025/04/09 17:21:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 18:56:53 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,28 @@ void	load_bumpmap(char *path, t_world *world)
 	world->canvas->bumpmapcolor = mlx_texture_to_image(world->canvas->mlx_ptr,
 			texture);
 	world->canvas->bumpmap = texture;
+}
+
+t_xyzvektor	get_color(t_c canvas, t_shape shape, long double x, long double y)
+{
+	t_xyzvektor	color;
+	int			ix;
+	int			iy;
+	int			pixel_offset;
+	uint32_t	pixel;
+
+	ix = (int)x;
+	iy = (int)y;
+	if (canvas.bumpmapcolor && shape.type == 0)
+	{
+		pixel_offset = iy * (canvas.bumpmapcolor->width * 4 / sizeof(int)) + ix;
+		pixel = ((uint32_t *)canvas.bumpmapcolor->pixels)[pixel_offset];
+		color.w = ((pixel >> 24) & 0xFF) / 255.0;
+		color.z = ((pixel >> 16) & 0xFF) / 255.0;
+		color.y = ((pixel >> 8) & 0xFF) / 255.0;
+		color.x = (pixel & 0xFF) / 255.0;
+		return (color);
+	}
+	else
+		return (get_color_from_uint(shape.material.color));
 }
