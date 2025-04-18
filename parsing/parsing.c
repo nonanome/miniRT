@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 01:07:20 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 13:12:19 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,10 @@ int	parse_input(char *file_name, t_world *world)
 	int		i;
 
 	i = 0;
+	world->all_sorted = ft_calloc(sizeof(double *), 100);
+	if (!world->all_sorted)
+		return (1);
+	world->all_sorted[0] = 0;
 	input = process_file(file_name);
 	if (!input)
 		return (1);
@@ -113,6 +117,5 @@ int	parse_input(char *file_name, t_world *world)
 		}
 		i++;
 	}
-	free_input(input);
-	return (0);
+	return (free_input(input), 0);
 }

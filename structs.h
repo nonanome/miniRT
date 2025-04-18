@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/10 01:45:43 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 13:19:52 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ typedef struct canvas
 	t_xyzvektor		eyevector;
 	mlx_texture_t	*bumpmap;
 	mlx_image_t		*bumpmapcolor;
+	mlx_image_t		*image_to_free;
 }					t_c;
 
 typedef struct s_camera
