@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:24:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 18:46:29 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 10:51:33 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_ray	transform(t_ray ray, double **transformation)
 	new_ray.direction.z = transformation[2][0] * ray.direction.x
 		+ transformation[2][1] * ray.direction.y + transformation[2][2]
 		* ray.direction.z;
+	new_ray.direction.w = 0.0;
 	return (new_ray);
 }
 

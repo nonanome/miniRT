@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 01:01:00 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 12:42:54 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_camera	*camera(int hsize, int vsize, double field_of_view)
 		return (NULL);
 	cam->hsize = hsize;
 	cam->vsize = vsize;
-	cam->field_of_view = field_of_view;
+	cam->field_of_view = field_of_view * (PI / 180);
 	half_view = tan(cam->field_of_view / 2);
 	aspect = (double)cam->hsize / (double)cam->vsize;
 	if (aspect >= 1)

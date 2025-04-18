@@ -1,0 +1,29 @@
+# fov wrong value. Was pi /3 i think
+
+# wichtig:
+# rebase
+# ESC key einbauen
+# farbige lichter
+# sphere 1 size doesn't exist
+# sphere cylinder radius nicht uniform
+# verbale Vorbereitung
+# test Szenen wie im subject
+# 3d normalized normal vector for plane
+# Check rotation 3d normalized orientation vector for camera
+# 3d normalized vector of axis of cylinder
+
+# bonus:
+# sphere bumpmap
+
+# Meine knowledge gaps
+# find out why sphere checker is hard
+# need to "Error/n" and then print our message
+# remove capped value
+# Check whats slowing it down
+
+# norm:
+# bonus normal separation
+# multiple L work because multi light bonus
+# makefile compile with libft
+# make bonus
+# generell norm

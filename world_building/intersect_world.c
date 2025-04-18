@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 01:08:37 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 12:34:52 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,24 @@ void	find_nearest_intersection(t_intersec *intersections,
 {
 	int	i;
 
-	i = 0;
-	while (i < nr_intersections)
+	i = -1;
+	while (++i < nr_intersections)
 	{
+		if (!intersections[i].times)
+			continue ;
 		if (intersections[i].times[0] > 0 || intersections[i].times[1] > 0)
 		{
 			if (!*intersec_to_use)
 			{
-				*intersec_to_use = &intersections[i];
+				*intersec_to_use = &(intersections[i]);
 				*shape_to_use = intersections[i].object_id;
 			}
-			else if (intersections[i].times[0] < (*intersec_to_use)->times[0]
-				|| intersections[i].times[1] < (*intersec_to_use)->times[0])
+			else if (intersections[i].times[0] < (*intersec_to_use)->times[0])
 			{
-				*intersec_to_use = &intersections[i];
+				*intersec_to_use = &(intersections[i]);
 				*shape_to_use = intersections[i].object_id;
 			}
 		}
-		i++;
 	}
 }
 
@@ -274,5 +274,27 @@ int	intersect_world(t_world *world, t_ray ray)
 		i++;
 	}
 	sort_intersections(world->all_sorted);
+	// {
+	// 	int i;
+	// 	int count = world->canvas->all_intersections.nr_intersection_entries;
+	// 	int k;
+
+	// 	printf("---- All Intersections ----\n");
+	// 	printf("count: %d\n", count);
+	// 	for (i = 0; i < count; i++) {
+	// 		printf("Intersection %d: time0 = %f, time1 = %f, object_id = %d\n",
+	// 			i,
+	// 			world->canvas->all_intersections.intersections[i].times[0],
+	// 			world->canvas->all_intersections.intersections[i].times[1],
+	// 			world->canvas->all_intersections.intersections[i].object_id);
+	// 	}
+
+	// 	printf("---- All Sorted Values ----\n");
+	// 	k = 0;
+	// 	while (world->all_sorted[k] != 0) {
+	// 		printf("all_sorted[%d] = %f\n", k, world->all_sorted[k]);
+	// 		k++;
+	// 	}
+	// }
 	return (0);
 }
