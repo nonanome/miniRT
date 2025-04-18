@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 12:34:52 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 20:26:31 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,135 +91,6 @@ static void	sort_intersections(double *all_sorted)
 	}
 }
 
-void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
-		t_world world)
-{
-	t_xyzvektor	relative_point;
-	double		theta;
-	double		phi;
-	int			width;
-	int			height;
-
-	width = world.canvas->bumpmapcolor->width;
-	height = world.canvas->bumpmapcolor->height;
-	relative_point = substraction(comps->point, shape->origin);
-	theta = atan2(relative_point.z, relative_point.x);
-	// Azimutalwinkel (von x und z)
-	phi = asin(relative_point.y / shape->radius);
-	// Normalisiere den Azimutalwinkel auf [0, 1]
-	intersect->u = (theta + PI) / (2 * PI);
-	intersect->v = 0.5 - phi / PI;
-	intersect->u = (int)(intersect->u * 4096) % 4096;
-	intersect->v = (int)(intersect->v * 4096) % 4096;
-	comps->u = intersect->u;
-	comps->v = intersect->v;
-}
-
-void	orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z)
-{
-	// Überprüfen, ob x der Nullvektor ist
-	if (x.x == 0 && x.y == 0 && x.z == 0)
-	{
-		printf("Fehler: Der Vektor x darf nicht der Nullvektor sein.\n");
-		return ;
-	}
-	// Berechnung des ersten orthogonalen Vektors y
-	if (x.x != 0 || x.y != 0)
-	{
-		y->x = -x.y;
-		y->y = x.x;
-		y->z = 0;
-	}
-	else
-	{
-		// Wenn x = [0, 0, z] ist, dann setze y = [0, z, -y]
-		y->x = 0;
-		y->y = x.z;
-		y->z = -x.y;
-	}
-	// Berechnung des zweiten orthogonalen Vektors z
-	// Wir können z einfach als Kreuzprodukt von x und y berechnen.
-	z->x = x.y * y->z - x.z * y->y;
-	z->y = x.z * y->x - x.x * y->z;
-	z->z = x.x * y->y - x.y * y->x;
-}
-
-void	change_normal_for_bump(t_comp *comp, t_intersec *intersection,
-		t_ray ray, t_world *world)
-{
-	t_xyzvektor	a;
-	t_xyzvektor	b;
-	int			x;
-	int			y;
-	float		center;
-	float		left;
-	float		right;
-	float		top;
-	float		bottom;
-	float		strength;
-	float		dx;
-	float		dy;
-	t_xyzvektor	tangent_x;
-	t_xyzvektor	tangent_y;
-	t_xyzvektor	bump_normal;
-
-	orthogonale_vektoren(comp->normalv, &a, &b);
-	x = (int)((intersection->u) * world->canvas->bumpmap->width)
-		% world->canvas->bumpmap->width;
-	y = (int)(intersection->v * world->canvas->bumpmap->height)
-		% world->canvas->bumpmap->height;
-	center = get_bumpmap_grayscale(world->canvas->bumpmap, x, y) / 255.0f;
-	left = get_bumpmap_grayscale(world->canvas->bumpmap, (x - 1
-				+ world->canvas->bumpmap->width)
-			% world->canvas->bumpmap->width, y) / 255.0f;
-	right = get_bumpmap_grayscale(world->canvas->bumpmap, (x + 1)
-			% world->canvas->bumpmap->width, y) / 255.0f;
-	top = get_bumpmap_grayscale(world->canvas->bumpmap, x, (y - 1
-				+ world->canvas->bumpmap->height)
-			% world->canvas->bumpmap->height) / 255.0f;
-	bottom = get_bumpmap_grayscale(world->canvas->bumpmap, x, (y + 1)
-			% world->canvas->bumpmap->height) / 255.0f;
-	strength = 1;
-	dx = (right - left) * strength;
-	dy = (bottom - top) * strength;
-	tangent_x = cross_product(a, comp->normalv);
-	if (magnitude(tangent_x) < 0.01f)
-		tangent_x = cross_product(b, comp->normalv);
-	tangent_x = normalize(tangent_x);
-	tangent_y = cross_product(comp->normalv, tangent_x);
-	tangent_y = normalize(tangent_y);
-	bump_normal = substraction(comp->normalv,
-			addition(scalar_multiplication(tangent_x, dx),
-				scalar_multiplication(tangent_y, dy)));
-	comp->normalv = normalize(bump_normal);
-}
-
-void	uv_of_plane(t_intersec *intersect, t_comp comps, t_shape *plane)
-{
-	t_xyzvektor	relative_point;
-	double		u;
-	double		v;
-	double		scale;
-
-	// Tangentenvektor (Richtung der u-Koordinate)
-	t_xyzvektor tangent = {1, 0, 0}; // Standard: X-Achse
-	// Bitangent (Richtung der v-Koordinate)
-	t_xyzvektor bitangent = {0, 0, 1}; // Standard: Z-Achse
-	relative_point = substraction(comps.point, plane->origin);
-	u = dot_product(relative_point, tangent);
-	v = dot_product(relative_point, bitangent);
-	// Skalierung und Wrapping (optional)
-	scale = 1.0;
-	u = fmod(u * scale, 1.0);
-	v = fmod(v * scale, 1.0);
-	if (u < 0)
-		u += 1.0;
-	if (v < 0)
-		v += 1.0;
-	intersect->u = u;
-	intersect->v = v;
-}
-
 t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 		t_shape *shape, t_world *world)
 {
@@ -231,7 +102,6 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.eyev = negate_tuple(ray.direction);
 	if (world->canvas->bumpmapcolor)
 		uv_of_sphere(intersection, &comps, shape, *world);
-	// uv_of_plane(intersection, comps, shape);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	if (world->canvas->bumpmap != 0)
 		change_normal_for_bump(&comps, intersection, ray, world);
@@ -274,27 +144,5 @@ int	intersect_world(t_world *world, t_ray ray)
 		i++;
 	}
 	sort_intersections(world->all_sorted);
-	// {
-	// 	int i;
-	// 	int count = world->canvas->all_intersections.nr_intersection_entries;
-	// 	int k;
-
-	// 	printf("---- All Intersections ----\n");
-	// 	printf("count: %d\n", count);
-	// 	for (i = 0; i < count; i++) {
-	// 		printf("Intersection %d: time0 = %f, time1 = %f, object_id = %d\n",
-	// 			i,
-	// 			world->canvas->all_intersections.intersections[i].times[0],
-	// 			world->canvas->all_intersections.intersections[i].times[1],
-	// 			world->canvas->all_intersections.intersections[i].object_id);
-	// 	}
-
-	// 	printf("---- All Sorted Values ----\n");
-	// 	k = 0;
-	// 	while (world->all_sorted[k] != 0) {
-	// 		printf("all_sorted[%d] = %f\n", k, world->all_sorted[k]);
-	// 		k++;
-	// 	}
-	// }
 	return (0);
 }
