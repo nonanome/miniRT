@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:15:38 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 20:57:53 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/18 18:26:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	parse_cylinder(t_world *world, char *line)
 		|| normal[1] < -1 || normal[1] > 1 || normal[2] < -1 || normal[2] > 1)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(2);
-	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
+	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));
 	ft_free_split(normal_split);
 	prepare_cylinder_vars(shape, world, split, &(xyz[3]));
 	shape->default_transformation = get_cylinder_matrix(xyz, shape->normal,
@@ -167,7 +167,7 @@ int	parse_cone(t_world *world, char *line)
 		|| normal[1] < -1 || normal[1] > 1 || normal[2] < -1 || normal[2] > 1)
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(3);
-	shape->normal = set_vector(normal[0], normal[1], normal[2], 0);
+	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));
 	ft_free_split(normal_split);
 	prepare_cone_vars(shape, world, split, &(xyz[3]));
 	shape->default_transformation = get_cylinder_matrix(xyz, shape->normal,
