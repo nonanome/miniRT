@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:25:28 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:28:37 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:53:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ int	parse_cone(t_world *world, char *line)
 	double	normal[3];
 	t_shape	*shape;
 
-	check_cylinder_line(line);
+	check_cylinder_line(line, world);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	if (parse_common_shape(split, xyz, &(xyz[3])))
+	if (parse_common_shape(split, xyz, &(xyz[3]), world))
 		return (ft_free_split(split), 1);
 	normal_split = ft_split(split[2], ',');
 	if (!normal_split)
 		return (ft_free_split(split), 1);
-	if (!parse_xyz(normal_split, normal, 1))
+	if (!parse_xyz(normal_split, normal, 1, world))
 		return (ft_free_split(normal_split), ft_free_split(split), 1);
 	shape = new_shape(3);
 	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));

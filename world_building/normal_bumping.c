@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:39:09 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:40:05 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 18:03:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	initialize_bump_norm(t_comp *comp, t_intersec *intersection,
 		t_world *world, t_bump_norm *bn)
 {
-	orthogonale_vektoren(comp->normalv, &bn->a, &bn->b);
+	orthogonale_vektoren(comp->normalv, &bn->a, &bn->b, world);
 	bn->x = (int)(intersection->u * world->canvas->bumpmap->width)
 		% world->canvas->bumpmap->width;
 	bn->y = (int)(intersection->v * world->canvas->bumpmap->height)

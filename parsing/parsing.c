@@ -6,14 +6,17 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 15:36:19 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:39:29 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	look_for_double_uppercase(char **input, int A, int C, int L)
+void	look_for_double_uppercase(char **input, int A, int C, t_world *world)
 {
+	int	L;
+
+	L = 0;
 	while (*input)
 	{
 		if (*input[0] == 'A')
@@ -24,19 +27,17 @@ void	look_for_double_uppercase(char **input, int A, int C, int L)
 			L++;
 		else if (*input[0] >= '0' && *input[0] <= '9')
 		{
-			bail("first characters needs to be char", 1);
+			bail("first characters needs to be char", 1, world);
 		}
 		input++;
 	}
 	if (A > 1 || C > 1 || L > 1)
 	{
-		write(2, "input contains double capital letter object",
-			ft_strlen("input contains double capital letter object"));
-		exit(0);
+		bail("input contains double capital letter object", 1, world);
 	}
 }
 
-char	**process_file(char *file_name)
+char	**process_file(char *file_name, t_world *world)
 {
 	char	**input;
 	int		fd;
@@ -45,10 +46,10 @@ char	**process_file(char *file_name)
 
 	i = 0;
 	if (ft_strncmp(&(file_name[ft_strlen(file_name) - 3]), ".rt", 3) != 0)
-		bail("only .rt files", 1);
+		bail("only .rt files", 1, world);
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
-		bail("file not found", 1);
+		bail("file not found", 1, world);
 	input = MALLOC(1000 * sizeof(char *));
 	if (!input)
 		return (NULL);
@@ -59,7 +60,7 @@ char	**process_file(char *file_name)
 	}
 	input[i] = line;
 	input[++i] = NULL;
-	look_for_double_uppercase(input, 0, 0, 0);
+	look_for_double_uppercase(input, 0, 0, world);
 	close(fd);
 	return (input);
 }
@@ -104,7 +105,7 @@ int	parse_input(char *file_name, t_world *world)
 	if (!world->all_sorted)
 		return (1);
 	world->all_sorted[0] = 0;
-	input = process_file(file_name);
+	input = process_file(file_name, world);
 	if (!input)
 		return (1);
 	while (input[i])

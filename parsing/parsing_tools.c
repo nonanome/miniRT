@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:33:05 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:40:15 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_free_split(char **split)
 	FREE(split);
 }
 
-int	parse_xyz(char **split, double *xyz, int mode)
+int	parse_xyz(char **split, double *xyz, int mode, t_world *world)
 {
 	int		i;
 	float	number_to_parse;
@@ -70,8 +70,7 @@ int	parse_xyz(char **split, double *xyz, int mode)
 		if (i >= 3 || (mode == 1 && (number_to_parse < -1
 					|| number_to_parse > 1)))
 		{
-			write(2, "Error\nWrong Input", ft_strlen("Error\nWrong Input"));
-			return (0);
+			bail("wrong input", 1, world);
 		}
 		xyz[i] = number_to_parse;
 		i++;

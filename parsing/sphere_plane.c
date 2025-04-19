@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:17:30 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 18:03:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_sphere(t_world *world, char *line)
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	if (parse_common_shape(split, xyz, rgb))
+	if (parse_common_shape(split, xyz, rgb, world))
 		return (ft_free_split(split), 1);
 	radius = budget_ft_atof(split[2]);
 	if (radius < 0)
@@ -62,8 +62,8 @@ int	parse_plane(t_world *world, char *line)
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
-	if (!split || parse_common_shape(split, xyz, rgb)
-		|| parse_normal_vector(split, normal) || check_plane_line(line))
+	if (!split || parse_common_shape(split, xyz, rgb, world)
+		|| parse_normal_vector(split, normal, world) || check_plane_line(line, world))
 		return (1);
 	shape = new_shape(1);
 	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));

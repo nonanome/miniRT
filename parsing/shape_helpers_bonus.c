@@ -6,13 +6,13 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 15:45:21 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 18:15:24 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	parse_common_shape(char **split, double pos[3], double rgb[3])
+int	parse_common_shape(char **split, double pos[3], double rgb[3], t_world *world)
 {
 	char	**pos_split;
 	char	**rgb_split;
@@ -28,9 +28,9 @@ int	parse_common_shape(char **split, double pos[3], double rgb[3])
 		ft_free_split(rgb_split);
 		rgb_split = ft_split(split[5], ',');
 	}
-	if (!parse_xyz(pos_split, pos, 0))
+	if (!parse_xyz(pos_split, pos, 0, world))
 		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
-	if (!parse_xyz(rgb_split, rgb, 0))
+	if (!parse_xyz(rgb_split, rgb, 0, world))
 		return (ft_free_split(pos_split), ft_free_split(rgb_split), 1);
 	rgb[0] /= 255;
 	rgb[1] /= 255;
@@ -79,7 +79,7 @@ void	add_checker(t_world *world, char **split, int type)
 	world->shapes[world->nr_shapes - 1]->material.checker_enable = true;
 }
 
-int	parse_normal_vector(char **split, double normal[3])
+int	parse_normal_vector(char **split, double normal[3], t_world *world)
 {
 	char	**normal_split;
 	int		result;
@@ -87,7 +87,7 @@ int	parse_normal_vector(char **split, double normal[3])
 	normal_split = ft_split(split[2], ',');
 	if (!normal_split)
 		return (1);
-	result = parse_xyz(normal_split, normal, 1) && normal[0] >= -1
+	result = parse_xyz(normal_split, normal, 1, world) && normal[0] >= -1
 		&& normal[0] <= 1 && normal[1] >= -1 && normal[1] <= 1
 		&& normal[2] >= -1 && normal[2] <= 1;
 	ft_free_split(normal_split);
@@ -102,11 +102,11 @@ void	check_sphere_line(char *line, t_world *world)
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
 	if (split_count != 4 && split_count != 5)
-		bail("sphere line in wrong form", 1);
+		bail("sphere line in wrong form", 1, world);
 	if (count_split(ft_split(split_on_space[1], ',')) != 3
 		|| count_split(ft_split(split_on_space[3], ',')) != 3)
 	{
-		bail("sphere line in wrong form", 1);
+		bail("sphere line in wrong form", 1, world);
 	}
 	if (split_count == 5 && count_split(ft_split(split_on_space[4], ',')) == 1)
 		load_bumpmap(split_on_space[4], world);

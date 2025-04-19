@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 16:37:28 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:56:46 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void		free_double_ptr(double **a, int size);
 void		show_matrix(double **a, int size);
 void		*MALLOC(int size);
 void		FREE(void *data);
-void		bail(char *str, int code);
+void		bail(char *str, int code, t_world *world);
 
 // sphere
 void		set_transform(t_shape *shape, double **translation);
@@ -95,7 +95,7 @@ void		uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
 void		change_normal_for_bump(t_comp *comp, t_intersec *intersection,
 				t_world *world);
 int			get_bumpmap_grayscale(mlx_texture_t *texture, int x, int y);
-void		orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z);
+void		orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z, t_world *world);
 
 // ray
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);

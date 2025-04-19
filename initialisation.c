@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:29:16 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:15:44 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 18:05:43 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,27 @@ t_ray	init_ray(void)
 	return (ray);
 }
 
-void	bail(char *str, int code)
+void	bail(char *str, int code, t_world *world)
 {
 	write(2, "Error\n", 6);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
+	if (world->canvas)
+	{
+		if (world->canvas->mlx_ptr)
+		{
+			if (world->canvas->image_to_free)
+				mlx_delete_image(world->canvas->mlx_ptr,
+					world->canvas->image_to_free);
+			if (world->canvas->bumpmapcolor)
+				mlx_delete_image(world->canvas->mlx_ptr,
+					world->canvas->bumpmapcolor);
+			if (world->canvas->img)
+				mlx_delete_image(world->canvas->mlx_ptr, world->canvas->img);
+			if (world->canvas->bumpmap)
+				mlx_delete_texture(world->canvas->bumpmap);
+			mlx_terminate(world->canvas->mlx_ptr);
+		}
+	}
 	exit(code);
 }

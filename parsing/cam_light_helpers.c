@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:55:25 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:55:08 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:52:46 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ double	xyz_rgb_brightness(char **split, char **rgb_split, double rgb[4],
 	parse_xyz_cam_light(split[1], xyz, 0);
 	if (!rgb_split)
 		return (1);
-	if (!parse_xyz(rgb_split, rgb, 0))
+	if (!parse_xyz(rgb_split, rgb, 0, NULL))
 		return (ft_free_split(split), ft_free_split(rgb_split), 1);
 	rgb[0] /= 255;
 	rgb[1] /= 255;
