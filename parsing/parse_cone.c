@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cone.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:25:28 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:53:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 21:08:04 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	prepare_cone_vars(t_shape *shape, t_world *world, char **split,
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
-	shape->radius = budget_ft_atof(split[3]) / 2;
-	shape->maximum = budget_ft_atof(split[4]);
+	shape->radius = budget_ft_atof(split[3]);
+	shape->maximum = budget_ft_atof(split[4]) * 2;
 	shape->minimum = 0;
 	while (split[i++])
 		;

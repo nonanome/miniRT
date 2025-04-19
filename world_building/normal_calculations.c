@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal_calculations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 19:22:14 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 21:15:08 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,42 @@ t_xyzvektor	sphere_normal(t_shape shape, t_xyzvektor point)
 t_xyzvektor	calc_cone_normal(t_shape cone, t_xyzvektor point)
 {
 	t_xyzvektor	normal;
-	double		**inverse;
-	double		**transpose_inverse;
 	double		ratio;
 	double		dist;
 
 	ratio = cone.radius / (cone.maximum - cone.minimum);
-	inverse = invert_matrix(cone.default_transformation, 4);
-	point = multiply_vector_and_matrix(point, inverse);
-	transpose_inverse = transpose_matrix(inverse, 4);
 	dist = point.x * point.x + point.z * point.z;
-	if (dist < 1.0 + EPSILON)
-	{
-		if (point.y >= cone.maximum - EPSILON)
-			return (multiply_vector_and_matrix(set_vector(0, 1, 0, 0),
-					transpose_inverse));
-	}
+
+	// Prüfen, ob wir uns auf dem oberen Deckel befinden
+	if (dist < 1.0 + EPSILON && point.y >= cone.maximum - EPSILON)
+		return (set_vector(0, 1, 0, 0));
+
+	// Normale an der Seitenfläche
 	normal.x = point.x;
 	normal.z = point.z;
-	normal.y = sqrt(point.x * point.x + point.z * point.z) / ratio;
+	normal.y = -sqrt(point.x * point.x + point.z * point.z) * ratio;
 	normal.w = 0.0;
-	normal = multiply_vector_and_matrix(normal, transpose_inverse);
+
 	normal = normalize(normal);
 	return (normal);
+}
+
+
+t_xyzvektor	cone_normal(t_shape shape, t_xyzvektor point)
+{
+	double		**inverse_transform;
+	t_xyzvektor	world_normal;
+	t_xyzvektor	local_normal;
+	t_xyzvektor	local_point;
+	double		**transpose_inverse;
+
+	inverse_transform = invert_matrix(shape.default_transformation, 4);
+	local_point = multiply_vector_and_matrix(point, inverse_transform);
+	local_normal = calc_cone_normal(shape, local_point);
+	transpose_inverse = transpose_matrix(inverse_transform, 4);
+	world_normal = multiply_vector_and_matrix(local_normal, transpose_inverse);
+	free_double_ptr(transpose_inverse, 4);
+	return (normalize(world_normal));
 }
 
 t_xyzvektor	calc_cylinder_normal(t_shape shape, t_xyzvektor point)
@@ -113,6 +126,6 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 	else if (shape.type == 2)
 		return (cylinder_normal(shape, point));
 	else if (shape.type == 3)
-		return (calc_cone_normal(shape, point));
+		return (cone_normal(shape, point));
 	return (set_vector(0, 0, 0, 0));
 }
