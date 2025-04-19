@@ -6,25 +6,33 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:26:47 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:39:43 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:37:57 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape)
+void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
+		t_world world)
 {
 	t_xyzvektor	relative_point;
 	double		theta;
 	double		phi;
+	double		length;
+	double		factor;
 
 	relative_point = substraction(comps->point, shape->origin);
+	length = pow(relative_point.x, 2) + pow(relative_point.y, 2);
+	length += pow(relative_point.z, 2);
+	length = sqrt(length);
+	relative_point = scalar_division(relative_point, length);
 	theta = atan2(relative_point.z, relative_point.x);
-	phi = asin(relative_point.y / shape->radius);
-	intersect->u = (theta + PI) / (2 * PI);
-	intersect->v = 0.5 - phi / PI;
-	intersect->u = (int)(intersect->u * 4096) % 4096;
-	intersect->v = (int)(intersect->v * 4096) % 4096;
+	phi = asin(relative_point.y);
+	length = ((theta + PI) / (2 * PI));
+	intersect->u = fmod(length * world.canvas->bumpmap->width,
+			world.canvas->bumpmap->width);
+	intersect->v = fmod((0.5 - phi / PI) * world.canvas->bumpmap->height,
+			world.canvas->bumpmap->height);
 	comps->u = intersect->u;
 	comps->v = intersect->v;
 }
