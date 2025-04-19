@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:33:23 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 19:22:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,10 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 	else if (shape.type == 1)
 	{
 		inverse_transform = invert_matrix(shape.default_transformation, 4);
-		local_normal = shape.normal;
+		local_normal = set_vector(0, 0, 1, 0);
 		transpose_inverse = transpose_matrix(inverse_transform, 4);
 		ret = multiply_vector_and_matrix(local_normal, transpose_inverse);
+		ret = normalize(ret);
 		return (ret);
 	}
 	else if (shape.type == 2)
