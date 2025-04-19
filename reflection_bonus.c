@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reflection_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 15:23:06 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 16:48:34 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 	return (result);
 }
 
-t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow)
+
+t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow, t_world *world)
 {
 	t_store		store;
 	t_xyzvektor	result;
@@ -105,8 +106,9 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow)
 	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
+	store.ambient = hadamard_product(scalar_multiplication(*world->ambient,world->ambient_intensity),store.ambient);
 	result = each_light(&store, shape, canvas, comp.over_point);
-	final = addition(store.ambient, addition(result, store.specular));
+	final = addition(store.ambient, result);
 	final.x = fmax(0.0, fmin(1.0, final.x));
 	final.y = fmax(0.0, fmin(1.0, final.y));
 	final.z = fmax(0.0, fmin(1.0, final.z));

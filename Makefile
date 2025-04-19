@@ -1,6 +1,6 @@
 NAME = miniRT
 BONUS = miniRT_bonus
-CFLAGS = -Wall -Wextra -Werror -Iinclude -ldl -lglfw -pthread -lm -g
+CFLAGS = -Wall -Wextra -Werror -Iinclude -pthread -g
 PATH_MLX = -L./MLX42 -lmlx42 -O3
 MLX = MLX42/build/libmlx42.a
 CLEAN_DIRS = libft vector_stuff Matrix_stuff Intersections Transformation world_building parsing
