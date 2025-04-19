@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:41:37 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:46:49 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.point = point_of_intersection(intersection, ray);
 	comps.eyev = negate_tuple(ray.direction);
 	if (world->canvas->bumpmapcolor)
-		uv_of_sphere(intersection, &comps, shape);
+		uv_of_sphere(intersection, &comps, shape, *world);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	if (world->canvas->bumpmap != 0)
 		change_normal_for_bump(&comps, intersection, world);

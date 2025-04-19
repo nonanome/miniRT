@@ -38,7 +38,7 @@ libft/libft.a:
 $(NAME): ${GC} $(MLX) libft/libft.a
 	gcc ${GC} $(MLX) libft/libft.a -o $@ -ldl -lglfw -pthread -lm
 
-$(BONUS): ${BONUS_OBJ} $(MLX) libft/libft.a
+$(BONUS): ${GC_BONUS} $(MLX) libft/libft.a
 	gcc ${GC_BONUS} $(MLX) libft/libft.a -o $(BONUS) -ldl -lglfw -pthread -lm
 
 bonus: $(BONUS)

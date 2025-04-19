@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 15:35:03 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:42:54 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**process_file(char *file_name)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp(&(file_name[ft_strlen(file_name) - 4]), ".rt", 4) != 0)
+	if (ft_strncmp(&(file_name[ft_strlen(file_name) - 3]), ".rt", 3) != 0)
 		bail("only .rt files", 1);
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
