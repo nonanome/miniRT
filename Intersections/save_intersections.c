@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:45:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:59:15 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	canvas->all_intersections.intersections
 	[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
 	times_copy = clone_times(new_intersection->times, world);
-	FREE(new_intersection->times);
+	ft_free(new_intersection->times);
 	canvas->all_intersections.intersections
 	[canvas->all_intersections.nr_intersection_entries].times = times_copy;
 	update_sorted_storage(world, canvas, times_copy);
 	canvas->all_intersections.nr_intersection_entries++;
-	FREE(new_intersection);
+	ft_free(new_intersection);
 }

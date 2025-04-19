@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:49:36 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	**process_file(char *file_name, t_world *world)
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 		bail("file not found", 1, world);
-	input = MALLOC(1000 * sizeof(char *));
+	input = ft_malloc(1000 * sizeof(char *));
 	if (!input)
 		return (NULL);
 	while (budget_get_next_line(fd, &line) > 0)
@@ -73,8 +73,8 @@ static void	free_input(char **input)
 	if (!input)
 		return ;
 	while (input[i])
-		FREE(input[i++]);
-	FREE(input);
+		ft_free(input[i++]);
+	ft_free(input);
 }
 
 static int	parse_line(t_world *world, char *line)

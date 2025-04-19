@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:40:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 17:28:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*get_adress_of_list(void)
 	return (&list);
 }
 
-void	FREE(void *data)
+void	ft_free(void *data)
 {
 	t_list	*list;
 	t_list	*current;
@@ -44,7 +44,7 @@ void	FREE(void *data)
 	}
 }
 
-void	*MALLOC(int size)
+void	*ft_malloc(int size)
 {
 	t_list	*list;
 	void	*content;

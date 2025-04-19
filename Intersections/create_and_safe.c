@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:51:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 	if (sphere.radius <= 1)
 		discriminant += 1;
 	if (discriminant < 0)
-		return (FREE(discriminant_values), NULL);
+		return (ft_free(discriminant_values), NULL);
 	result->times = ft_calloc(2, sizeof(double));
 	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
 			* discriminant_values[0]);
 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
 			* discriminant_values[0]);
 	result->object_id = sphere.id;
-	FREE(discriminant_values);
+	ft_free(discriminant_values);
 	return (result);
 }
 

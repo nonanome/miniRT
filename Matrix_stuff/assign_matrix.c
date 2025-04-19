@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:17:45 by qhahn             #+#    #+#             */
-/*   Updated: 2025/03/22 19:19:21 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ double	**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
 	double	**mat;
 	int		i;
 
-	mat = (double **)MALLOC(4 * sizeof(double *));
+	mat = (double **)ft_malloc(4 * sizeof(double *));
 	if (!mat)
 		return (NULL);
 	i = 0;
 	while (i < 4)
 	{
-		mat[i] = (double *)MALLOC(4 * sizeof(double));
+		mat[i] = (double *)ft_malloc(4 * sizeof(double));
 		if (!mat[i])
 			return (NULL);
 		i++;

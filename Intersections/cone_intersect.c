@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:15:01 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:33:31 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	cone_discrimination(double *discriminant_values, t_ray ray, t_shape cone,
 		* ray.direction.z - ray.direction.y * ray.direction.y * tan_theta
 		* tan_theta;
 	if (discriminant_values[0] > -EPSILON && discriminant_values[0] < EPSILON)
-		return (FREE(discriminant_values), 1);
+		return (ft_free(discriminant_values), 1);
 	discriminant_values[1] = 2 * ray.origin.x * ray.direction.x + 2
 		* ray.origin.z * ray.direction.z - 2 * ray.origin.y * ray.direction.y
 		* tan_theta * tan_theta;
@@ -100,7 +100,7 @@ int	cone_discrimination(double *discriminant_values, t_ray ray, t_shape cone,
 	discriminant = discriminant_values[1] * discriminant_values[1] - 4
 		* discriminant_values[0] * discriminant_values[2];
 	if (discriminant < 0)
-		return (FREE(discriminant_values), 1);
+		return (ft_free(discriminant_values), 1);
 	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
 			* discriminant_values[0]);
 	result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2
@@ -122,7 +122,7 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 		cap_top(result, ray, cone);
 	if (result->times[1] == -1)
 		cap_bottom(result, ray, cone);
-	FREE(discriminant_values);
+	ft_free(discriminant_values);
 	return (result);
 }
 

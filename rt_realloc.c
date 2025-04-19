@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:18:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:38:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*alloc_transfer(void *ptr, int new_size, t_list *current, t_list *prev)
 	void	*new_ptr;
 	int		old_size;
 
-	new_ptr = MALLOC(new_size);
+	new_ptr = ft_malloc(new_size);
 	if (!new_ptr)
 		return (NULL);
 	old_size = sizeof(current->content);
@@ -40,7 +40,7 @@ void	*rt_realloc(void *ptr, int new_size)
 	prev = lst;
 	current = lst->next;
 	if (!ptr)
-		return (MALLOC(new_size));
+		return (ft_malloc(new_size));
 	if (new_size == 0)
 		return (NULL);
 	while (current)

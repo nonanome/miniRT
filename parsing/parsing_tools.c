@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:40:15 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void	ft_free_split(char **split)
 	i = 0;
 	while (split[i])
 	{
-		FREE(split[i]);
+		ft_free(split[i]);
 		i++;
 	}
-	FREE(split);
+	ft_free(split);
 }
 
 int	parse_xyz(char **split, double *xyz, int mode, t_world *world)

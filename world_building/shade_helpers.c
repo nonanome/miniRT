@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:33:18 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	empty_intersections(t_c *canvas)
 	if (canvas->all_intersections.intersections)
 	{
 		while (i < canvas->all_intersections.nr_intersection_entries)
-			FREE(canvas->all_intersections.intersections[i++].times);
-		FREE(canvas->all_intersections.intersections);
+			ft_free(canvas->all_intersections.intersections[i++].times);
+		ft_free(canvas->all_intersections.intersections);
 		canvas->all_intersections.nr_intersection_entries = 0;
 		canvas->all_intersections.nr_intersections = 0;
 	}

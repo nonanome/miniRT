@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:57:41 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ t_light		default_light(void);
 t_material	default_material(void);
 void		free_double_ptr(double **a, int size);
 void		show_matrix(double **a, int size);
-void		*MALLOC(int size);
-void		FREE(void *data);
+void		*ft_malloc(int size);
+void		ft_free(void *data);
 void		bail(char *str, int code, t_world *world);
 
 // sphere

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   throw_shade.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:35:40 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	*is_shadowed(t_world *world, t_xyzvektor point, t_shape shape)
 	bool		*shadows;
 
 	i = -1;
-	shadows = MALLOC(world->canvas->num_lights * sizeof(bool));
+	shadows = ft_malloc(world->canvas->num_lights * sizeof(bool));
 	ray = init_ray();
 	ray.origin = point;
 	v = set_vector(0, 0, 0, 0);
