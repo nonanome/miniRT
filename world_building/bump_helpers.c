@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:26:47 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 15:37:57 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:39:56 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
 	double		theta;
 	double		phi;
 	double		length;
-	double		factor;
 
 	relative_point = substraction(comps->point, shape->origin);
 	length = pow(relative_point.x, 2) + pow(relative_point.y, 2);
