@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shade_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:34:08 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:38:05 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	empty_intersections(t_c *canvas)
 	canvas->all_intersections.intersections = NULL;
 }
 
-static t_xyzvektor	calculate_hit_point(t_intersec intersection, double time)
+static t_xyzvektor	calc_hit_point(t_intersec intersection, double time)
 {
 	t_xyzvektor	result;
 
@@ -49,30 +49,31 @@ static t_xyzvektor	calculate_hit_point(t_intersec intersection, double time)
 	return (result);
 }
 
-t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape)
+t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape, size_t i,
+		double closest_t)
 {
 	t_xyzvektor	hit_intersection;
-	double		t0;
-	double		t1;
-	size_t			i;
+	double		t[3];
 
-	i = -1;
 	hit_intersection = set_vector(0, 0, 0, 0);
-	while (++i <= all_intersections.nr_intersections / 2 - 1)
+	while (++i < all_intersections.nr_intersections / 2)
 	{
-		if (!all_intersections.intersections[i].times
-			|| all_intersections.intersections[i].object_id == shape.id)
+		if (!all_intersections.intersections[i].times ||
+			all_intersections.intersections[i].object_id == shape.id)
 			continue ;
-		t0 = all_intersections.intersections[i].times[0];
-		t1 = all_intersections.intersections[i].times[1];
-		if (t0 > 0 && t0 < t1)
+		t[1] = all_intersections.intersections[i].times[0];
+		t[2] = all_intersections.intersections[i].times[1];
+		if (t[1] > EPSILON && (t[2] < EPSILON || t[1] < t[2]))
+			t[0] = t[1];
+		else if (t[2] > EPSILON)
+			t[0] = t[2];
+		else
+			continue ;
+		if (closest_t < 0 || t[0] < closest_t)
 		{
-			hit_intersection = calculate_hit_point
-				(all_intersections.intersections[i], t0);
-			if (t0 < 0 || t0 > t1)
-				hit_intersection = calculate_hit_point
-					(all_intersections.intersections[i], t1);
-			return (hit_intersection);
+			closest_t = t[0];
+			hit_intersection = calc_hit_point
+				(all_intersections.intersections[i], t[0]);
 		}
 	}
 	return (hit_intersection);
