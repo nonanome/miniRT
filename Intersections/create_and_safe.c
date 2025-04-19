@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_and_safe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:19:42 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:32:03 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 {
 	double	discriminant_values[2];
-	double	discriminant;
 
 	result->times = ft_calloc(2, sizeof(double));
 	discriminant_values[0] = 0;

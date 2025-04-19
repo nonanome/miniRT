@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 20:20:17 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:33:23 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 {
 	t_xyzvektor	ret;
 	double		**inverse_transform;
-	t_xyzvektor	world_normal;
 	t_xyzvektor	local_normal;
 	double		**transpose_inverse;
 

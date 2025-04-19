@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:15:38 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:28:22 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:38:14 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 void	prepare_cylinder_vars(t_shape *shape, t_world *world, char **split,
 		double rgb[3])
 {
-	int	i;
-
-	i = 0;
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));

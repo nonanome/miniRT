@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:16:03 by kkuhn             #+#    #+#             */
-/*   Updated: 2025/04/18 18:56:53 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:38:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,22 @@ int	get_bumpmap_grayscale(mlx_texture_t *texture, int x, int y)
 {
 	uint32_t	*pixels;
 	uint32_t	color;
-	int			gray;
+	uint32_t	gray;
+	uint32_t	x2;
+	uint32_t	y2;
 	uint8_t		rgb[3];
 
-	if (!texture || x < 0 || y < 0 || x >= texture->width
-		|| y >= texture->height)
+	x2 = (uint32_t)x;
+	y2 = (uint32_t)y;
+	if (!texture || x2 >= texture->width
+		|| y2 >= texture->height)
 		return (-1);
 	pixels = (uint32_t *)texture->pixels;
-	color = pixels[y * texture->width + x];
+	color = pixels[y2 * texture->width + x2];
 	rgb[0] = (color >> 0) & 0xFF;
 	rgb[1] = (color >> 8) & 0xFF;
 	rgb[2] = (color >> 16) & 0xFF;
 	gray = (int)(0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]);
-	if (gray < 0)
-		gray = 0;
 	if (gray > 255)
 		gray = 255;
 	return (gray);

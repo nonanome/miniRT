@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 20:05:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:31:46 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	save_intersection(t_c *canvas, t_intersec *new_intersection, int i, int j)
 	new_intersection_sorted = false;
 	old_intersections = canvas->all_intersections.intersections;
 	nr_intersec = canvas->all_intersections.nr_intersections + 1;
+	intersections_sorted = NULL;
 	if (!setup_new_intersect(canvas, new_intersection, nr_intersec,
 			intersections_sorted))
 		return (-1);

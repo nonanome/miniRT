@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:39:09 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 20:46:51 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:40:05 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ static void	adjust_normal_with_bump(t_comp *comp, t_bump_norm *bn)
 	comp->normalv = normalize(bn->bump_normal);
 }
 
-void	change_normal_for_bump(t_comp *comp, t_intersec *intersection,
-		t_ray ray, t_world *world)
+void	change_normal_for_bump(t_comp *comp, t_intersec *intersection, t_world *world)
 {
 	t_bump_norm	bn;
 

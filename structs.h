@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 20:42:57 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 13:05:45 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@ typedef struct s_koord
 	double			w;
 }					t_xyzvektor;
 
-typedef struct point_data
+typedef struct s_point_data
 {
 	t_xyzvektor		position;
 	t_xyzvektor		velocity;
 }					t_point;
 
-typedef struct environment
+typedef struct s_environment
 {
 	t_xyzvektor		wind;
 	t_xyzvektor		gravity;
 }					t_env;
 
-typedef struct ray
+typedef struct s_ray
 {
 	t_xyzvektor		origin;
 	t_xyzvektor		direction;
 
 }					t_ray;
 
-typedef struct material
+typedef struct s_material
 {
 	uint32_t		color;
 	double			ambient;
@@ -75,7 +75,7 @@ typedef struct s_shape
 	bool			closed;
 }					t_shape;
 
-typedef struct intersect
+typedef struct s_intersect
 {
 	t_ray			ray;
 	double			*times;
@@ -84,21 +84,21 @@ typedef struct intersect
 	int				object_id;
 }					t_intersec;
 
-typedef struct intersections
+typedef struct s_intersections
 {
 	t_intersec		*intersections;
 	size_t			nr_intersections;
 	size_t			nr_intersection_entries;
 }					t_all_intersec;
 
-typedef struct pointlight
+typedef struct s_pointlight
 {
 	t_xyzvektor		color;
 	double			brightness;
 	t_xyzvektor		position;
 }					t_light;
 
-typedef struct reflection_data_store
+typedef struct s_reflection_data_store
 {
 	t_xyzvektor		effective_color;
 	t_xyzvektor		materialcolor;
@@ -114,7 +114,7 @@ typedef struct reflection_data_store
 	t_xyzvektor		reflectv;
 }					t_store;
 
-typedef struct canvas
+typedef struct s_canvas
 {
 	int				width;
 	int				height;

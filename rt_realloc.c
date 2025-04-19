@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:18:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 12:45:04 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:38:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*alloc_transfer(void *ptr, int new_size, t_list *current, t_list *prev)
 {
 	void	*new_ptr;
-	size_t	old_size;
+	int		old_size;
 
 	new_ptr = MALLOC(new_size);
 	if (!new_ptr)

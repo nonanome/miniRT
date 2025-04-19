@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:03:18 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/09 22:48:11 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:33:05 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	parse_xyz(char **split, double *xyz, int mode)
 	while (split[i])
 	{
 		number_to_parse = budget_ft_atof(split[i]);
-		if (i >= 3 || mode == 1 && (number_to_parse < -1
-				|| number_to_parse > 1))
+		if (i >= 3 || (mode == 1 && (number_to_parse < -1
+					|| number_to_parse > 1)))
 		{
 			write(2, "Error\nWrong Input", ft_strlen("Error\nWrong Input"));
 			return (0);

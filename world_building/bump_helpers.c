@@ -6,23 +6,18 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:26:47 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 20:48:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:39:43 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
-		t_world world)
+void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape)
 {
 	t_xyzvektor	relative_point;
 	double		theta;
 	double		phi;
-	int			width;
-	int			height;
 
-	width = world.canvas->bumpmapcolor->width;
-	height = world.canvas->bumpmapcolor->height;
 	relative_point = substraction(comps->point, shape->origin);
 	theta = atan2(relative_point.z, relative_point.x);
 	phi = asin(relative_point.y / shape->radius);

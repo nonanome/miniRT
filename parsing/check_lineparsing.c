@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:29:54 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/17 17:31:25 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 13:54:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void	check_light_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 4)
+	if (split_count != 3 && split_count != 4)
 	{
 		bail("light line in wrong form", 1);
 	}
-	if (count_split(ft_split(split_on_space[1], ',')) != 3
-		|| count_split(ft_split(split_on_space[3], ',')) != 3)
+	if (count_split(ft_split(split_on_space[1], ',')) != 3)
 	{
-		write(2, "light line in wrong form\n", 25);
-		exit(1);
+		bail("light line in wrong form", 1);
 	}
+	if (split_count == 4 && count_split(ft_split(split_on_space[3], ',')) != 3)
+		bail("light line in wrong form", 1);
 }
 
 void	check_camera_line(char *line)
@@ -58,22 +58,16 @@ int	check_plane_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 4 && split_count != 5)
+	if (split_count != 4)
 	{
-		write(2, "plane line in wrong form",
-			ft_strlen("plane line in wrong form"));
-		exit(0);
+		bail("plane line in wrong form", 1);
 	}
 	if (count_split(ft_split(split_on_space[1], ',')) != 3
 		|| count_split(ft_split(split_on_space[2], ',')) != 3
 		|| count_split(ft_split(split_on_space[3], ',')) != 3)
 	{
-		write(2, "plane line in wrong form", 24);
-		exit(0);
+		bail("plane line in wrong form", 1);
 	}
-	if (split_count == 5 && (count_split(ft_split(split_on_space[4],
-					',')) != 3))
-		return (write(2, "plane line in wrong form", 24), 1);
 	return (0);
 }
 
@@ -84,15 +78,11 @@ void	check_ambient_light_line(char *line)
 	split_on_space = ft_split(line, ' ');
 	if (count_split(split_on_space) != 3)
 	{
-		write(2, "ambient_light line in wrong form",
-			ft_strlen("ambient_light line in wrong form"));
-		exit(1);
+		bail("ambient_light line in wrong form", 1);
 	}
 	if (count_split(ft_split(split_on_space[2], ',')) != 3)
 	{
-		write(2, "ambient_light line in wrong form",
-			ft_strlen("ambient_light line in wrong form"));
-		exit(1);
+		bail("ambient_light line in wrong form", 1);
 	}
 }
 
@@ -103,23 +93,14 @@ void	check_cylinder_line(char *line)
 
 	split_on_space = ft_split(line, ' ');
 	split_count = count_split(split_on_space);
-	if (split_count != 6 && split_count != 7)
+	if (split_count != 6)
 	{
-		write(2, "cylinder line in wrong form",
-			ft_strlen("cylinder line in wrong form"));
-		exit(1);
+		bail("cylinder line in wrong form", 2);
 	}
 	if (count_split(ft_split(split_on_space[1], ',')) != 3
 		|| count_split(ft_split(split_on_space[2], ',')) != 3
 		|| count_split(ft_split(split_on_space[5], ',')) != 3)
 	{
-		write(2, "cylinder line in wrong form", 27);
-		exit(1);
-	}
-	if (split_count == 7 && (count_split(ft_split(split_on_space[5],
-					',')) != 3))
-	{
-		write(2, "cylinder line in wrong form", 27);
-		exit(1);
+		bail("cylinder line in wrong form", 2);
 	}
 }

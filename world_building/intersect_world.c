@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 20:26:31 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:41:37 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ t_comp	prepare_computations(t_intersec *intersection, t_ray ray,
 	comps.point = point_of_intersection(intersection, ray);
 	comps.eyev = negate_tuple(ray.direction);
 	if (world->canvas->bumpmapcolor)
-		uv_of_sphere(intersection, &comps, shape, *world);
+		uv_of_sphere(intersection, &comps, shape);
 	comps.normalv = calculate_normale(*shape, comps.point);
 	if (world->canvas->bumpmap != 0)
-		change_normal_for_bump(&comps, intersection, ray, world);
+		change_normal_for_bump(&comps, intersection, world);
 	comps.over_point = set_vector(comps.point.x + comps.normalv.x * EPSILON,
 			comps.point.y + comps.normalv.y * EPSILON, comps.point.z
 			+ comps.normalv.z * EPSILON, 1);
@@ -122,11 +122,9 @@ int	intersect_world(t_world *world, t_ray ray)
 {
 	t_intersec	*new_intersection;
 	int			i;
-	int			j;
 	double		temp;
 
 	i = 0;
-	j = 0;
 	while (world->nr_shapes > i)
 	{
 		new_intersection = intersect(world->shapes[i], ray);

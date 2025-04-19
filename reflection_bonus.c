@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 13:10:45 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:23:06 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static double	get_shadow_factor(bool *in_shadow, t_c canvas)
 	int		i;
 	double	shadow_factor;
 
-	shadow_factor = 0.2;
+	shadow_factor = 0.4;
 	i = -1;
 	while (++i < canvas.num_lights)
 	{
@@ -39,7 +39,7 @@ static double	get_shadow_factor(bool *in_shadow, t_c canvas)
 	return (shadow_factor);
 }
 
-t_xyzvektor	add_light(t_store *store, t_shape shape, t_xyzvektor *result,
+void	add_light(t_store *store, t_shape shape, t_xyzvektor *result,
 		t_c canvas)
 {
 	t_xyzvektor	scaled_spec;
@@ -59,14 +59,12 @@ t_xyzvektor	add_light(t_store *store, t_shape shape, t_xyzvektor *result,
 					- store->shadow_factor));
 		store->specular = addition(store->specular, scaled_spec);
 	}
-	return (*result);
 }
 
 t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 		t_xyzvektor point)
 {
 	t_xyzvektor	result;
-	t_xyzvektor	scaled_spec;
 	int			i;
 
 	i = -1;
@@ -76,13 +74,13 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 		store->lightsourcecolor = canvas.lightsource[i].color;
 		store->effective_color = hadamard_product(store->materialcolor,
 				store->lightsourcecolor);
-		store->light_vector = normalize(substraction
-				(canvas.lightsource[i].position, point));
+		store->light_vector = normalize(substraction(canvas.lightsource[i].position,
+					point));
 		store->light_dot_normale = dot_product(store->light_vector,
 				canvas.normale);
 		if (store->light_dot_normale >= 0)
 		{
-			result = add_light(store, shape, &result, canvas);
+			add_light(store, shape, &result, canvas);
 		}
 	}
 	return (result);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cam_light.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 18:52:19 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:56:25 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,24 +83,19 @@ int	parse_light(t_world *world, char *line)
 {
 	char	**split;
 	double	xyz[3];
-	double	rgb[4];
 	t_light	new_light;
-	char	**rgb_split;
 
+	xyz[0] = 0;
 	check_light_line(line);
 	split = ft_split(line, ' ');
 	if (!split)
 		return (1);
 	if (budget_ft_atof(split[2]) < 0)
 		return (ft_free_split(split), 1);
-	rgb_split = ft_split(split[3], ',');
-	if (!rgb_split)
-		return (ft_free_split(split), 1);
-	if (xyz_rgb_brightness(split, rgb_split, rgb, xyz))
-		return (write(2, "problem parsing light\n", 22), 1);
-	new_light.color = set_vector(rgb[0], rgb[1], rgb[2], 0);
-	new_light.brightness = budget_ft_atof(split[1]);
+	parse_xyz_cam_light(split[1], xyz, 0);
+	new_light.color = set_vector(255, 255, 255, 0);
+	new_light.brightness = budget_ft_atof(split[2]);
 	new_light.position = set_vector(xyz[0], xyz[1], xyz[2], 0);
 	realloc_light(world->canvas, new_light);
-	return (ft_free_split(split), ft_free_split(rgb_split), 0);
+	return (ft_free_split(split), 0);
 }

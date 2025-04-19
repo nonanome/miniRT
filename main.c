@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:20:56 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 18:45:23 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:24:19 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	esc_handler(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_ESCAPE)
 	{
 		world = (t_world *)param;
-		mlx_delete_image(world->canvas->mlx_ptr, world->canvas->image_to_free);
+		if (world->canvas->image_to_free)
+			mlx_delete_image(world->canvas->mlx_ptr,
+				world->canvas->image_to_free);
 		if (world->canvas->bumpmapcolor)
 			mlx_delete_image(world->canvas->mlx_ptr,
 				world->canvas->bumpmapcolor);
@@ -37,9 +39,6 @@ void	esc_handler(mlx_key_data_t keydata, void *param)
 int	main(int argc, char *argv[])
 {
 	t_world		*world;
-	t_ray		ray;
-	t_comp		comp;
-	t_xyzvektor	shadestuff;
 	mlx_image_t	*image;
 
 	world = get_world(100);

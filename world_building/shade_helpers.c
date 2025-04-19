@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 19:31:25 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 14:34:08 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sphere_ray_transform(t_shape shape, t_ray ray)
 
 void	empty_intersections(t_c *canvas)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (canvas->all_intersections.intersections)
@@ -54,7 +54,7 @@ t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape)
 	t_xyzvektor	hit_intersection;
 	double		t0;
 	double		t1;
-	int			i;
+	size_t			i;
 
 	i = -1;
 	hit_intersection = set_vector(0, 0, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/18 13:12:19 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 13:19:00 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	look_for_double_uppercase(char **input, int A, int C, int L)
 		}
 		input++;
 	}
-	if (A > 1 || C > 1)
+	if (A > 1 || C > 1 || L > 1)
 	{
 		write(2, "input contains double capital letter object",
 			ft_strlen("input contains double capital letter object"));
@@ -110,11 +110,6 @@ int	parse_input(char *file_name, t_world *world)
 		cleaned = clean_input_line(input[i]);
 		if ((parse_line(world, cleaned)))
 			return (1);
-		else if (ft_strncmp(cleaned, "co", 2) == 0)
-		{
-			if (parse_cone(world, cleaned))
-				return (1);
-		}
 		i++;
 	}
 	return (free_input(input), 0);
