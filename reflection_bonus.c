@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 16:48:34 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 18:01:45 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	add_light(t_store *store, t_shape shape, t_xyzvektor *result,
 {
 	t_xyzvektor	scaled_spec;
 
-	store->diffuse = scalar_multiplication(store->materialcolor,
+	store->diffuse = scalar_multiplication(store->effective_color,
 			shape.material.diffuse * store->light_dot_normale);
 	*result = addition(*result, scalar_multiplication(store->diffuse, 1.0
 				- store->shadow_factor));

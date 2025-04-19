@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:14:50 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 16:37:45 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 17:35:40 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ static void	check_shade_hit(t_all_intersec intersections, bool *shadow_flag,
 
 	hit_intersection = set_vector(0, 0, 0, 0);
 	if (intersections.intersections != NULL)
-		hit_intersection = hit(intersections, shape);
+		hit_intersection = hit(intersections, shape, -1, -1);
 	else
 		hit_intersection.w = INFINITY;
+	hit_intersection = hit(intersections, shape, -1, -1);
 	if (hit_intersection.w > EPSILON && hit_intersection.w < distance)
 		*shadow_flag = true;
 	else
