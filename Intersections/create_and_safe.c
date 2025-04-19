@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 14:32:03 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:51:32 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,10 @@ t_intersec	*intersect_sphere(t_intersec *result, t_ray ray, t_shape sphere)
 	discriminant_values[2] = dot_product(sphere_to_ray, sphere_to_ray)
 		- sphere.radius * sphere.radius;
 	discriminant = get_discriminant_smol(discriminant_values);
-	if(sphere.radius <= 1)
+	if (sphere.radius <= 1)
 		discriminant += 1;
 	if (discriminant < 0)
-	{
-		FREE(discriminant_values);
-		return (NULL);
-	}
+		return (FREE(discriminant_values), NULL);
 	result->times = ft_calloc(2, sizeof(double));
 	result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2
 			* discriminant_values[0]);

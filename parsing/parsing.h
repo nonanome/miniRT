@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:03:30 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:47:42 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:48:02 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	check_ambient_light_line(char *line, t_world *world);
 int		parse_rgb(char *str, double rgb[3]);
 int		parse_ratio(char *str, double *ratio);
 int		count_split(char **split_string);
-int		parse_common_shape(char **split, double pos[3], double rgb[3], t_world *world);
+int		parse_common_shape(char **split, double pos[3], double rgb[3],
+			t_world *world);
 int		parse_normal_vector(char **split, double normal[3], t_world *world);
 char	*clean_input_line(char *line);
 double	**get_cylinder_matrix(double xyz[3], t_xyzvektor target_axis,

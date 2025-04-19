@@ -6,32 +6,32 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 18:07:50 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:49:36 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	look_for_double_uppercase(char **input, int A, int C, t_world *world)
+void	look_for_double_uppercase(char **input, int a, int c, t_world *world)
 {
-	int L;
+	int	l;
 
-	L = 0;
+	l = 0;
 	while (*input)
 	{
 		if (*input[0] == 'A')
-			A++;
+			a++;
 		if (*input[0] == 'C')
-			C++;
+			c++;
 		if (*input[0] == 'L')
-			L++;
+			l++;
 		else if (*input[0] >= '0' && *input[0] <= '9')
 		{
 			bail("first characters needs to be char", 1, world);
 		}
 		input++;
 	}
-	if (A > 1 || C > 1)
+	if (a > 1 || c > 1)
 	{
 		bail("input contains double capital letter object", 1, world);
 	}

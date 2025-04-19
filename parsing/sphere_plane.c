@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 18:43:36 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:43:09 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	parse_plane(t_world *world, char *line)
 	if (!split)
 		return (1);
 	if (!split || parse_common_shape(split, xyz, rgb, world)
-		|| parse_normal_vector(split, normal, world) || check_plane_line(line, world))
+		|| parse_normal_vector(split, normal, world) || check_plane_line(line,
+			world))
 		return (1);
 	shape = new_shape(1);
 	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));

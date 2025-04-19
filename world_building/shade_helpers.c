@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shade_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:38:05 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:33:18 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape, size_t i,
 	hit_intersection = set_vector(0, 0, 0, 0);
 	while (++i < all_intersections.nr_intersections / 2)
 	{
-		if (!all_intersections.intersections[i].times ||
-			all_intersections.intersections[i].object_id == shape.id)
+		if (!all_intersections.intersections[i].times
+			|| all_intersections.intersections[i].object_id == shape.id)
 			continue ;
 		t[1] = all_intersections.intersections[i].times[0];
 		t[2] = all_intersections.intersections[i].times[1];

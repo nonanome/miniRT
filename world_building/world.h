@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:24 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:35:49 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:32:45 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void		free_double_ptr(double **a, int size);
 void		empty_intersections(t_c *canvas);
 double		**matrix(t_xyzvektor left, t_xyzvektor true_up, t_xyzvektor forward,
 				t_xyzvektor t);
-t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape, size_t i, double closest_t);
+t_xyzvektor	hit(t_all_intersec all_intersections, t_shape shape, size_t i,
+				double closest_t);
 void		empty_intersections(t_c *canvas);
 void		save_intersections(t_c *canvas, t_intersec *new_intersection,
 				t_world *world);

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:56:46 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:57:41 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void		uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
 void		change_normal_for_bump(t_comp *comp, t_intersec *intersection,
 				t_world *world);
 int			get_bumpmap_grayscale(mlx_texture_t *texture, int x, int y);
-void		orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z, t_world *world);
+void		orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z,
+				t_world *world);
 
 // ray
 t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale);

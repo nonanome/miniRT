@@ -6,13 +6,14 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:57:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 18:15:24 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:46:28 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	parse_common_shape(char **split, double pos[3], double rgb[3], t_world *world)
+int	parse_common_shape(char **split, double pos[3], double rgb[3],
+		t_world *world)
 {
 	char	**pos_split;
 	char	**rgb_split;
@@ -49,8 +50,8 @@ char	**checker_parsing(char **split, int type)
 	i = 0;
 	while (split[i++])
 		;
-	if ((i != 6 && (type == 0 || type == 1)) || (i != 8
-			&& (type == 2 || type == 3)))
+	if ((i != 6 && (type == 0 || type == 1)) || (i != 8 && (type == 2
+				|| type == 3)))
 		return (NULL);
 	if (type == 0 || type == 1)
 		i = 4;
@@ -73,9 +74,9 @@ void	add_checker(t_world *world, char **split, int type)
 	if (!split_split || !(*split_split))
 		return ;
 	world->shapes[world->nr_shapes
-		- 1]->material.color2 = set_vector(budget_ft_atof(split_split[0])
-			/ 255, budget_ft_atof(split_split[1]) / 255,
-			budget_ft_atof(split_split[2]) / 255, 0);
+		- 1]->material.color2 = set_vector(budget_ft_atof(split_split[0]) / 255,
+			budget_ft_atof(split_split[1]) / 255, budget_ft_atof(split_split[2])
+			/ 255, 0);
 	world->shapes[world->nr_shapes - 1]->material.checker_enable = true;
 }
 

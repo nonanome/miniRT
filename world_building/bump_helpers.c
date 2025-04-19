@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:26:47 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:56:29 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:42:59 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	uv_of_sphere(t_intersec *intersect, t_comp *comps, t_shape *shape,
 	comps->v = intersect->v;
 }
 
-void	orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z, t_world *world)
+void	orthogonale_vektoren(t_xyzvektor x, t_xyzvektor *y, t_xyzvektor *z,
+		t_world *world)
 {
 	if (x.x == 0 && x.y == 0 && x.z == 0)
 		bail("x cant be 0 :)", 1, world);

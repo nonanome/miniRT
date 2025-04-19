@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:28:50 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:51:58 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 		store->lightsourcecolor = canvas.lightsource[i].color;
 		store->effective_color = hadamard_product(store->materialcolor,
 				store->lightsourcecolor);
-		store->light_vector = normalize(substraction(canvas.lightsource[i].position,
-					point));
+		store->light_vector = normalize(substraction
+				(canvas.lightsource[i].position, point));
 		store->light_dot_normale = dot_product(store->light_vector,
 				canvas.normale);
 		if (store->light_dot_normale >= 0)
@@ -85,7 +85,6 @@ t_xyzvektor	each_light(t_store *store, t_shape shape, t_c canvas,
 	}
 	return (result);
 }
-
 
 t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow, t_world *world)
 {
@@ -106,7 +105,8 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow, t_world *world)
 	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
-	store.ambient = hadamard_product(scalar_multiplication(*world->ambient,world->ambient_intensity),store.ambient);
+	store.ambient = hadamard_product(scalar_multiplication(*world->ambient,
+				world->ambient_intensity), store.ambient);
 	result = each_light(&store, shape, canvas, comp.over_point);
 	final = addition(store.ambient, addition(result, store.specular));
 	final.x = fmax(0.0, fmin(1.0, final.x));
