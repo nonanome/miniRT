@@ -1,24 +1,12 @@
+# Ambient light
 A 0.2 255,255,255
-C 0,15,-10 0,1,0 180
-L 10,15,-10 1 255,255,255
 
-# Floor (gray)
-pl 0,-5,0 0,1,0 200,200,200
+# Camera: position (0,15,-10), normalized orientation (0,-1,0), FOV 120
+C 0,0,-10 0,-0.7,0.2 120
 
-# Wall 0 (red) – at angle 0°: center at (5,0,0), normal pointing inward (-1,0,0)
-pl 5,0,0 -1,0,0 255,0,0
+# Light: position (10,15,-10), brightness ratio 1, color (255,255,255)
+L 0,-15,-20 0.8 255,255,255
 
-# Wall 1 (green) – angle 60°: center at (2.5,0,4.33), inward normal (-0.5,0,-0.866)
-pl 2.5,0,4.33 -0.5,0,-0.866 0,255,0
+# Floor (gray): center (0,-5,0), normal (0,1,0), color (200,200,200)
+pl 0,0,5 0.2,0,0.4 200,200,200
 
-# Wall 2 (blue) – angle 120°: center at (-2.5,0,4.33), inward normal (0.5,0,-0.866)
-pl -2.5,0,4.33 0.5,0,-0.866 0,0,255
-
-# Wall 3 (yellow) – angle 180°: center at (-5,0,0), inward normal (1,0,0)
-pl -5,0,0 1,0,0 255,255,0
-
-# Wall 4 (magenta) – angle 240°: center at (-2.5,0,-4.33), inward normal (0.5,0,0.866)
-pl -2.5,0,-4.33 0.5,0,0.866 255,0,255
-
-# Wall 5 (cyan) – angle 300°: center at (2.5,0,-4.33), inward normal (-0.5,0,0.866)
-pl 2.5,0,-4.33 -0.5,0,0.866 0,255,255

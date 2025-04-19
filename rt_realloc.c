@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:18:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/19 23:00:44 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*alloc_transfer(void *ptr, int new_size, t_list *current, t_list *prev)
 	void	*new_ptr;
 	int		old_size;
 
-	new_ptr = ft_malloc(new_size);
+	new_ptr = ft_calloc(1, new_size);
 	if (!new_ptr)
 		return (NULL);
 	old_size = sizeof(current->content);

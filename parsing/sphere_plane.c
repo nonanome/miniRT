@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:43:09 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 01:32:10 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@ double	**get_sphere_matrix(double radius, double xyz[3])
 	trans = translation(xyz[0], xyz[1], xyz[2]);
 	rad = scaling(radius, radius, radius);
 	return (multiply_matrix(rad, trans));
+}
+
+double	**get_plane_matrix(double xyz[3], t_xyzvektor normal)
+{
+	double	**rotation;
+	double	**translation_matrix;
+	double	**full_transform;
+
+	rotation = get_identity_matrix();
+	create_rotation_matrix(normal, rotation); // rotates (0,1,0) to normal
+	translation_matrix = translation(xyz[0], xyz[1], xyz[2]);
+	full_transform = multiply_matrix(translation_matrix, rotation);
+	return (full_transform);
 }
 
 int	parse_sphere(t_world *world, char *line)
@@ -71,7 +84,7 @@ int	parse_plane(t_world *world, char *line)
 	shape->material.ambient = world->ambient_intensity;
 	shape->material.color = get_color_from_tuple(set_vector(rgb[0], rgb[1],
 				rgb[2], 0));
-	shape->default_transformation = translation(xyz[0], xyz[1], xyz[2]);
+	shape->default_transformation = get_plane_matrix(xyz, shape->normal);
 	world->shapes[world->nr_shapes] = shape;
 	world->nr_shapes++;
 	add_checker(world, split, 1);

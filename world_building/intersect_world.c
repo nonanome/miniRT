@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 22:20:42 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 15:46:49 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 00:03:12 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ void	find_nearest_intersection(t_intersec *intersections,
 			{
 				*intersec_to_use = &(intersections[i]);
 				*shape_to_use = intersections[i].object_id;
+			}
+			else if (intersections[i].times[0] == (*intersec_to_use)->times[0])
+			{
+				if (intersections[i].object_id < (*intersec_to_use)->object_id)
+				{
+					*intersec_to_use = &(intersections[i]);
+					*shape_to_use = intersections[i].object_id;
+				}
 			}
 			else if (intersections[i].times[0] < (*intersec_to_use)->times[0])
 			{

@@ -35,10 +35,10 @@ $(MLX_DIR):
 libft/libft.a:
 	make -C ./libft
 
-$(NAME): ${GC} $(MLX) libft/libft.a
+$(NAME): $(MLX) libft/libft.a ${GC}
 	gcc ${GC} $(MLX) libft/libft.a -o $@ -ldl -lglfw -pthread -lm
 
-$(BONUS): ${GC_BONUS} $(MLX) libft/libft.a
+$(BONUS): $(MLX) libft/libft.a ${GC_BONUS}
 	gcc ${GC_BONUS} $(MLX) libft/libft.a -o $(BONUS) -ldl -lglfw -pthread -lm
 
 bonus: $(BONUS)

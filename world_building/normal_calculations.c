@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal_calculations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 21:15:08 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/20 00:28:59 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_xyzvektor	calculate_normale(t_shape shape, t_xyzvektor point)
 	else if (shape.type == 1)
 	{
 		inverse_transform = invert_matrix(shape.default_transformation, 4);
-		local_normal = set_vector(0, 0, 1, 0);
+		local_normal = set_vector(0, 1, 0, 0);
 		transpose_inverse = transpose_matrix(inverse_transform, 4);
 		ret = multiply_vector_and_matrix(local_normal, transpose_inverse);
 		ret = normalize(ret);

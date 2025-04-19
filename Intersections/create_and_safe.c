@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:10:06 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 00:30:48 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ t_intersec	*intersect_plane(t_intersec *result, t_ray ray, t_shape plane)
 	result->times = ft_calloc(2, sizeof(double));
 	discriminant_values[0] = 0;
 	discriminant_values[1] = 0;
-	discriminant_values[0] = dot_product(ray.direction, plane.normal);
+	discriminant_values[0] = dot_product(ray.direction, set_vector(0, 1, 0, 0));
 	if (discriminant_values[0] == 0)
 	{
 		return (NULL);
 	}
-	discriminant_values[1] = -dot_product(ray.origin, plane.normal);
-	if (discriminant_values[1] / discriminant_values[0] < EPSILON)
+	discriminant_values[1] = -dot_product(ray.origin, set_vector(0, 1, 0, 0));
+	if (discriminant_values[1] / discriminant_values[0] <= EPSILON)
 	{
-		result->times[0] = 0;
-		result->times[1] = 0;
+		result->times[0] = -1;
+		result->times[1] = -1;
 		return (result);
 	}
 	result->times[0] = discriminant_values[1] / discriminant_values[0];
