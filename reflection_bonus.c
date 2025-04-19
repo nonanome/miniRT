@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reflection_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 18:01:45 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/19 20:28:50 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow, t_world *world)
 			shape.material.ambient);
 	store.ambient = hadamard_product(scalar_multiplication(*world->ambient,world->ambient_intensity),store.ambient);
 	result = each_light(&store, shape, canvas, comp.over_point);
-	final = addition(store.ambient, result);
+	final = addition(store.ambient, addition(result, store.specular));
 	final.x = fmax(0.0, fmin(1.0, final.x));
 	final.y = fmax(0.0, fmin(1.0, final.y));
 	final.z = fmax(0.0, fmin(1.0, final.z));
