@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:40:51 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 12:17:42 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	*ft_malloc(int size)
 		return (NULL);
 	}
 	new_node->content = content;
+	new_node->size = size;
 	new_node->next = list->next;
 	list->next = new_node;
 	return (content);

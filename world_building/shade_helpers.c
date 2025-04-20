@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:43:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 12:47:55 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	empty_intersections(t_c *canvas)
 		canvas->all_intersections.nr_intersections = 0;
 	}
 	canvas->all_intersections.intersections = NULL;
+	canvas->all_intersections.allocated_intersections = 0;
 }
 
 static t_xyzvektor	calc_hit_point(t_intersec intersection, double time)

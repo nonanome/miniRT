@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 14:43:39 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/20 16:06:37 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,23 @@ t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 	return (normalize(substraction(in, n)));
 }
 
-static double	get_shadow_factor(bool *in_shadow, t_c canvas)
+static double	get_shadow_factor(bool *in_shadow, t_c canvas, t_xyzvektor point)
 {
 	int		i;
 	double	shadow_factor;
+	double	distance_to_light;
+	double	max_distance = 50.0;
 
 	shadow_factor = 0.4;
 	i = -1;
 	while (++i < canvas.num_lights)
 	{
 		if (in_shadow[i])
-			shadow_factor += 0.4;
+		{
+			distance_to_light = magnitude(substraction(canvas.lightsource[i].position, point));
+			double attenuation = 1.0 - fmin(distance_to_light / max_distance, 1.0);
+			shadow_factor += 0.4 * attenuation;
+		}
 	}
 	if (shadow_factor > 1)
 		shadow_factor = 1;
@@ -102,7 +108,7 @@ t_xyzvektor	lightning(t_comp comp, t_c canvas, bool *in_shadow, t_world *world)
 		store.materialcolor = pattern_at(shape, comp.over_point);
 	else
 		store.materialcolor = get_color(canvas, shape, comp.u, comp.v);
-	store.shadow_factor = get_shadow_factor(in_shadow, canvas);
+	store.shadow_factor = get_shadow_factor(in_shadow, canvas, comp.over_point);
 	store.ambient = scalar_multiplication(store.materialcolor,
 			shape.material.ambient);
 	store.ambient = hadamard_product(scalar_multiplication(*world->ambient,

@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:18:26 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 23:00:44 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 12:37:18 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*alloc_transfer(void *ptr, int new_size, t_list *current, t_list *prev)
 	old_size = sizeof(current->content);
 	if (old_size < new_size)
 		old_size = new_size;
-	ft_memcpy(new_ptr, ptr, old_size);
+	ft_memcpy(new_ptr, ptr, current->size - 1);
 	prev->next = current->next;
 	free(current->content);
 	free(current);

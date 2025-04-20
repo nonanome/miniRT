@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:00:05 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 01:32:10 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 12:04:29 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ double	**get_sphere_matrix(double radius, double xyz[3])
 
 	trans = translation(xyz[0], xyz[1], xyz[2]);
 	rad = scaling(radius, radius, radius);
-	return (multiply_matrix(rad, trans));
+	return (multiply_matrix(trans, rad));
 }
 
 double	**get_plane_matrix(double xyz[3], t_xyzvektor normal)
@@ -29,7 +29,7 @@ double	**get_plane_matrix(double xyz[3], t_xyzvektor normal)
 	double	**full_transform;
 
 	rotation = get_identity_matrix();
-	create_rotation_matrix(normal, rotation); // rotates (0,1,0) to normal
+	create_rotation_matrix(normal, rotation);
 	translation_matrix = translation(xyz[0], xyz[1], xyz[2]);
 	full_transform = multiply_matrix(translation_matrix, rotation);
 	return (full_transform);
