@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone_intersect.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:15:01 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 15:46:12 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,50 @@ int	cone_discrimination(double *discriminant_values, t_ray ray, t_shape cone,
 	return (0);
 }
 
+double	get_cone_discriminant(double *discriminant_values, t_ray ray,
+	t_shape cone, t_intersec *result)
+{
+double	discriminant;
+double	tan_theta;
+
+// Berechne tan²(θ), wobei θ der Öffnungswinkel des Kegels ist
+tan_theta = cone.radius / (cone.maximum - cone.minimum);
+tan_theta = tan_theta * tan_theta;  // Quadrieren, da wir tan² benötigen
+
+// Quadratische Gleichung für den Kegel: x² + z² - y²*tan²θ = 0
+discriminant_values[0] = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z
+					   - ray.direction.y * ray.direction.y * tan_theta;
+
+// Wenn der Koeffizient nahe 0 ist, ist der Strahl parallel zur Mantelfläche
+if (fabs(discriminant_values[0]) < EPSILON)
+	return (ft_free(discriminant_values), -1);
+
+// Linearer Term
+discriminant_values[1] = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z
+							- ray.origin.y * ray.direction.y * tan_theta);
+
+// Konstanter Term
+discriminant_values[2] = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z
+					   - ray.origin.y * ray.origin.y * tan_theta;
+
+// Diskriminante berechnen
+discriminant = discriminant_values[1] * discriminant_values[1] - 4
+			* discriminant_values[0] * discriminant_values[2];
+
+if (discriminant < 0)
+	return (ft_free(discriminant_values), -1);
+
+// Schnittpunkte berechnen
+result->times[0] = (-discriminant_values[1] - sqrt(discriminant)) / (2 * discriminant_values[0]);
+result->times[1] = (-discriminant_values[1] + sqrt(discriminant)) / (2 * discriminant_values[0]);
+result->object_id = cone.id;
+
+return (discriminant);
+}
+
+
+
+
 t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 {
 	double	*discriminant_values;
@@ -117,11 +161,11 @@ t_intersec	*cone_intersect(t_intersec *result, t_ray ray, t_shape cone)
 	result->times = ft_calloc(2, sizeof(double));
 	if (cone_discrimination(discriminant_values, ray, cone, result))
 		return (NULL);
+	// if (get_cone_discriminant(discriminant_values, ray, cone, result))
+	// 	return (NULL);
 	cut_cone(result, ray, cone);
 	if (result->times[0] == -1)
 		cap_top(result, ray, cone);
-	if (result->times[1] == -1)
-		cap_bottom(result, ray, cone);
 	ft_free(discriminant_values);
 	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cylinder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:15:38 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 17:53:15 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 16:00:14 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ double	**get_cylinder_matrix(double xyz[3], t_xyzvektor target_axis,
 	scale = scaling(radius, 1.0, radius);
 	if (!scale)
 		return (NULL);
-	temp_transform = multiply_matrix(translation_matrix, rotation);
+	temp_transform = multiply_matrix(rotation, translation_matrix);
 	if (!temp_transform)
 		return (NULL);
 	full_transform = multiply_matrix(temp_transform, scale);
