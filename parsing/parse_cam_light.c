@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 16:58:46 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 19:31:50 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 20:12:34 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,6 @@ int	parse_camera(t_world *world, char *line)
 			normalize(set_vector(normal[0], normal[1], normal[2], 0)));
 	world->camera->transform = view_transform(set_vector(xyz[0], xyz[1], xyz[2],
 				0), target, set_vector(0, 1, 0, 0));
-	printf("normal:%f %f %f\n", normal[0], normal[1], normal[2]);
-	printf("xyz:%f %f %f\n", xyz[0], xyz[1], xyz[2]);
-	printf("target:%f %f %f %f\n", target.x, target.y, target.z, target.w);
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-			printf("%f ", world->camera->transform[i][j]);
-		printf("\n");
-	}
 	return (ft_free_split(split), 0);
 }
 
