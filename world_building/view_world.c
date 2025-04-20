@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 15:01:17 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 19:50:40 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ double	**view_transform(t_xyzvektor from, t_xyzvektor to, t_xyzvektor up)
 	double		**translation_mat;
 
 	forward = normalize(substraction(to, from));
-	left = cross_product(forward, normalize(up));
+	left = normalize(cross_product(forward, normalize(up)));
 	true_up = cross_product(left, forward);
 	orientation = matrix(left, true_up, forward);
 	translation_mat = translation(-from.x, -from.y, -from.z);
