@@ -6,7 +6,7 @@
 /*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:25:28 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 21:08:04 by kkuhn            ###   ########.fr       */
+/*   Updated: 2025/04/20 21:13:36 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,34 @@ void	prepare_cone_vars(t_shape *shape, t_world *world, char **split,
 	add_checker(world, split, 2);
 }
 
+double	**get_cone_matrix(double xyz[3], t_xyzvektor target_axis,
+	double radius)
+{
+	double		**rotation;
+	double		**translation_matrix;
+	double		**scale;
+	double		**full_transform;
+	double		**temp_transform;
+
+	rotation = get_identity_matrix();
+	if (!rotation)
+		return (NULL);
+	create_rotation_matrix(target_axis, rotation);
+	translation_matrix = translation(xyz[0], xyz[1], xyz[2]);
+	if (!translation_matrix)
+		return (NULL);
+	scale = scaling(radius, 1.0, radius);
+	if (!scale)
+		return (NULL);
+	temp_transform = multiply_matrix(rotation, translation_matrix);
+	if (!temp_transform)
+		return (NULL);
+	full_transform = multiply_matrix(temp_transform, scale);
+	if (!full_transform)
+		return (NULL);
+	return (full_transform);
+}
+
 int	parse_cone(t_world *world, char *line)
 {
 	char	**split;
@@ -57,7 +85,7 @@ int	parse_cone(t_world *world, char *line)
 	shape = new_shape(3);
 	shape->normal = normalize(set_vector(normal[0], normal[1], normal[2], 0));
 	prepare_cone_vars(shape, world, split, &(xyz[3]));
-	shape->default_transformation = get_cylinder_matrix(xyz, shape->normal,
+	shape->default_transformation = get_cone_matrix(xyz, shape->normal,
 			shape->radius);
 	if (!shape->default_transformation)
 		return (1);
