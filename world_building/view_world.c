@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   view_world.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:08:08 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 19:50:40 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 20:11:10 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ double	**view_transform(t_xyzvektor from, t_xyzvektor to, t_xyzvektor up)
 
 	forward = normalize(substraction(to, from));
 	left = normalize(cross_product(forward, normalize(up)));
-	true_up = cross_product(left, forward);
+	true_up = normalize(cross_product(left, forward));
 	orientation = matrix(left, true_up, forward);
 	translation_mat = translation(-from.x, -from.y, -from.z);
 	if (!orientation || !translation_mat)
