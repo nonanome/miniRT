@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:45:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 14:11:28 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 15:33:09 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static void	update_sorted_storage(t_world *world, t_c *canvas, double *times)
 				bail("ft_calloc failed", 1, world);
 			world->all_sorted = new_sorted;
 		}
-		world->all_sorted[canvas->all_intersections.nr_intersections] = times[i];
+		world->all_sorted
+		[canvas->all_intersections.nr_intersections] = times[i];
 		canvas->all_intersections.nr_intersections++;
 		i++;
 	}
@@ -82,10 +83,12 @@ void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	double	*times_copy;
 
 	resize_intersections_array(canvas, world);
-	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
+	canvas->all_intersections.intersections
+	[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
 	times_copy = clone_times(new_intersection->times, world);
 	ft_free(new_intersection->times);
-	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries].times = times_copy;
+	canvas->all_intersections.intersections
+	[canvas->all_intersections.nr_intersection_entries].times = times_copy;
 	update_sorted_storage(world, canvas, times_copy);
 	canvas->all_intersections.nr_intersection_entries++;
 	ft_free(new_intersection);

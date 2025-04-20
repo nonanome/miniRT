@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:32:04 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 00:28:59 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 15:35:31 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,15 @@ t_xyzvektor	calc_cone_normal(t_shape cone, t_xyzvektor point)
 
 	ratio = cone.radius / (cone.maximum - cone.minimum);
 	dist = point.x * point.x + point.z * point.z;
-
-	// Prüfen, ob wir uns auf dem oberen Deckel befinden
 	if (dist < 1.0 + EPSILON && point.y >= cone.maximum - EPSILON)
 		return (set_vector(0, 1, 0, 0));
-
-	// Normale an der Seitenfläche
 	normal.x = point.x;
 	normal.z = point.z;
 	normal.y = -sqrt(point.x * point.x + point.z * point.z) * ratio;
 	normal.w = 0.0;
-
 	normal = normalize(normal);
 	return (normal);
 }
-
 
 t_xyzvektor	cone_normal(t_shape shape, t_xyzvektor point)
 {

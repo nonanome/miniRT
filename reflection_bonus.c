@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:43:31 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/20 13:53:40 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 15:36:18 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,25 @@ t_xyzvektor	calculate_reflection(t_xyzvektor in, t_xyzvektor normale)
 	return (normalize(substraction(in, n)));
 }
 
-static double	get_shadow_factor(bool *in_shadow, t_c canvas, t_xyzvektor point)
+static double	get_shadow_factor(bool *in_shadow, t_c canvas,
+		t_xyzvektor point)
 {
 	int		i;
 	double	shadow_factor;
 	double	distance_to_light;
-	double	max_distance = 50.0;
+	double	max_distance;
+	double	attenuation;
 
+	max_distance = 50.0;
 	shadow_factor = 0.4;
 	i = -1;
 	while (++i < canvas.num_lights)
 	{
 		if (in_shadow[i])
 		{
-			distance_to_light = magnitude(substraction(canvas.lightsource[i].position, point));
-			double attenuation = 1.0 - fmin(distance_to_light / max_distance, 1.0);
+			distance_to_light = magnitude(substraction
+					(canvas.lightsource[i].position, point));
+			attenuation = 1.0 - fmin(distance_to_light / max_distance, 1.0);
 			shadow_factor += 0.4 * attenuation;
 		}
 	}
