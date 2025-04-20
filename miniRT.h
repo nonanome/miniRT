@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kkuhn <kkuhn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:23:11 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 15:32:29 by kkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,6 @@ t_xyzvektor	calculate_wall_coordinate(int x, int y, double pixel_size,
 				double half);
 t_xyzvektor	pattern_at(t_shape shape, t_xyzvektor point);
 t_xyzvektor	get_color(t_c canvas, t_shape shape, long double x, long double y);
+void		cut_cylinder(t_intersec *result, t_ray ray, t_shape shape);
 
 #endif
