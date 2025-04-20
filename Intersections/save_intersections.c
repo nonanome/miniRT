@@ -6,30 +6,39 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:45:19 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:58:47 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 14:11:28 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../world_building/world.h"
+#include <stdio.h>
 
 static void	resize_intersections_array(t_c *canvas, t_world *world)
 {
 	size_t	new_size;
 	void	*temp;
 
-	if (canvas->all_intersections.nr_intersections == 0)
+	if (canvas->all_intersections.allocated_intersections == 0
+		|| canvas->all_intersections.intersections == NULL)
 	{
-		new_size = 1;
-		temp = ft_calloc(sizeof(t_intersec), 1);
+		return (new_size = 2, temp = ft_calloc(sizeof(t_intersec), new_size),
+			canvas->all_intersections.allocated_intersections = new_size,
+			canvas->all_intersections.intersections = temp, (void)0);
 	}
-	else
+	else if (canvas->all_intersections.nr_intersection_entries
+		+ 1 > canvas->all_intersections.allocated_intersections)
 	{
-		new_size = canvas->all_intersections.nr_intersection_entries + 1;
+		new_size = canvas->all_intersections.allocated_intersections * 2;
 		temp = rt_realloc(canvas->all_intersections.intersections,
 				sizeof(t_intersec) * new_size);
+		if (!temp)
+			bail("realloc failed", 1, world);
+		canvas->all_intersections.allocated_intersections = new_size;
 	}
+	else
+		return ;
 	if (!temp)
-		bail("realloc failed", 1, world);
+		bail("calloc failed", 1, world);
 	canvas->all_intersections.intersections = temp;
 }
 
@@ -61,8 +70,7 @@ static void	update_sorted_storage(t_world *world, t_c *canvas, double *times)
 				bail("ft_calloc failed", 1, world);
 			world->all_sorted = new_sorted;
 		}
-		world->all_sorted[canvas->all_intersections.nr_intersections]
-			= times[i];
+		world->all_sorted[canvas->all_intersections.nr_intersections] = times[i];
 		canvas->all_intersections.nr_intersections++;
 		i++;
 	}
@@ -74,12 +82,10 @@ void	save_intersections(t_c *canvas, t_intersec *new_intersection,
 	double	*times_copy;
 
 	resize_intersections_array(canvas, world);
-	canvas->all_intersections.intersections
-	[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
+	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries] = *new_intersection;
 	times_copy = clone_times(new_intersection->times, world);
 	ft_free(new_intersection->times);
-	canvas->all_intersections.intersections
-	[canvas->all_intersections.nr_intersection_entries].times = times_copy;
+	canvas->all_intersections.intersections[canvas->all_intersections.nr_intersection_entries].times = times_copy;
 	update_sorted_storage(world, canvas, times_copy);
 	canvas->all_intersections.nr_intersection_entries++;
 	ft_free(new_intersection);

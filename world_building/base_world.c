@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 21:33:02 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:59:32 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 14:12:05 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_shape	*new_shape(int type)
 	shape->material = default_material();
 	shape->id = global_id;
 	global_id++;
+	if (global_id >= 99)
+		bail("too many shapes", 1, NULL);
 	shape->minimum = -INFINITY;
 	shape->maximum = INFINITY;
 	shape->closed = false;

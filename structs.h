@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:40:27 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 13:05:45 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 14:12:32 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_intersections
 	t_intersec		*intersections;
 	size_t			nr_intersections;
 	size_t			nr_intersection_entries;
+	size_t			allocated_intersections;
 }					t_all_intersec;
 
 typedef struct s_pointlight

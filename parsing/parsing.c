@@ -6,7 +6,7 @@
 /*   By: qhahn <qhahn@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:54:58 by qhahn             #+#    #+#             */
-/*   Updated: 2025/04/19 20:59:02 by qhahn            ###   ########.fr       */
+/*   Updated: 2025/04/20 14:11:58 by qhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	look_for_double_uppercase(char **input, int a, int c, t_world *world)
 		}
 		input++;
 	}
-	if (a > 1 || c > 1 || l > 1)
+	if (a != 1 || c != 1 || l != 1)
 	{
-		bail("input contains double capital letter object", 1, world);
+		bail("wrong number of cameras, lights or ambient light", 1, world);
 	}
 }
 
@@ -104,7 +104,6 @@ int	parse_input(char *file_name, t_world *world)
 	world->all_sorted = ft_calloc(sizeof(double *), 100);
 	if (!world->all_sorted)
 		return (1);
-	world->all_sorted[0] = 0;
 	input = process_file(file_name, world);
 	if (!input)
 		return (1);
